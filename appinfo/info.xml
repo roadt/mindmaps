@@ -11,7 +11,9 @@
     <namespace>Mindmaps</namespace>
     <category>organization</category>
     <category>tools</category>
-    <bugs>https://github.com/splitt3r/Kooperative-Systeme/issues</bugs>
+    <bugs>https://github.com/splitt3r/mindmaps/issues</bugs>
+    <repository type="git">https://github.com/splitt3r/mindmaps.git</repository>
+    <screenshot>https://raw.githubusercontent.com/splitt3r/mindmaps/master/screenshots/mindmap_node_actions.png</screenshot>
     <dependencies>
         <nextcloud min-version="10" max-version="13"/>
     </dependencies>
