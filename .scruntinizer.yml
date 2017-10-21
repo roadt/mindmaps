@@ -1,0 +1,13 @@
+filter:
+  excluded_paths:
+    - 'js/vendor/*'
+    - 'l10n/*'
+
+imports:
+  - javascript
+  - php
+
+build:
+  tests:
+    override:
+      -  jshint-run --config js/.jshintrc

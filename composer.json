@@ -1,0 +1,15 @@
+{
+	"name": "mindmaps",
+	"description": "This Nextcloud app allows you to create awesome mindmaps together with you colleagues.",
+	"type": "project",
+	"license": "AGPL",
+	"authors": [
+		{
+			"name": "Kai Schröer",
+			"homepage": "https://schroeer.co"
+		}
+	],
+	"require-dev": {
+		"phpunit/phpunit": "^5.4"
+	}
+}

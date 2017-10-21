@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>mindmaps</id>
+    <name>Mindmaps</name>
+    <summary>This Nextcloud app allows you to create awesome mindmaps together with you colleagues.</summary>
+    <description><![CDATA[This Nextcloud app allows you to create awesome mindmaps together with you colleagues. You can easily work together on your mindmaps and see who´s working on which node of the mindmap.]]></description>
+    <licence>agpl</licence>
+    <author mail="kai@schroeer.co" homepage="https://schroeer.co">Kai Schröer</author>
+    <version>0.0.1</version>
+    <namespace>Mindmaps</namespace>
+    <category>organization</category>
+    <category>tools</category>
+    <bugs>https://github.com/splitt3r/Kooperative-Systeme/issues</bugs>
+    <dependencies>
+        <nextcloud min-version="10" max-version="13"/>
+    </dependencies>
+</info>
