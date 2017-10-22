@@ -92,7 +92,7 @@ source:
 # Builds the source package for the app store, ignores php and js tests
 .PHONY: appstore
 appstore:
-rm -rf $(appstore_build_directory)
+	rm -rf $(appstore_build_directory)
 	rm -rf $(build_source_directory)
 	mkdir -p $(appstore_build_directory)
 	mkdir -p $(build_source_directory)
