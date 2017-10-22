@@ -5,9 +5,9 @@
     <name>Mindmaps</name>
     <summary>This Nextcloud app allows you to create awesome mindmaps together with you colleagues.</summary>
     <description><![CDATA[This Nextcloud app allows you to create awesome mindmaps together with you colleagues. You can easily work together on your mindmaps and see who´s working on which node of the mindmap.]]></description>
+    <version>0.0.1</version>
     <licence>agpl</licence>
     <author mail="kai@schroeer.co" homepage="https://schroeer.co">Kai Schröer</author>
-    <version>0.0.1</version>
     <namespace>Mindmaps</namespace>
     <category>organization</category>
     <category>tools</category>
