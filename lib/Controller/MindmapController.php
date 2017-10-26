@@ -95,7 +95,7 @@ class MindmapController extends Controller {
     public function update($mindmapId, $title, $description) {
         try {
             return new DataResponse($this->mindmapService->update($mindmapId, $title, $description, $this->userId));
-        } catch (NotFoundException $ex){
+        } catch (NotFoundException $ex) {
             return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
         } catch (BadRequestException $ex) {
             return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());

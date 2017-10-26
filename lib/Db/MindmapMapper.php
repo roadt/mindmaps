@@ -61,16 +61,16 @@ class MindmapMapper extends Mapper {
      */
     public function findAll($userId) {
         $sql = 'SELECT ' .
-               '  DISTINCT(*PREFIX*mindmap_acl.mindmap_id) IS NOT NULL AS shared, ' .
-               '  ' . $this->getTableName() . '.* ' .
-               'FROM ' . $this->getTableName() . ' ' .
-               '  LEFT JOIN *PREFIX*mindmap_acl ON ' . $this->getTableName() . '.id = *PREFIX*mindmap_acl.mindmap_id ' .
-               'WHERE ' . $this->getTableName() . '.user_id = ? OR ' .
-               '      *PREFIX*mindmap_acl.participant = ? AND *PREFIX*mindmap_acl.type = ? OR ' .
-               '      *PREFIX*mindmap_acl.participant IN (SELECT gid ' .
-               '                                     FROM *PREFIX*group_user ' .
-               '                                     WHERE uid = ?) AND *PREFIX*mindmap_acl.type = ? ' .
-               'ORDER BY ' . $this->getTableName() . '.id';
+                '  DISTINCT(*PREFIX*mindmap_acl.mindmap_id) IS NOT NULL AS shared, ' .
+                '  ' . $this->getTableName() . '.* ' .
+                'FROM ' . $this->getTableName() . ' ' .
+                '  LEFT JOIN *PREFIX*mindmap_acl ON ' . $this->getTableName() . '.id = *PREFIX*mindmap_acl.mindmap_id ' .
+                'WHERE ' . $this->getTableName() . '.user_id = ? OR ' .
+                '      *PREFIX*mindmap_acl.participant = ? AND *PREFIX*mindmap_acl.type = ? OR ' .
+                '      *PREFIX*mindmap_acl.participant IN (SELECT gid ' .
+                '                                     FROM *PREFIX*group_user ' .
+                '                                     WHERE uid = ?) AND *PREFIX*mindmap_acl.type = ? ' .
+                'ORDER BY ' . $this->getTableName() . '.id';
         return $this->findEntities($sql, [$userId, $userId, Acl::PERMISSION_TYPE_USER, $userId, Acl::PERMISSION_TYPE_GROUP]);
     }
 }

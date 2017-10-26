@@ -112,7 +112,7 @@ class MindmapNodeService extends Service {
             $mindmapNode->setY($y);
 
             return $this->minamapNodeMapper->update($mindmapNode);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->handleException($e);
         }
     }
@@ -131,7 +131,7 @@ class MindmapNodeService extends Service {
             $mindmapNode->setLockedBy($userId);
 
             return $this->minamapNodeMapper->update($mindmapNode);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->handleException($e);
         }
     }
@@ -150,7 +150,7 @@ class MindmapNodeService extends Service {
             $mindmapNode->setLockedBy(null);
 
             return $this->minamapNodeMapper->update($mindmapNode);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->handleException($e);
         }
     }

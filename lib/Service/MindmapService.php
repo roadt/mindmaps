@@ -67,7 +67,7 @@ class MindmapService extends Service {
      */
     public function create($title, $description, $userId) {
         if ($title === null || $title === '') {
-           throw new BadRequestException();
+            throw new BadRequestException();
         }
 
         $mindmap = new Mindmap();
@@ -103,7 +103,7 @@ class MindmapService extends Service {
             }
 
             return $this->mindmapMapper->update($mindmap);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->handleException($e);
         }
     }

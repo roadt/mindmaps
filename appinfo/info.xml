@@ -8,10 +8,10 @@
     <version>0.0.1</version>
     <licence>agpl</licence>
     <author mail="kai@schroeer.co" homepage="https://schroeer.co">Kai Schröer</author>
+    <namespace>Mindmaps</namespace>
     <documentation>
         <admin>https://github.com/splitt3r/mindmaps/blob/master/README.md</admin>
     </documentation>
-    <namespace>Mindmaps</namespace>
     <category>organization</category>
     <category>tools</category>
     <website>https://github.com/splitt3r/mindmaps</website>

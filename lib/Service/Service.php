@@ -69,7 +69,7 @@ class Service {
     public function find($id) {
         try {
             return $this->mapper->find($id);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->handleException($e);
         }
     }
@@ -87,7 +87,7 @@ class Service {
         try {
             $entity = $this->find($id);
             return $this->mapper->delete($entity);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->handleException($e);
         }
     }

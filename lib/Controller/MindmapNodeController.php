@@ -102,7 +102,7 @@ class MindmapNodeController extends Controller {
     public function update($mindmapNodeId, $parentId, $label, $x, $y) {
         try {
             return new DataResponse($this->mindmapNodeService->update($mindmapNodeId, $parentId, $label, $x, $y, $this->userId));
-        } catch (NotFoundException $ex){
+        } catch (NotFoundException $ex) {
             return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
         } catch (BadRequestException $ex) {
             return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());

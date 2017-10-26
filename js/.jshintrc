@@ -27,6 +27,10 @@
 		"requestToken": true,
 		"t": true,
 		"vis": true,
-		"Handlebars": true
+		"Handlebars": true,
+		"MindmapService": true,
+        "MindmapNodeService": true,
+        "AclService": true,
+        "View": true
 	}
 }

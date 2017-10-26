@@ -29,7 +29,7 @@ use OCP\IRequest;
 
 class PageController extends Controller {
 
-	private $userId;
+    private $userId;
 
     /**
      * PageController constructor.
@@ -38,14 +38,14 @@ class PageController extends Controller {
      * @param IRequest $request
      * @param string $userId
      */
-	public function __construct($appName,
+    public function __construct($appName,
                                 IRequest $request,
                                 $userId) {
-		parent::__construct($appName, $request);
-		$this->userId = $userId;
-	}
+        parent::__construct($appName, $request);
+        $this->userId = $userId;
+    }
 
-	/**
+    /**
      * Simple method that renders the index page.
      *
 	 * @NoAdminRequired
@@ -53,7 +53,7 @@ class PageController extends Controller {
      *
      * @return TemplateResponse
 	 */
-	public function index() {
-		return new TemplateResponse('mindmaps', 'index');
-	}
+    public function index() {
+        return new TemplateResponse('mindmaps', 'index');
+    }
 }
