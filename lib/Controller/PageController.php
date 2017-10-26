@@ -48,11 +48,11 @@ class PageController extends Controller {
     /**
      * Simple method that renders the index page.
      *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
+     * @NoAdminRequired
+     * @NoCSRFRequired
      *
      * @return TemplateResponse
-	 */
+     */
     public function index() {
         return new TemplateResponse('mindmaps', 'index');
     }

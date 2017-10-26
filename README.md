@@ -2,6 +2,7 @@
 
 [![Build Status](https://img.shields.io/travis/splitt3r/mindmaps.svg?style=flat-square)](https://travis-ci.org/splitt3r/mindmaps)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/splitt3r/mindmaps.svg?style=flat-square)](https://scrutinizer-ci.com/g/splitt3r/mindmaps)
+[![Code Coverage]https://img.shields.io/scrutinizer/coverage/g/splitt3r/mindmaps.svg?style=flat-square)](https://scrutinizer-ci.com/g/splitt3r/mindmaps)
 [![Software License](https://img.shields.io/badge/license-AGPL-brightgreen.svg?style=flat-square)](LICENSE)
 
 This Nextcloud app allows you to create awesome mindmaps together with you colleagues.
