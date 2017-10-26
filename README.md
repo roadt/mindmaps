@@ -25,7 +25,7 @@ App icon by [Icons8](https://icons8.com) and mindmaps powered by [Vis.js](http:/
 
 ## Installation / Update
 
-This app is supposed to work on Nextcloud version 10+.
+This app is supposed to work on Nextcloud version 11+.
 
 ### Install latest release
 

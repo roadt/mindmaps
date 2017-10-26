@@ -1,15 +1,16 @@
 {
 	"name": "mindmaps",
-	"description": "This Nextcloud app allows you to create awesome mindmaps together with you colleagues.",
 	"type": "project",
-	"license": "AGPL",
+	"license": "AGPLv3",
 	"authors": [
 		{
-			"name": "Kai Schröer",
-			"homepage": "https://schroeer.co"
+			"name": "Kai Schröer"
 		}
 	],
 	"require-dev": {
-		"phpunit/phpunit": "^5.4"
+		"christophwurst/nextcloud": "^12.0",
+		"phpunit/phpunit": "^5.4",
+		"league/factory-muffin": "^3.0",
+		"league/factory-muffin-faker": "^2.0"
 	}
 }
