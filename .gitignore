@@ -1,4 +1,7 @@
+build/
+vendor/
+.idea/
+*.lock
+*.iml
 .DS_Store
 Thumbs.db
-*.iml
-.idea/

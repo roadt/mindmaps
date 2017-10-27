@@ -23,15 +23,14 @@
 
 namespace OCA\Mindmaps\Tests\Unit\Service;
 
+use League\FactoryMuffin\Faker\Facade as Faker;
 use OCA\Mindmaps\Db\Mindmap;
 use OCA\Mindmaps\Db\MindmapMapper;
 use OCA\Mindmaps\Service\MindmapService;
+use OCA\Mindmaps\Tests\Unit\UnitTestCase;
 use OCP\IDBConnection;
-use PHPUnit_Framework_TestCase;
-use League\FactoryMuffin\FactoryMuffin;
-use League\FactoryMuffin\Faker\Facade as Faker;
 
-class MindmapServiceTest extends PHPUnit_Framework_TestCase {
+class MindmapServiceTest extends UnitTestCase {
 
 	/** @var IDBConnection */
 	private $con;
@@ -39,8 +38,6 @@ class MindmapServiceTest extends PHPUnit_Framework_TestCase {
 	private $mindmapService;
 	/** @var MindmapMapper */
 	private $mindmapMapper;
-	/** @var FactoryMuffin */
-	private	$fm;
 
 	/**
 	 * {@inheritDoc}
@@ -50,8 +47,6 @@ class MindmapServiceTest extends PHPUnit_Framework_TestCase {
 		$this->con = \OC::$server->getDatabaseConnection();
 		$this->mindmapMapper = new MindmapMapper($this->con);
 		$this->mindmapService = new MindmapService($this->mindmapMapper);
-		$this->fm = new FactoryMuffin();
-		$this->fm->loadFactories(__DIR__ . '/../Factories');
 	}
 
 	/**

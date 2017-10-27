@@ -25,11 +25,11 @@ namespace OCA\Mindmaps\Tests\Unit\Controller;
 
 use OCA\Mindmaps\Controller\MindmapController;
 use OCA\Mindmaps\Service\MindmapService;
+use OCA\Mindmaps\Tests\Unit\UnitTestCase;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
-use PHPUnit_Framework_TestCase;
 
-class MindmapControllerTest extends PHPUnit_Framework_TestCase {
+class MindmapControllerTest extends UnitTestCase {
 
 	/** @var MindmapController */
     private $controller;

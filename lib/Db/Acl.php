@@ -57,10 +57,10 @@ class Acl extends Model implements JsonSerializable {
      */
     public function jsonSerialize() {
         return [
-            'id' => $this->id,
-            'participant' => $this->participant,
+			'id' => $this->id,
+			'participant' => $this->participant,
 			'type' => $this->type,
-            'mindmapId' => $this->mindmapId
+			'mindmapId' => $this->mindmapId
         ];
     }
 }

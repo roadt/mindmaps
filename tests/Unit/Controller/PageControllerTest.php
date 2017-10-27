@@ -23,12 +23,12 @@
 
 namespace OCA\Mindmaps\Tests\Unit\Controller;
 
-use OCP\IRequest;
-use PHPUnit_Framework_TestCase;
 use OCA\Mindmaps\Controller\PageController;
+use OCA\Mindmaps\Tests\Unit\UnitTestCase;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\IRequest;
 
-class PageControllerTest extends PHPUnit_Framework_TestCase {
+class PageControllerTest extends UnitTestCase {
 
 	/** @var PageController */
     private $controller;

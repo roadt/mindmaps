@@ -21,20 +21,22 @@
  *
  */
 
-namespace OCA\Mindmaps\Db;
+namespace OCA\Mindmaps\Tests\Unit;
 
-use OCP\AppFramework\Db\Entity;
+use League\FactoryMuffin\FactoryMuffin;
+use PHPUnit_Framework_TestCase;
 
-class Model extends Entity {
+class UnitTestCase extends PHPUnit_Framework_TestCase {
+
+	/** @var FactoryMuffin */
+	protected $fm;
 
 	/**
-	 * FactoryMuffin checks for the existence of setters with method_exists($obj, $attr) but that returns false.
-	 * By overwriting the __set() magic method we can trigger the changed flag on $obj->attr assignment.
-	 *
-	 * @param $name
-	 * @param $value
+	 * {@inheritDoc}
 	 */
-	public function __set($name, $value) {
-		$this->setter($name, [$value]);
+	public function setUp() {
+		parent::setUp();
+		$this->fm = new FactoryMuffin();
+		$this->fm->loadFactories(__DIR__ . '/Factories');
 	}
 }

@@ -27,7 +27,7 @@ use League\FactoryMuffin\Faker\Facade as Faker;
  * General factory for the mindmap node model.
  */
 $fm->define('OCA\Mindmaps\Db\MindmapNode')->setDefinitions([
-	'userId' => Faker::sentence(10),
+	'userId' => Faker::firstNameMale(),
 	'x' => Faker::numberBetween(-400, 400),
 	'y' => Faker::numberBetween(-400, 400),
 	'label' => Faker::sentence(5),
