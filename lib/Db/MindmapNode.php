@@ -24,7 +24,6 @@
 namespace OCA\Mindmaps\Db;
 
 use JsonSerializable;
-use OCP\AppFramework\Db\Entity;
 
 /**
  * @method int getMindmapId()
@@ -42,7 +41,7 @@ use OCP\AppFramework\Db\Entity;
  * @method string getLockedBy()
  * @method void setLockedBy(string $lockedBy)
  */
-class MindmapNode extends Entity implements JsonSerializable {
+class MindmapNode extends Model implements JsonSerializable {
 
     protected $mindmapId;
     protected $parentId;

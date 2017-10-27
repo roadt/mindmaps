@@ -21,30 +21,13 @@
  *
  */
 
-namespace OCA\Mindmaps\Tests\Integration\Controller;
-
-use OCP\AppFramework\App;
-use OCP\AppFramework\IAppContainer;
-use PHPUnit_Framework_TestCase;
+use League\FactoryMuffin\Faker\Facade as Faker;
 
 /**
- * This test shows how to make a small Integration Test. Query your class
- * directly from the container, only pass in mocks if needed and run your tests
- * against the database
+ * General factory for the mindmap model.
  */
-class AppTest extends PHPUnit_Framework_TestCase {
-
-	/** @var IAppContainer */
-    private $container;
-
-    public function setUp() {
-        parent::setUp();
-        $app = new App('mindmaps');
-        $this->container = $app->getContainer();
-    }
-
-    public function testAppInstalled() {
-        $appManager = $this->container->query('OCP\App\IAppManager');
-        $this->assertTrue($appManager->isInstalled('mindmaps'));
-    }
-}
+$fm->define('OCA\Mindmaps\Db\Mindmap')->setDefinitions([
+	'title' => Faker::sentence(10),
+	'description' => Faker::sentence(20),
+	'userId' => Faker::firstNameMale()
+]);

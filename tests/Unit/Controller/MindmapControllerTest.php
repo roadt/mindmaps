@@ -24,20 +24,29 @@
 namespace OCA\Mindmaps\Tests\Unit\Controller;
 
 use OCA\Mindmaps\Controller\MindmapController;
+use OCA\Mindmaps\Service\MindmapService;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\IRequest;
 use PHPUnit_Framework_TestCase;
 
 class MindmapControllerTest extends PHPUnit_Framework_TestCase {
+
+	/** @var MindmapController */
     private $controller;
+    /** @var IRequest */
     private $request;
+    /** @var MindmapService */
     private $mindmapService;
+
     private $userId = 'john';
 
-	public function setUp() {
+	/**
+	 * {@inheritDoc}
+	 */
+    public function setUp() {
         $this->request = $this->getMockBuilder('OCP\IRequest')
             ->disableOriginalConstructor()
             ->getMock();
-
         $this->mindmapService = $this->getMockBuilder(
             '\OCA\Mindmaps\Service\MindmapService')
             ->disableOriginalConstructor()
@@ -46,12 +55,13 @@ class MindmapControllerTest extends PHPUnit_Framework_TestCase {
         $this->controller = new MindmapController(
             'mindmaps', $this->request, $this->mindmapService, $this->userId
         );
-	}
+    }
 
-	public function testIndex() {
+	/**
+	 * Basic controller index route test.
+	 */
+    public function testIndex() {
         $result = $this->controller->index();
-
-        $this->assertTrue($result instanceof DataResponse);
-	}
-
+		$this->assertInstanceOf(DataResponse::class, $result);
+    }
 }

@@ -24,7 +24,6 @@
 namespace OCA\Mindmaps\Db;
 
 use JsonSerializable;
-use OCP\AppFramework\Db\Entity;
 
 /**
  * @method string getTitle()
@@ -36,7 +35,7 @@ use OCP\AppFramework\Db\Entity;
  * @method int getAclId()
  * @method void setAclId(int $aclId)
  */
-class Mindmap extends Entity implements JsonSerializable {
+class Mindmap extends Model implements JsonSerializable {
 
     protected $title;
     protected $description;

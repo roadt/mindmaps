@@ -21,30 +21,21 @@
  *
  */
 
-namespace OCA\Mindmaps\Tests\Integration\Controller;
+namespace OCA\Mindmaps\Db;
 
-use OCP\AppFramework\App;
-use OCP\AppFramework\IAppContainer;
-use PHPUnit_Framework_TestCase;
+use JsonSerializable;
+use OCP\AppFramework\Db\Entity;
 
-/**
- * This test shows how to make a small Integration Test. Query your class
- * directly from the container, only pass in mocks if needed and run your tests
- * against the database
- */
-class AppTest extends PHPUnit_Framework_TestCase {
+class Model extends Entity {
 
-	/** @var IAppContainer */
-    private $container;
-
-    public function setUp() {
-        parent::setUp();
-        $app = new App('mindmaps');
-        $this->container = $app->getContainer();
-    }
-
-    public function testAppInstalled() {
-        $appManager = $this->container->query('OCP\App\IAppManager');
-        $this->assertTrue($appManager->isInstalled('mindmaps'));
-    }
+	/**
+	 * FactoryMuffin checks for the existence of setters with method_exists($obj, $attr) but that returns false.
+	 * By overwriting the __set() magic method we can trigger the changed flag on $obj->attr assignment.
+	 *
+	 * @param $name
+	 * @param $value
+	 */
+	public function __set($name, $value) {
+		$this->setter($name, [$value]);
+	}
 }

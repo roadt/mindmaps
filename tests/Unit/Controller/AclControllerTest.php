@@ -24,20 +24,29 @@
 namespace OCA\Mindmaps\Tests\Unit\Controller;
 
 use OCA\Mindmaps\Controller\AclController;
+use OCA\Mindmaps\Service\AclService;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\IRequest;
 use PHPUnit_Framework_TestCase;
 
 class AclControllerTest extends PHPUnit_Framework_TestCase {
+
+	/** @var AclController */
     private $controller;
+    /** @var IRequest */
     private $request;
+    /** @var AclService */
     private $aclService;
+
     private $userId = 'john';
 
-	public function setUp() {
+	/**
+	 * {@inheritDoc}
+	 */
+    public function setUp() {
         $this->request = $this->getMockBuilder('OCP\IRequest')
             ->disableOriginalConstructor()
             ->getMock();
-
         $this->aclService = $this->getMockBuilder(
             '\OCA\Mindmaps\Service\AclService')
             ->disableOriginalConstructor()
@@ -46,12 +55,13 @@ class AclControllerTest extends PHPUnit_Framework_TestCase {
         $this->controller = new AclController(
             'mindmaps', $this->request, $this->aclService, $this->userId
         );
-	}
+    }
 
-	public function testIndex() {
+	/**
+	 * Basic controller index route test.
+	 */
+    public function testIndex() {
         $result = $this->controller->index(0);
-
-        $this->assertTrue($result instanceof DataResponse);
-	}
-
+        $this->assertInstanceOf(DataResponse::class, $result);
+    }
 }

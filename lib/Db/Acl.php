@@ -24,7 +24,6 @@
 namespace OCA\Mindmaps\Db;
 
 use JsonSerializable;
-use OCP\AppFramework\Db\Entity;
 
 /**
  * @method string getParticipant()
@@ -34,7 +33,7 @@ use OCP\AppFramework\Db\Entity;
  * @method string getMindmapId()
  * @method void setMindmapId(int $mindmapId)
  */
-class Acl extends Entity implements JsonSerializable {
+class Acl extends Model implements JsonSerializable {
 
     const PERMISSION_TYPE_USER = 0;
     const PERMISSION_TYPE_GROUP = 1;
@@ -60,7 +59,7 @@ class Acl extends Entity implements JsonSerializable {
         return [
             'id' => $this->id,
             'participant' => $this->participant,
-            'type' => $this->type,
+			'type' => $this->type,
             'mindmapId' => $this->mindmapId
         ];
     }
