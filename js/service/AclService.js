@@ -20,6 +20,8 @@
  *
  */
 
+'use strict';
+
 var AclService = function (baseUrl) {
     this._baseUrl = baseUrl;
     this._acl = [];

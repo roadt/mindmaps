@@ -23,18 +23,26 @@
 
 namespace OCA\Mindmaps\Db;
 
+use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 
 class MindmapMapper extends Mapper {
 
+	private $mindmapNodeMapper;
+	private $aclMapper;
+
     /**
      * MindmapMapper constructor.
      *
      * @param IDBConnection $db
+	 * @param MindmapNodeMapper $mindmapNodeMapper
      */
-    public function __construct(IDBConnection $db) {
+    public function __construct(IDBConnection $db, MindmapNodeMapper $mindmapNodeMapper, AclMapper $aclMapper) {
         parent::__construct($db, 'mindmaps');
+
+        $this->mindmapNodeMapper = $mindmapNodeMapper;
+        $this->aclMapper = $aclMapper;
     }
 
     /**
@@ -57,7 +65,7 @@ class MindmapMapper extends Mapper {
      *
      * @param string $userId
      *
-     * @return array
+     * @return \OCP\AppFramework\Db\Entity[]
      */
     public function findAll($userId) {
         $sql = 'SELECT ' .
@@ -73,4 +81,16 @@ class MindmapMapper extends Mapper {
                 'ORDER BY ' . $this->getTableName() . '.id';
         return $this->findEntities($sql, [$userId, $userId, Acl::PERMISSION_TYPE_USER, $userId, Acl::PERMISSION_TYPE_GROUP]);
     }
+
+	/**
+	 * Deletes an entity from the table.
+	 *
+	 * @param Entity $entity the entity that should be deleted
+	 * @return Entity the deleted entity
+	 */
+	public function delete(Entity $entity) {
+		$this->mindmapNodeMapper->deleteByMindmapId($entity->getId());
+		$this->aclMapper->deleteByMindmapId($entity->getId());
+		return parent::delete($entity);
+	}
 }

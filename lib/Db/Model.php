@@ -25,7 +25,7 @@ namespace OCA\Mindmaps\Db;
 
 use OCP\AppFramework\Db\Entity;
 
-class Model extends Entity {
+abstract class Model extends Entity {
 
 	/**
 	 * FactoryMuffin checks for the existence of setters with method_exists($obj, $attr) but that returns false.

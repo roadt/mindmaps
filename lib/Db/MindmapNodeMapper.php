@@ -57,10 +57,22 @@ class MindmapNodeMapper extends Mapper {
      *
      * @param integer $mindmapId
      *
-     * @return array
+     * @return MindmapNode[]
      */
     public function findAll($mindmapId) {
         $sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE mindmap_id = ?';
         return $this->findEntities($sql, [$mindmapId]);
     }
+
+	/**
+	 * Delete all child nodes for a given mindmap.
+	 *
+	 * @param integer $mindmapId
+	 */
+    public function deleteByMindmapId($mindmapId) {
+		$mindmapNodes = $this->findAll($mindmapId);
+		foreach ($mindmapNodes as $node) {
+			$this->delete($node);
+		}
+	}
 }

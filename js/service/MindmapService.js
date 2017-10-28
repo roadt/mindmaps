@@ -20,6 +20,8 @@
  *
  */
 
+'use strict';
+
 var MindmapService = function (baseUrl) {
     this._baseUrl = baseUrl;
     this._mindmaps = [];

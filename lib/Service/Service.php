@@ -28,7 +28,7 @@ use OCA\Mindmaps\Exception\NotFoundException;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
-class Service {
+abstract class Service {
 
     protected $mapper;
 
@@ -72,6 +72,7 @@ class Service {
         } catch (Exception $e) {
             $this->handleException($e);
         }
+        return null;
     }
 
     /**
@@ -90,5 +91,6 @@ class Service {
         } catch (Exception $e) {
             $this->handleException($e);
         }
+        return null;
     }
 }

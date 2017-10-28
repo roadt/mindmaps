@@ -24,8 +24,10 @@
 namespace OCA\Mindmaps\Tests\Unit\Service;
 
 use League\FactoryMuffin\Faker\Facade as Faker;
+use OCA\Mindmaps\Db\AclMapper;
 use OCA\Mindmaps\Db\Mindmap;
 use OCA\Mindmaps\Db\MindmapMapper;
+use OCA\Mindmaps\Db\MindmapNodeMapper;
 use OCA\Mindmaps\Service\MindmapService;
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
 use OCP\IDBConnection;
@@ -38,6 +40,10 @@ class MindmapServiceTest extends UnitTestCase {
 	private $mindmapService;
 	/** @var MindmapMapper */
 	private $mindmapMapper;
+	/** @var MindmapNodeMapper */
+	private $mindmapNodeMapper;
+	/** @var AclMapper */
+	private $aclMapper;
 
 	/**
 	 * {@inheritDoc}
@@ -45,7 +51,9 @@ class MindmapServiceTest extends UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->con = \OC::$server->getDatabaseConnection();
-		$this->mindmapMapper = new MindmapMapper($this->con);
+		$this->aclMapper = new AclMapper($this->con);
+		$this->mindmapNodeMapper = new MindmapNodeMapper(($this->con));
+		$this->mindmapMapper = new MindmapMapper($this->con, $this->mindmapNodeMapper, $this->aclMapper);
 		$this->mindmapService = new MindmapService($this->mindmapMapper);
 	}
 

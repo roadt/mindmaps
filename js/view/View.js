@@ -20,6 +20,8 @@
  *
  */
 
+'use strict';
+
 var View = function (mindmaps, nodes, acl) {
     this._mindmaps = mindmaps;
     this._nodes = nodes;
@@ -104,6 +106,12 @@ View.prototype = {
             OC.dialogs.alert(t('mindmaps', 'The vis.js Framework is not available!'), t('mindmaps', 'Error'));
         }
     },
+	registerNewButton: function () {
+		var self = this;
+		$('#new-mindmap-button').off().click(function () {
+			self.renderCreateEditMindmapModal();
+		});
+	},
     renderNavigation: function () {
         var self = this;
         var $mindmapList = $('#mindmap-list');
@@ -127,10 +135,6 @@ View.prototype = {
             }).fail(function () {
                 OC.dialogs.alert(t('mindmaps', 'Could not load mindmap nodes.'), t('mindmaps', 'Error'));
             });
-        });
-
-        $('#new-mindmap-button').off().click(function () {
-            self.renderCreateEditMindmapModal();
         });
 
         $('.app-navigation-entry-utils-menu-button button').off().click(function (e) {
@@ -426,6 +430,7 @@ View.prototype = {
         var self = this;
         var active = self._mindmaps.getActive();
         this._mindmaps.loadAll().done(function () {
+        	self.registerNewButton();
             if (typeof active === 'undefined') {
                 active = self._mindmaps.getAll()[0];
             }

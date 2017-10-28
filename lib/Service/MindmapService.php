@@ -106,5 +106,6 @@ class MindmapService extends Service {
         } catch (Exception $e) {
             $this->handleException($e);
         }
+        return null;
     }
 }

@@ -30,17 +30,17 @@ use OCA\Mindmaps\Exception\BadRequestException;
 
 class MindmapNodeService extends Service {
 
-    private $minamapNodeMapper;
+    private $mindmapNodeMapper;
 
     /**
      * MindmapNodeService constructor.
      *
-     * @param MindmapNodeMapper $minamapNodeMapper
+     * @param MindmapNodeMapper $mindmapNodeMapper
      */
-    public function __construct(MindmapNodeMapper $minamapNodeMapper) {
-        parent::__construct($minamapNodeMapper);
+    public function __construct(MindmapNodeMapper $mindmapNodeMapper) {
+        parent::__construct($mindmapNodeMapper);
 
-        $this->minamapNodeMapper = $minamapNodeMapper;
+        $this->mindmapNodeMapper = $mindmapNodeMapper;
     }
 
     /**
@@ -52,7 +52,7 @@ class MindmapNodeService extends Service {
      * @return array
      */
     public function findAll($mindmapId, $userId) {
-        return $this->minamapNodeMapper->findAll($mindmapId);
+        return $this->mindmapNodeMapper->findAll($mindmapId);
     }
 
     /**
@@ -82,7 +82,7 @@ class MindmapNodeService extends Service {
         $mindmapNode->setY($y);
         $mindmapNode->setUserId($userId);
 
-        return $this->minamapNodeMapper->insert($mindmapNode);
+        return $this->mindmapNodeMapper->insert($mindmapNode);
     }
 
     /**
@@ -111,10 +111,11 @@ class MindmapNodeService extends Service {
             $mindmapNode->setX($x);
             $mindmapNode->setY($y);
 
-            return $this->minamapNodeMapper->update($mindmapNode);
+            return $this->mindmapNodeMapper->update($mindmapNode);
         } catch (Exception $e) {
             $this->handleException($e);
         }
+        return null;
     }
 
     /**
@@ -130,10 +131,11 @@ class MindmapNodeService extends Service {
             $mindmapNode = $this->find($mindmapNodeId);
             $mindmapNode->setLockedBy($userId);
 
-            return $this->minamapNodeMapper->update($mindmapNode);
+            return $this->mindmapNodeMapper->update($mindmapNode);
         } catch (Exception $e) {
             $this->handleException($e);
         }
+        return null;
     }
 
     /**
@@ -149,9 +151,10 @@ class MindmapNodeService extends Service {
             $mindmapNode = $this->find($mindmapNodeId);
             $mindmapNode->setLockedBy(null);
 
-            return $this->minamapNodeMapper->update($mindmapNode);
+            return $this->mindmapNodeMapper->update($mindmapNode);
         } catch (Exception $e) {
             $this->handleException($e);
         }
+        return null;
     }
 }
