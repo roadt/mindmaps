@@ -7,7 +7,7 @@
     <description><![CDATA[This Nextcloud app allows you to create awesome mindmaps together with you colleagues. You can easily work together on your mindmaps and see who´s working on which node of the mindmap.]]></description>
     <version>0.0.1</version>
     <licence>agpl</licence>
-    <author mail="kai@schroeer.co" homepage="https://schroeer.co">Kai Schröer</author>
+    <author>Kai Schröer</author>
     <namespace>Mindmaps</namespace>
     <documentation>
         <admin>https://github.com/splitt3r/mindmaps/blob/master/README.md</admin>
