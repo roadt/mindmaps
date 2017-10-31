@@ -44,7 +44,9 @@ script:
   # Check info.xml schema validity
   - wget https://apps.nextcloud.com/schema/apps/info.xsd
   - xmllint appinfo/info.xml --schema info.xsd --noout
-  - rm info.xsd
+  # Check database.xml schema validity
+  - wget https://apps.nextcloud.com/schema/apps/database.xsd
+  - xmllint appinfo/database.xml --schema database.xsd --noout
   # Check PHP syntax errors
   - find . -name \*.php -exec php -l "{}" \;
   # Execute tests
