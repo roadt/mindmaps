@@ -49,7 +49,7 @@ class MindmapMapperTest extends UnitTestCase {
 		parent::setUp();
 		$this->con = \OC::$server->getDatabaseConnection();
 		$this->aclMapper = new AclMapper($this->con);
-		$this->mindmapNodeMapper = new MindmapNodeMapper(($this->con));
+		$this->mindmapNodeMapper = new MindmapNodeMapper($this->con);
 		$this->mindmapMapper = new MindmapMapper($this->con, $this->mindmapNodeMapper, $this->aclMapper);
 	}
 
