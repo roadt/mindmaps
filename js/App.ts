@@ -23,7 +23,7 @@
 import Vue from 'vue';
 
 import AppContent from './components/AppContent.vue';
-import Navigation from './components/Navigation.vue';
+import AppNavigation from './components/AppNavigation.vue';
 
 export class App {
 	static start() {
@@ -31,7 +31,7 @@ export class App {
 			el: '#app',
 			components: {
 				'app-content': AppContent,
-				'app-navigation': Navigation
+				'app-navigation': AppNavigation
 			}
 		});
 	}

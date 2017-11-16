@@ -22,7 +22,7 @@
 
 import Axios from 'axios';
 
-export class Service {
+export abstract class Service {
 	protected headers: object;
 	protected baseUrl: string;
 	protected data: any[];
@@ -41,7 +41,7 @@ export class Service {
 				return entry;
 			}
 		});
-		throw new Error('Could not find an entry with the given id.');
+		throw new Error(t('mindmaps', 'Could not find an entry with the given id.'));
 	}
 
 	getAll() {

@@ -36,7 +36,8 @@ export class MindmapNodeService extends Service {
 			this.data.forEach((node) => {
 				node.title = t('mindmaps', 'Author: ') + node.userId;
 				if (node.lockedBy !== null) {
-					node.title = node.title + t('mindmaps', ' / Locked by: ') + node.lockedBy;
+					node.title = node.title + t('mindmaps', ' / Locked by: ') +
+						node.lockedBy;
 					node.color = 'red';
 				}
 			});
@@ -70,7 +71,8 @@ export class MindmapNodeService extends Service {
 		).then((response) => {
 			let node = this.find(id);
 			let index = this.data.indexOf(node);
-			node.title = t('mindmaps', 'Author: ') + node.userId + t('mindmaps', ' / Locked by: ') + node.lockedBy;
+			node.title = t('mindmaps', 'Author: ') + node.userId +
+				t('mindmaps', ' / Locked by: ') + node.lockedBy;
 			node.color = 'red';
 			this.data[index] = node;
 			return response;
