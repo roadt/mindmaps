@@ -1,0 +1,45 @@
+{
+	"name": "mindmaps",
+	"description": "This Nextcloud app allows you to create awesome mindmaps together with you colleagues.",
+	"version": "0.0.1",
+	"author": "Kai Schröer <git@schroeer.co>",
+	"license": "AGPL-3.0",
+	"homepage": "https://github.com/splitt3r/mindmaps#readme",
+	"bugs": {
+		"url": "https://github.com/splitt3r/mindmaps/issues"
+	},
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/splitt3r/mindmaps.git"
+	},
+	"keywords": [
+		"Nextcloud",
+		"Mindmaps"
+	],
+	"scripts": {
+		"dev": "webpack  --progress --colors --watch",
+		"build-dev": "webpack",
+		"build": "webpack -p"
+	},
+	"dependencies": {
+		"@types/jquery": "^3.2.16",
+		"@types/markdown-it": "^0.0.4",
+		"axios": "^0.17.1",
+		"babel-core": "^6.26.0",
+		"babel-loader": "^7.1.2",
+		"css-loader": "^0.28.7",
+		"markdown-it": "^8.4.0",
+		"ts-loader": "^3.1.1",
+		"typescript": "^2.6.1",
+		"uglify-js": "^3.1.9",
+		"underscore": "^1.8.3",
+		"vis": "4.21.0",
+		"vue": "^2.5.3",
+		"vue-loader": "^13.5.0",
+		"vue-router": "^2.8.1",
+		"vue-template-compiler": "^2.5.3",
+		"vuex": "^3.0.1",
+		"webpack": "^3.8.1"
+	}
+}

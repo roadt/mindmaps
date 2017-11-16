@@ -57,7 +57,7 @@ class MindmapNodeMapper extends Mapper {
      *
      * @param integer $mindmapId
      *
-     * @return MindmapNode[]
+     * @return \OCP\AppFramework\Db\Entity[]
      */
     public function findAll($mindmapId) {
         $sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE mindmap_id = ?';

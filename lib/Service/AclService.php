@@ -49,7 +49,7 @@ class AclService extends Service {
      * @param integer|null $limit
      * @param integer|null $offset
      *
-     * @return mixed
+     * @return \OCP\AppFramework\Db\Entity[]
      */
     public function findAll($mindmapId, $limit = null, $offset = null) {
         return $this->aclMapper->findAll($mindmapId, $limit, $offset);

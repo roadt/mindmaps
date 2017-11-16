@@ -1,4 +1,3 @@
-<?php
 /**
  * @copyright Copyright (c) 2017 Kai Schröer <git@schroeer.co>
  *
@@ -21,13 +20,11 @@
  *
  */
 
-style('mindmaps', 'vendor/vis.min');
-style('mindmaps', 'main');
+import {Model} from './Model';
 
-script('mindmaps', 'bundle');
-?>
-
-<div id="app">
-	<app-navigation></app-navigation>
-	<app-content></app-content>
-</div>
+export class Mindmap extends Model {
+	title: string;
+	description: string;
+	userId: string;
+	shared: string;
+}

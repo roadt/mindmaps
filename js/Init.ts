@@ -1,4 +1,3 @@
-<?php
 /**
  * @copyright Copyright (c) 2017 Kai Schröer <git@schroeer.co>
  *
@@ -21,13 +20,8 @@
  *
  */
 
-style('mindmaps', 'vendor/vis.min');
-style('mindmaps', 'main');
+import {App} from './App';
 
-script('mindmaps', 'bundle');
-?>
-
-<div id="app">
-	<app-navigation></app-navigation>
-	<app-content></app-content>
-</div>
+$(() => {
+	App.start();
+});

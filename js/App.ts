@@ -1,4 +1,3 @@
-<?php
 /**
  * @copyright Copyright (c) 2017 Kai Schröer <git@schroeer.co>
  *
@@ -21,13 +20,19 @@
  *
  */
 
-style('mindmaps', 'vendor/vis.min');
-style('mindmaps', 'main');
+import Vue from 'vue';
 
-script('mindmaps', 'bundle');
-?>
+import AppContent from './components/AppContent.vue';
+import Navigation from './components/Navigation.vue';
 
-<div id="app">
-	<app-navigation></app-navigation>
-	<app-content></app-content>
-</div>
+export class App {
+	static start() {
+		new Vue({
+			el: '#app',
+			components: {
+				'app-content': AppContent,
+				'app-navigation': Navigation
+			}
+		});
+	}
+}

@@ -34,7 +34,7 @@ class PageControllerTest extends UnitTestCase {
     private $controller;
     /** @var IRequest */
     private $request;
-
+	/** @var string */
     private $userId = 'john';
 
 	/**

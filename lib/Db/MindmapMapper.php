@@ -85,8 +85,9 @@ class MindmapMapper extends Mapper {
 	/**
 	 * Deletes an entity from the table.
 	 *
-	 * @param Entity $entity the entity that should be deleted
-	 * @return Entity the deleted entity
+	 * @param \OCP\AppFramework\Db\Entity $entity the entity that should be deleted
+	 *
+	 * @return \OCP\AppFramework\Db\Entity the deleted entity
 	 */
 	public function delete(Entity $entity) {
 		$this->mindmapNodeMapper->deleteByMindmapId($entity->getId());

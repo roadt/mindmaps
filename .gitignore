@@ -1,3 +1,5 @@
+js/**/*.js
+node_modules/
 build/
 vendor/
 .idea/
@@ -5,3 +7,4 @@ vendor/
 *.iml
 .DS_Store
 Thumbs.db
+package-lock.json

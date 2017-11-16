@@ -37,7 +37,7 @@ class MindmapNodeControllerTest extends UnitTestCase {
     private $request;
     /** @var MindmapNodeService */
     private $mindmapNodeService;
-
+	/** @var string */
     private $userId = 'john';
 
 	/**

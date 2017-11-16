@@ -37,7 +37,7 @@ class AclControllerTest extends UnitTestCase {
     private $request;
     /** @var AclService */
     private $aclService;
-
+    /** @var string */
     private $userId = 'john';
 
 	/**

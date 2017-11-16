@@ -49,7 +49,7 @@ class MindmapNodeService extends Service {
      * @param integer $mindmapId
      * @param string $userId
      *
-     * @return array
+     * @return \OCP\AppFramework\Db\Entity[]
      */
     public function findAll($mindmapId, $userId) {
         return $this->mindmapNodeMapper->findAll($mindmapId);

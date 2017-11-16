@@ -20,19 +20,21 @@
  *
  */
 
-(function (OC, window, $, undefined) {
-    'use strict';
+import {Service} from './Service';
 
-    $(document).ready(function () {
-        var mindmaps = new MindmapService(OC.generateUrl('/apps/mindmaps/mindmaps'));
-        var nodes = new MindmapNodeService(OC.generateUrl('/apps/mindmaps/nodes'));
-        var acl = new AclService(OC.generateUrl('/apps/mindmaps/acl'));
-        var view = new View(mindmaps, nodes, acl);
+export class MindmapService extends Service {
+	private active;
 
-        view.render();
+	constructor() {
+		super('/apps/mindmaps/mindmaps');
+		this.active = null;
+	}
 
-        setInterval(function () {
-            view.render();
-        }, 30 * 1000);
-    });
-})(OC, window, jQuery);
+	getActive() {
+		return this.active;
+	}
+
+	setActive(obj) {
+		this.active = obj;
+	}
+}
