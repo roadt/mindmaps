@@ -49,6 +49,8 @@ script:
   - xmllint appinfo/database.xml --schema database.xsd --noout
   # Check PHP syntax errors
   - find . -name \*.php -exec php -l "{}" \;
+  # Install JS deps
+  make npm
   # Execute tests
   - make test
 
