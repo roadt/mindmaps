@@ -33,6 +33,8 @@ If you want to run the latest development version from git source, you need to c
 
 ```
 git clone https://github.com/splitt3r/mindmaps.git
+npm install
+npm run-script build-dev
 ```
 
 ## Contribution Guidelines

@@ -51,9 +51,9 @@ endif
 .PHONY: npm
 npm:
 ifeq (,$(wildcard $(CURDIR)/package.json))
-	cd js && $(npm) run build
+	cd js && $(npm) install && $(npm) run build
 else
-	npm run build
+	$(npm) install && $(npm) run build
 endif
 
 # Removes the appstore build
@@ -120,11 +120,6 @@ appstore:
 	--exclude="js/.*" \
 	--exclude="l10n/.tx" \
 	./ $(build_source_directory)/$(app_name)
-
-	@if [ -f $(cert_directory)/$(app_name).key ]; then \
-		echo "Creating integrity file..."; \
-		php ../../occ integrity:sign-app --privateKey="$(cert_directory)/$(app_name).key" --certificate="$(cert_directory)/$(app_name).crt" --path "$(build_source_directory)/$(app_name)"; \
-	fi
 
 	tar cvzf $(appstore_package_name).tar.gz --directory="$(build_source_directory)" $(app_name)
 
