@@ -22,13 +22,18 @@
 
 import {Service} from './Service';
 import Axios from "axios";
+import {MindmapNode} from '../models/MindmapNode';
 
-export class MindmapNodeService extends Service {
+export class MindmapNodeService extends Service<MindmapNode> {
 	constructor() {
 		super('/apps/mindmaps/nodes');
 	}
 
-	loadAll(mindmapId: number) {
+	load(mindmapId?: number) {
+		if (typeof mindmapId === 'undefined') {
+			throw new Error(t('mindmaps', 'Please specify a mindmapId.'));
+		}
+
 		return Axios.get(this.baseUrl + '/' + mindmapId, {
 			headers: this.headers
 		}).then((response) => {
@@ -48,18 +53,17 @@ export class MindmapNodeService extends Service {
 	}
 
 	remove(id: number) {
-		let node = this.find(id);
+		let node: any = this.find(id);
 		if (node.parentId === 0) {
-			return Promise.reject(t('mindmaps', 'Root Node can´t be deleted.'));
-		} else {
-			super.remove(id).then((response) => {
-				let index = this.data.indexOf(node);
-				this.data.splice(index, 1);
-				return response;
-			}).catch((error) => {
-				return Promise.reject(error.response);
-			});
+			throw new Error(t('mindmaps', 'Root Node can´t be deleted.'));
 		}
+		return super.remove(id).then((response) => {
+			let index = this.data.indexOf(node);
+			this.data.splice(index, 1);
+			return response;
+		}).catch((error) => {
+			return Promise.reject(error.response);
+		});
 	}
 
 	lock(id: number) {
@@ -69,7 +73,7 @@ export class MindmapNodeService extends Service {
 				headers: this.headers
 			}
 		).then((response) => {
-			let node = this.find(id);
+			let node: any = this.find(id);
 			let index = this.data.indexOf(node);
 			node.title = t('mindmaps', 'Author: ') + node.userId +
 				t('mindmaps', ' / Locked by: ') + node.lockedBy;
@@ -87,7 +91,7 @@ export class MindmapNodeService extends Service {
 				headers: this.headers
 			}
 		).then((response) => {
-			let node = this.find(id);
+			let node: any = this.find(id);
 			let index = this.data.indexOf(node);
 			node.title = t('mindmaps', 'Author: ') + node.userId;
 			node.color = '#97C2FC';

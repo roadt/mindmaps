@@ -20,10 +20,4 @@
  *
  */
 
-export default {
-	methods: {
-		t(text: string): string {
-			return t('mindmaps', text);
-		}
-	}
-}
+declare module 'vis';

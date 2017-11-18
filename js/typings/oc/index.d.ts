@@ -20,10 +20,31 @@
  *
  */
 
-export default {
-	methods: {
-		t(text: string): string {
-			return t('mindmaps', text);
-		}
+declare function t(app: string, text: string): string;
+
+declare namespace OC {
+	let requestToken: string;
+
+	function generateUrl(url: string, params?: any[], options?: any[]): string;
+
+	function getCurrentUser(): CurrentUser;
+
+	function getLocale(): string;
+
+	interface CurrentUser {
+		uid: string;
+		displayName: string;
+	}
+}
+
+declare namespace OCP {
+	interface AppConfig {
+		getKeys(app: string, options: object): void;
+
+		getValue(app: string, key: string, defaultValue: string, options: object): void;
+
+		setValue(app: string, key: string, value: string, options: object): void;
+
+		deleteKey(app: string, key: string, options: object): void;
 	}
 }

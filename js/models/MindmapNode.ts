@@ -30,4 +30,7 @@ export class MindmapNode extends Model {
 	y: number;
 	label: string;
 	lockedBy: string;
+	// Vis.js node properties!
+	title: string;
+	color: string;
 }

@@ -20,12 +20,13 @@
  *
  */
 
-import Axios from 'axios';
+import Axios, {AxiosPromise} from 'axios';
+import {Model} from '../models/Model';
 
-export abstract class Service {
+export abstract class Service<T extends Model> {
 	protected headers: object;
 	protected baseUrl: string;
-	protected data: any[];
+	protected data: Array<T>;
 
 	constructor(baseUrl: string) {
 		this.baseUrl = OC.generateUrl(baseUrl);
@@ -35,20 +36,21 @@ export abstract class Service {
 		};
 	}
 
-	find(id: number) {
+	find(id: number): T | null {
+		let obj: T | null = null;
 		this.data.forEach((entry) => {
 			if (entry.id === id) {
-				return entry;
+				obj = entry;
 			}
 		});
-		throw new Error(t('mindmaps', 'Could not find an entry with the given id.'));
+		return obj;
 	}
 
-	getAll() {
+	getAll(): Array<T> {
 		return this.data;
 	}
 
-	load() {
+	load(): AxiosPromise {
 		return Axios.get(this.baseUrl, {
 			headers: this.headers
 		}).then((response) => {
@@ -59,7 +61,7 @@ export abstract class Service {
 		});
 	}
 
-	create(obj) {
+	create(obj: T): AxiosPromise {
 		return Axios.post(this.baseUrl,
 			{
 				data: obj
@@ -75,8 +77,8 @@ export abstract class Service {
 		});
 	}
 
-	update(obj) {
-		return Axios.put(this.baseUrl + '/' + id,
+	update(obj: T): AxiosPromise {
+		return Axios.put(this.baseUrl + '/' + obj.id,
 			{
 				data: obj
 			},
@@ -92,16 +94,19 @@ export abstract class Service {
 		});
 	}
 
-	remove(id: number) {
+	remove(id: number): AxiosPromise {
 		return Axios.delete(this.baseUrl + '/' + id,
 			{
 				headers: this.headers
 			}
 		).then((response) => {
 			let entry = this.find(response.data.id);
-			let index = this.data.indexOf(entry);
-			this.data.splice(index, 1);
-			return response.data;
+			if (entry != null) {
+				let index = this.data.indexOf(entry);
+				this.data.splice(index, 1);
+				return response.data;
+			}
+			return Promise.reject(t('mindmaps', 'Object not found.'));
 		}).catch((error) => {
 			return Promise.reject(error.response);
 		});

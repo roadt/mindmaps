@@ -21,20 +21,21 @@
  */
 
 import {Service} from './Service';
+import {Mindmap} from '../models/Mindmap';
 
-export class MindmapService extends Service {
-	private active;
+export class MindmapService extends Service<Mindmap> {
+	private active: Mindmap | null;
 
 	constructor() {
 		super('/apps/mindmaps/mindmaps');
 		this.active = null;
 	}
 
-	getActive() {
+	getActive(): Mindmap | null {
 		return this.active;
 	}
 
-	setActive(obj) {
+	setActive(obj: Mindmap): void {
 		this.active = obj;
 	}
 }

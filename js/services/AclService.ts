@@ -21,8 +21,9 @@
  */
 
 import {Service} from './Service';
+import {Acl} from '../models/Acl';
 
-export class AclService extends Service {
+export class AclService extends Service<Acl> {
 	constructor() {
 		super('/apps/mindmaps/acl');
 	}
