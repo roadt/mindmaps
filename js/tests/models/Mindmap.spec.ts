@@ -20,11 +20,12 @@
  *
  */
 
-import {Model} from './Model';
+import {expect} from 'chai';
+import {Mindmap} from '../../models/Mindmap';
 
-export class Mindmap extends Model {
-	title: string;
-	description: string;
-	userId: string;
-	shared: boolean;
-}
+describe("Mindmap", () => {
+	it("Should be an instance of Mindmap", () => {
+		let mindmap = new Mindmap();
+		expect(mindmap).to.instanceOf(Mindmap);
+	});
+});

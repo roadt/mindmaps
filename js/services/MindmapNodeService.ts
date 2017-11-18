@@ -23,6 +23,7 @@
 import {Service} from './Service';
 import Axios, {AxiosPromise} from 'axios';
 import {MindmapNode} from '../models/MindmapNode';
+import {System} from '../System';
 
 export class MindmapNodeService extends Service<MindmapNode> {
 	constructor() {
@@ -31,7 +32,7 @@ export class MindmapNodeService extends Service<MindmapNode> {
 
 	load(mindmapId?: number): AxiosPromise {
 		if (typeof mindmapId === 'undefined') {
-			throw new Error(t('mindmaps', 'Please specify a mindmapId.'));
+			throw new Error(System.t('Please specify a mindmapId.'));
 		}
 
 		return Axios.get(this.baseUrl + '/' + mindmapId, {
@@ -39,10 +40,10 @@ export class MindmapNodeService extends Service<MindmapNode> {
 		}).then((response) => {
 			this.data = response.data;
 			this.data.forEach((node) => {
-				node.title = t('mindmaps', 'Author: ') + node.userId;
+				node.title = System.t('Author: ') + node.userId;
 				if (node.lockedBy !== null) {
 					node.title = node.title +
-						t('mindmaps', ' / Locked by: ') +
+						System.t(' / Locked by: ') +
 						node.lockedBy;
 					node.color = 'red';
 				}
@@ -56,7 +57,7 @@ export class MindmapNodeService extends Service<MindmapNode> {
 	remove(id: number): AxiosPromise {
 		let node: any = this.find(id);
 		if (node.parentId === 0) {
-			throw new Error(t('mindmaps', 'Root Node can´t be deleted.'));
+			throw new Error(System.t('Root Node can´t be deleted.'));
 		}
 		return super.remove(id).then((response) => {
 			let index = this.data.indexOf(node);
@@ -76,8 +77,8 @@ export class MindmapNodeService extends Service<MindmapNode> {
 		).then((response) => {
 			let node: any = this.find(id);
 			let index = this.data.indexOf(node);
-			node.title = t('mindmaps', 'Author: ') + node.userId +
-				t('mindmaps', ' / Locked by: ') + node.lockedBy;
+			node.title = System.t('Author: ') + node.userId +
+				System.t(' / Locked by: ') + node.lockedBy;
 			node.color = 'red';
 			this.data[index] = node;
 			return response;
@@ -94,7 +95,7 @@ export class MindmapNodeService extends Service<MindmapNode> {
 		).then((response) => {
 			let node: any = this.find(id);
 			let index = this.data.indexOf(node);
-			node.title = t('mindmaps', 'Author: ') + node.userId;
+			node.title = System.t('Author: ') + node.userId;
 			node.color = '#97C2FC';
 			this.data[index] = node;
 			return response.data;

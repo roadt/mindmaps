@@ -20,11 +20,16 @@
  *
  */
 
-import {Model} from './Model';
+export class System {
+	static t(text: string): string {
+		return t('mindmaps', text);
+	}
 
-export class Mindmap extends Model {
-	title: string;
-	description: string;
-	userId: string;
-	shared: boolean;
+	static generateUrl(url: string): string {
+		return OC.generateUrl(url);
+	}
+
+	static getRequestToken(): string {
+		return OC.requestToken;
+	}
 }

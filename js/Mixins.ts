@@ -19,11 +19,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+import {System} from './System';
 
 export default {
 	methods: {
 		t(text: string): string {
-			return t('mindmaps', text);
+			return System.t(text);
 		}
 	}
 }

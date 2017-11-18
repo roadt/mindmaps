@@ -22,6 +22,7 @@
 
 import Axios, {AxiosPromise} from 'axios';
 import {Model} from '../models/Model';
+import {System} from '../System';
 
 export abstract class Service<T extends Model> {
 	protected headers: object;
@@ -29,9 +30,9 @@ export abstract class Service<T extends Model> {
 	protected data: Array<T>;
 
 	constructor(baseUrl: string) {
-		this.baseUrl = OC.generateUrl(baseUrl);
+		this.baseUrl = System.generateUrl(baseUrl);
 		this.headers = {
-			'requesttoken': OC.requestToken,
+			'requesttoken': System.getRequestToken(),
 			'OCS-APIREQUEST': 'true'
 		};
 	}
@@ -106,7 +107,7 @@ export abstract class Service<T extends Model> {
 				this.data.splice(index, 1);
 				return response.data;
 			}
-			return Promise.reject(t('mindmaps', 'Object not found.'));
+			return Promise.reject(System.t('Object not found.'));
 		}).catch((error) => {
 			return Promise.reject(error.response);
 		});
