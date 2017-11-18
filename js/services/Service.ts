@@ -25,8 +25,8 @@ import {Model} from '../models/Model';
 import {System} from '../System';
 
 export abstract class Service<T extends Model> {
-	protected headers: object;
 	protected baseUrl: string;
+	protected headers: object;
 	protected data: Array<T>;
 
 	constructor(baseUrl: string) {
@@ -35,6 +35,7 @@ export abstract class Service<T extends Model> {
 			'requesttoken': System.getRequestToken(),
 			'OCS-APIREQUEST': 'true'
 		};
+		this.data = [];
 	}
 
 	find(id: number): T | null {

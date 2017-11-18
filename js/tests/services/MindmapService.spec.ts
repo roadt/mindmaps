@@ -25,7 +25,6 @@ import {Mindmap} from '../../models/Mindmap';
 import {MindmapService} from '../../services/MindmapService';
 import * as moxios from 'moxios';
 import * as sinon from 'sinon';
-import {System} from '../../System';
 
 describe('MindmapService', () => {
 	let service: MindmapService;
@@ -41,15 +40,6 @@ describe('MindmapService', () => {
 
 	describe('load', () => {
 		it('Should return one mindmap', (done) => {
-			// Stub all the OC methods.
-			sinon.stub(System, 't').callsFake((text: string) => {
-				return text;
-			});
-			sinon.stub(System, 'generateUrl').callsFake((text: string) => {
-				return text;
-			});
-			sinon.stub(System, 'getRequestToken').returns('TEST');
-
 			data = [{
 				'id': 1,
 				'title': 'Test',
