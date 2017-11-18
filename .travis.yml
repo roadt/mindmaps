@@ -50,7 +50,7 @@ script:
   # Check PHP syntax errors
   - find . -name \*.php -exec php -l "{}" \;
   # Install JS deps
-  make npm
+  - make npm
   # Execute tests
   - make test
 
