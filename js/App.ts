@@ -26,7 +26,7 @@ import AppContent from './components/AppContent.vue';
 import AppNavigation from './components/AppNavigation.vue';
 
 export class App {
-	static start() {
+	static start(): void {
 		new Vue({
 			el: '#app',
 			components: {

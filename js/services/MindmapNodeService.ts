@@ -21,7 +21,7 @@
  */
 
 import {Service} from './Service';
-import Axios from "axios";
+import Axios, {AxiosPromise} from 'axios';
 import {MindmapNode} from '../models/MindmapNode';
 
 export class MindmapNodeService extends Service<MindmapNode> {
@@ -29,7 +29,7 @@ export class MindmapNodeService extends Service<MindmapNode> {
 		super('/apps/mindmaps/nodes');
 	}
 
-	load(mindmapId?: number) {
+	load(mindmapId?: number): AxiosPromise {
 		if (typeof mindmapId === 'undefined') {
 			throw new Error(t('mindmaps', 'Please specify a mindmapId.'));
 		}
@@ -41,7 +41,8 @@ export class MindmapNodeService extends Service<MindmapNode> {
 			this.data.forEach((node) => {
 				node.title = t('mindmaps', 'Author: ') + node.userId;
 				if (node.lockedBy !== null) {
-					node.title = node.title + t('mindmaps', ' / Locked by: ') +
+					node.title = node.title +
+						t('mindmaps', ' / Locked by: ') +
 						node.lockedBy;
 					node.color = 'red';
 				}
@@ -52,7 +53,7 @@ export class MindmapNodeService extends Service<MindmapNode> {
 		});
 	}
 
-	remove(id: number) {
+	remove(id: number): AxiosPromise {
 		let node: any = this.find(id);
 		if (node.parentId === 0) {
 			throw new Error(t('mindmaps', 'Root Node can´t be deleted.'));
@@ -66,7 +67,7 @@ export class MindmapNodeService extends Service<MindmapNode> {
 		});
 	}
 
-	lock(id: number) {
+	lock(id: number): AxiosPromise {
 		return Axios.post(this.baseUrl + '/' + id + '/locks',
 			{},
 			{
@@ -85,7 +86,7 @@ export class MindmapNodeService extends Service<MindmapNode> {
 		});
 	}
 
-	unlock(id: number) {
+	unlock(id: number): AxiosPromise {
 		return Axios.delete(this.baseUrl + '/' + id + '/locks',
 			{
 				headers: this.headers

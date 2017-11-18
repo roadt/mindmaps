@@ -22,9 +22,25 @@
 
 import {Service} from './Service';
 import {Acl} from '../models/Acl';
+import {default as Axios, AxiosPromise} from 'axios';
 
 export class AclService extends Service<Acl> {
 	constructor() {
 		super('/apps/mindmaps/acl');
+	}
+
+	load(mindmapId?: number): AxiosPromise {
+		if (typeof mindmapId === 'undefined') {
+			throw new Error(t('mindmaps', 'Please specify a mindmapId.'));
+		}
+
+		return Axios.get(this.baseUrl + '/' + mindmapId, {
+			headers: this.headers
+		}).then((response) => {
+			this.data = response.data;
+			return response;
+		}).catch((error) => {
+			return Promise.reject(error.response);
+		});
 	}
 }

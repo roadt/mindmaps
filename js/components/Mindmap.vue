@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <script lang="ts">
 	import {MindmapNodeService} from '../services/MindmapNodeService';
-	import vis from 'vis';
+	import * as vis from 'vis';
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
 	import {MindmapNode} from "../models/MindmapNode";
@@ -38,7 +38,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		created() {
 			let service = new MindmapNodeService();
 			service.load(23).then((response) => {
-				let container = document.getElementById('mindmap');
+				let wrapper: HTMLElement | null = document.getElementById('app-content-wrapper');
+				let container: HTMLElement | null = document.getElementById('mindmap');
 				let options = {
 					physics: {enabled: false},
 					interaction: {dragNodes: false},
@@ -47,14 +48,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				let nodes: Array<MindmapNode> = response.data;
 				let edges: Array<{from: number, to: number}> = [];
 
+				if (container !== null && wrapper !== null) {
+					// The mindmap should use all of the wrappers place.
+					container.style.height = wrapper.clientHeight + 'px';
+				}
+
 				nodes.forEach((val: MindmapNode) => {
 					if (val.parentId !== 0) {
 						edges.push({from: val.parentId, to: val.id});
 					}
 				});
 
-				if (vis !== null) {
-					let network = new vis.Network(container, {nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges)}, options);
+				if (vis !== null && container !== null) {
+					let network = new vis.Network(container,
+						{nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges)},
+						options);
 					network.fit();
 				}
 			}).catch((error) => {

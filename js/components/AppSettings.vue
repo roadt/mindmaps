@@ -25,7 +25,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<button class="settings-button" data-apps-slide-toggle="#app-settings-content">{{ t('Settings') }}</button>
 		</div>
 		<div id="app-settings-content">
-
+			<ul>
+				<li>
+					<label for="refreshInterval">{{ t('Refresh interval (in minutes)') }}</label>
+					<input id="refreshInterval" type="number" v-bind:value="refreshInterval">
+				</li>
+			</ul>
 		</div>
 	</div>
 </template>
@@ -39,6 +44,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		mixins: [Mixins]
 	})
 	export default class AppSettings extends Vue {
-
+		refreshInterval: number = 0;
+		created() {
+			this.refreshInterval = 10;
+		}
 	}
 </script>

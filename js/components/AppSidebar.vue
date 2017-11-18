@@ -32,10 +32,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			</ul>
 			<div class="tabsContainer">
 				<div id="detailsTabView" class="tab detailsTabView">
-
+					<h3>{{ t('Help') }}<span class="icon icon-info" v-bind:title="t('Help')"></span></h3>
+					<p v-html="helpText"></p>
+					<h3>{{ t('Description') }}<a class="icon icon-edit save" href="#" v-bind:title="t('Save description')"></a></h3>
+					<textarea id="description">{{ description }}</textarea>
 				</div>
 				<div id="sharingTabView" class="tab sharingTabView hidden">
-
+					<ul id="shareWithList" class="shareWithList">
+						<template v-for="share in shares">
+							<li v-bind:data-id="share.id">
+								<div class="avatar" v-bind:data-username="share.participant"></div>
+								<span class="username">{{ share.participant }}</span>
+								<a class="icon icon-delete delete" href="#">{{ t('Delete share') }}</a>
+							</li>
+						</template>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -46,11 +57,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
 	import Mixins from "../Mixins";
+	import {Acl} from "../models/Acl";
+	import {AclService} from "../services/AclService";
 
 	@Component({
 		mixins: [Mixins]
 	})
 	export default class AppSidebar extends Vue {
-
+		helpText: string = t('mindmaps', 'Select a node and double click anywhere in your mindmap to add a child node. ' +
+			'You can also edit or delete nodes by simply clicking on them and choose the corresponding action icon. ' +
+			'App icon by <a href="https://icons8.com/" rel="noopener" target="_blank">Icons8</a> and mindmaps powered by ' +
+			'<a href="http://visjs.org/" rel="noopener" target="_blank">Vis.js</a>.');
+		shares: Array<Acl> = [];
+		description: string = '';
+		created() {
+			let service = new AclService();
+			service.load(23).then((response) => {
+				this.shares = [];
+				response.data.forEach((share: Acl) => {
+					this.shares.push(share);
+				});
+			}).catch((error) => {
+				console.error('Error: ' + error.message);
+			});
+		}
 	}
 </script>

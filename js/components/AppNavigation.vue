@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		<button class="icon-add svg app-content-list-button" id="new-mindmap-button">{{ t('New Mindmap') }}</button>
 		<ul>
 			<template v-for="mindmap in mindmaps">
-				<li class="with-menu" v-bind:class="mindmap.classes" v-bind:data-id="mindmap.id">
+				<li class="with-menu" v-bind:data-id="mindmap.id">
 					<a href="#">{{ mindmap.title }}</a>
 					<div class="app-navigation-entry-utils">
 						<ul>
@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 							</li>
 						</ul>
 					</div>
-					<div class="app-navigation-entry-menu" v-show="mindmap.menu">
+					<div class="app-navigation-entry-menu">
 						<ul>
 							<li><button class="icon-rename svg" v-bind:title="t('Rename Mindmap')"></button></li>
 							<li><button class="icon-delete svg" v-bind:title="t('Delete Mindmap')"></button></li>
@@ -54,6 +54,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
 	import Mixins from "../Mixins";
+	import {MindmapService} from "../services/MindmapService";
+	import {Mindmap} from "../models/Mindmap";
 
 	@Component({
 		mixins: [Mixins],
@@ -62,10 +64,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	})
 	export default class AppNavigation extends Vue {
-		mindmaps: Array<any> = [
-			{classes:' active', id: 1, title: 'Mindmap #1', active: true, shared: false, menu: false},
-			{classes:'', id: 2, title: 'Mindmap #2', active: false, shared: true, menu: false},
-			{classes:'', id: 3, title: 'Mindmap #3', active: false, shared: false, menu: false}
-		];
+		mindmaps: Array<Mindmap> = [];
+		created() {
+			this.mindmaps = [];
+			let service = new MindmapService();
+			service.load().then((response) => {
+				this.mindmaps = [];
+				response.data.forEach((mindmap: Mindmap) => {
+					this.mindmaps.push(mindmap);
+				});
+			}).catch((error) => {
+				console.error('Error: ' + error.message);
+			});
+		}
 	}
 </script>
