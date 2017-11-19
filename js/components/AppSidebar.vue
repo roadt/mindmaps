@@ -32,16 +32,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			</ul>
 			<div class="tabsContainer">
 				<div id="detailsTabView" class="tab detailsTabView">
-					<h3>{{ t('Help') }}<span class="icon icon-info" v-bind:title="t('Help')"></span></h3>
+					<h3>{{ t('Help') }}<span class="icon icon-info" :title="t('Help')"></span></h3>
 					<p v-html="helpText"></p>
-					<h3>{{ t('Description') }}<a class="icon icon-edit save" href="#" v-bind:title="t('Save description')"></a></h3>
+					<h3>{{ t('Description') }}<a class="icon icon-edit save" href="#" :title="t('Save description')"></a></h3>
 					<textarea id="description">{{ description }}</textarea>
 				</div>
 				<div id="sharingTabView" class="tab sharingTabView hidden">
 					<ul id="shareWithList" class="shareWithList">
 						<template v-for="share in shares">
-							<li v-bind:data-id="share.id">
-								<div class="avatar" v-bind:data-username="share.participant"></div>
+							<li :data-id="share.id">
+								<div class="avatar" :data-username="share.participant"></div>
 								<span class="username">{{ share.participant }}</span>
 								<a class="icon icon-delete delete" href="#">{{ t('Delete share') }}</a>
 							</li>
@@ -56,9 +56,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <script lang="ts">
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
-	import Mixins from "../Mixins";
-	import {Acl} from "../models/Acl";
-	import {AclService} from "../services/AclService";
+	import Mixins from '../Mixins';
+	import {Acl} from '../models/Acl';
+	import {AclService} from '../services/AclService';
 
 	@Component({
 		mixins: [Mixins]

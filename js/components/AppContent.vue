@@ -21,25 +21,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div id="app-content">
-		<div id="app-content-wrapper">
-			<mindmap></mindmap>
-		</div>
-		<app-sidebar></app-sidebar>
+		<router-view></router-view>
 	</div>
 </template>
 
 <script lang="ts">
 	import Mindmap from './Mindmap.vue';
-	import AppSidebar from './AppSidebar.vue';
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
-	import Mixins from "../Mixins";
+	import Mixins from '../Mixins';
 
 	@Component({
 		mixins: [Mixins],
 		components: {
-			'mindmap': Mindmap,
-			'app-sidebar': AppSidebar
+			'mindmap': Mindmap
 		}
 	})
 	export default class AppContent extends Vue {

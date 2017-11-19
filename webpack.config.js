@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-	entry: './js/Init.ts',
+	entry: './js/App.ts',
 	output: {
 		path: path.resolve(__dirname, './js'),
 		filename: 'bundle.js'

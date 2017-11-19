@@ -28,8 +28,12 @@ env:
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.npm
 
 before_install:
+  # Install node + latest npm
+  - nvm install --lts
+  - npm install -g npm@latest
   # Install NC and app
   - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
   - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB

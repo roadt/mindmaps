@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<ul>
 				<li>
 					<label for="refreshInterval">{{ t('Refresh interval (in minutes)') }}</label>
-					<input id="refreshInterval" type="number" v-bind:value="refreshInterval">
+					<input id="refreshInterval" type="number" :value="refreshInterval">
 				</li>
 			</ul>
 		</div>
@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <script lang="ts">
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
-	import Mixins from "../Mixins";
+	import Mixins from '../Mixins';
 
 	@Component({
 		mixins: [Mixins]

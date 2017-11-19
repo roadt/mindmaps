@@ -24,22 +24,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		<button class="icon-add svg app-content-list-button" id="new-mindmap-button">{{ t('New Mindmap') }}</button>
 		<ul>
 			<template v-for="mindmap in mindmaps">
-				<li class="with-menu" v-bind:data-id="mindmap.id">
-					<a href="#">{{ mindmap.title }}</a>
+				<li class="with-menu" :data-id="mindmap.id">
+					<router-link :to="`/${mindmap.id}`">{{ mindmap.title }}</router-link>
 					<div class="app-navigation-entry-utils">
 						<ul>
 							<li class="app-navigation-entry-utils-menu-share svg" v-if="mindmap.shared">
-								<i class="icon icon-share" v-bind:title="t('Shared with / by you')"></i>
+								<i class="icon icon-share" :title="t('Shared with / by you')"></i>
 							</li>
 							<li class="app-navigation-entry-utils-menu-button">
-								<button class="icon-more svg" v-bind:title="t('More')"></button>
+								<button class="icon-more svg" :title="t('More')"></button>
 							</li>
 						</ul>
 					</div>
 					<div class="app-navigation-entry-menu">
 						<ul>
-							<li><button class="icon-rename svg" v-bind:title="t('Rename Mindmap')"></button></li>
-							<li><button class="icon-delete svg" v-bind:title="t('Delete Mindmap')"></button></li>
+							<li><button class="icon-rename svg" :title="t('Rename Mindmap')"></button></li>
+							<li><button class="icon-delete svg" :title="t('Delete Mindmap')"></button></li>
 						</ul>
 					</div>
 				</li>
@@ -53,9 +53,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import AppSettings from './AppSettings.vue';
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
-	import Mixins from "../Mixins";
-	import {MindmapService} from "../services/MindmapService";
-	import {Mindmap} from "../models/Mindmap";
+	import Mixins from '../Mixins';
+	import {MindmapService} from '../services/MindmapService';
+	import {Mindmap} from '../models/Mindmap';
 
 	@Component({
 		mixins: [Mixins],

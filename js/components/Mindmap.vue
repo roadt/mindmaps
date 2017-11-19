@@ -20,7 +20,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div id="mindmap">{{ t('Mindmap loading...') }}</div>
+	<div>
+		<div id="app-content-wrapper">
+			<div id="mindmap">{{ t('Mindmap loading...') }}</div>
+		</div>
+		<app-sidebar></app-sidebar>
+	</div>
 </template>
 
 <script lang="ts">
@@ -28,14 +33,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import * as vis from 'vis';
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
-	import {MindmapNode} from "../models/MindmapNode";
-	import Mixins from "../Mixins";
+	import {MindmapNode} from '../models/MindmapNode';
+	import Mixins from '../Mixins';
+	import AppSidebar from './AppSidebar.vue';
 
 	@Component({
-		mixins: [Mixins]
+		mixins: [Mixins],
+		components: {
+			'app-sidebar': AppSidebar
+		}
 	})
 	export default class Mindmap extends Vue {
 		created() {
+			// @ts-ignore
+			console.log(this.$route.params.id);
+
 			let service = new MindmapNodeService();
 			service.load(23).then((response) => {
 				let wrapper: HTMLElement | null = document.getElementById('app-content-wrapper');
