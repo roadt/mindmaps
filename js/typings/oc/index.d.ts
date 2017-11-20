@@ -20,7 +20,12 @@
  *
  */
 
-declare function t(app: string, text: string): string;
+declare function t(app: string, text: string, vars?: any, count?: number, options?: TranslationOptions): string;
+declare function n(app: string, textSingular: string, textPlural: string, count: number, vars?: any, options?: TranslationOptions): string;
+
+interface TranslationOptions {
+	escape: boolean;
+}
 
 declare namespace OC {
 	let requestToken: string;

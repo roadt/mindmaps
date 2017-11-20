@@ -21,8 +21,12 @@
  */
 
 export default class System {
-	static t(text: string): string {
-		return t('mindmaps', text);
+	static t(text: string, vars?: any, count?: number, options?: any): string {
+		return t('mindmaps', text, vars, count, options);
+	}
+
+	static n(textSingular: string, textPlural: string, count: number, vars?: any, options?: any): string {
+		return n('mindmaps', textSingular, textPlural, count, vars, options);
 	}
 
 	static generateUrl(url: string): string {

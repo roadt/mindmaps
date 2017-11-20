@@ -26,8 +26,8 @@ import VueRouter from 'vue-router';
 import Mindmap from './components/Mindmap.vue';
 import Index from './components/Index.vue';
 
-export default class Router {
-	static registerRoutes(): VueRouter {
+export default class Routes {
+	static register(): VueRouter {
 		Vue.use(VueRouter);
 
 		const routes = [

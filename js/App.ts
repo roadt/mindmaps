@@ -23,11 +23,11 @@
 import Vue from 'vue';
 import AppContent from './components/AppContent.vue';
 import AppNavigation from './components/AppNavigation.vue';
-import Router from './Router';
+import Routes from './Routes';
 
 class App {
 	static start(): void {
-		const router = Router.registerRoutes();
+		const router = Routes.register();
 		new Vue({
 			router,
 			el: '#app',
