@@ -20,6 +20,6 @@
  *
  */
 
-export abstract class Model {
+export default abstract class Model {
 	id: number;
 }

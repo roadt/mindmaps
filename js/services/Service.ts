@@ -21,10 +21,10 @@
  */
 
 import Axios, {AxiosPromise} from 'axios';
-import {Model} from '../models/Model';
-import {System} from '../System';
+import Model from '../models/Model';
+import System from '../System';
 
-export abstract class Service<T extends Model> {
+export default abstract class Service<T extends Model> {
 	protected baseUrl: string;
 	protected headers: object;
 	protected data: Array<T>;

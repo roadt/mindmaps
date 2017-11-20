@@ -29,11 +29,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script lang="ts">
-	import {MindmapNodeService} from '../services/MindmapNodeService';
+	import MindmapNodeService from '../services/MindmapNodeService';
 	import * as vis from 'vis';
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
-	import {MindmapNode} from '../models/MindmapNode';
+	import MindmapNode from '../models/MindmapNode';
 	import Mixins from '../Mixins';
 	import AppSidebar from './AppSidebar.vue';
 
@@ -45,14 +45,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	})
 	export default class Mindmap extends Vue {
 		created() {
-			// @ts-ignore
-			console.log(this.$route.params.id);
-
-			let service = new MindmapNodeService();
-			service.load(23).then((response) => {
-				let wrapper: HTMLElement | null = document.getElementById('app-content-wrapper');
-				let container: HTMLElement | null = document.getElementById('mindmap');
-				let options = {
+			const id = parseInt(this.$route.params.id);
+			const service = new MindmapNodeService();
+			service.load(id).then((response) => {
+				const content = document.getElementById('app-content');
+				const wrapper = document.getElementById('app-content-wrapper');
+				const container = document.getElementById('mindmap');
+				const options = {
 					physics: {enabled: false},
 					interaction: {dragNodes: false},
 					locale: OC.getLocale()
@@ -60,8 +59,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				let nodes: Array<MindmapNode> = response.data;
 				let edges: Array<{from: number, to: number}> = [];
 
-				if (container !== null && wrapper !== null) {
+				// TODO: This should be way more easy!
+				if (content !== null && wrapper !== null && container !== null) {
 					// The mindmap should use all of the wrappers place.
+					wrapper.style.height = content.clientHeight + 'px';
 					container.style.height = wrapper.clientHeight + 'px';
 				}
 
@@ -72,7 +73,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				});
 
 				if (vis !== null && container !== null) {
-					let network = new vis.Network(container,
+					const network = new vis.Network(container,
 						{nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges)},
 						options);
 					network.fit();

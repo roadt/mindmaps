@@ -20,10 +20,10 @@
  *
  */
 
-import {Service} from './Service';
-import {Mindmap} from '../models/Mindmap';
+import Service from './Service';
+import Mindmap from '../models/Mindmap';
 
-export class MindmapService extends Service<Mindmap> {
+export default class MindmapService extends Service<Mindmap> {
 	private active: Mindmap | null;
 
 	constructor() {

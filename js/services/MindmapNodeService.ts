@@ -20,12 +20,12 @@
  *
  */
 
-import {Service} from './Service';
+import Service from './Service';
 import Axios, {AxiosPromise} from 'axios';
-import {MindmapNode} from '../models/MindmapNode';
-import {System} from '../System';
+import MindmapNode from '../models/MindmapNode';
+import System from '../System';
 
-export class MindmapNodeService extends Service<MindmapNode> {
+export default class MindmapNodeService extends Service<MindmapNode> {
 	constructor() {
 		super('/apps/mindmaps/nodes');
 	}

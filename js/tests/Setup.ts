@@ -20,7 +20,7 @@
  *
  */
 
-import {System} from '../System';
+import System from '../System';
 import * as sinon from 'sinon';
 
 before(() => {

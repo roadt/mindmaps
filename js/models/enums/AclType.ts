@@ -20,7 +20,7 @@
  *
  */
 
-export enum AclType {
+export const enum AclType {
 	USER,
 	GROUP,
 	CIRCLE

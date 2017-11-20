@@ -21,8 +21,8 @@
  */
 
 import {assert, expect} from 'chai';
-import {Mindmap} from '../../models/Mindmap';
-import {MindmapService} from '../../services/MindmapService';
+import Mindmap from '../../models/Mindmap';
+import MindmapService from '../../services/MindmapService';
 import * as moxios from 'moxios';
 import * as sinon from 'sinon';
 
@@ -52,7 +52,7 @@ describe('MindmapService', () => {
 				responseText: JSON.stringify(data)
 			});
 
-			let onFulfilled = sinon.spy();
+			const onFulfilled = sinon.spy();
 			service = new MindmapService();
 			service.load().then(onFulfilled);
 
@@ -63,14 +63,14 @@ describe('MindmapService', () => {
 		});
 
 		it('Should return the mindmap with id 1', () => {
-			let mindmap: Mindmap | null = service.find(1);
+			const mindmap = service.find(1);
 			if (mindmap !== null) {
 				expect(mindmap.title).to.string(data[0].title);
 			}
 		});
 
 		it('Should return null for the mindmap with id 2', () => {
-			let mindmap: Mindmap | null = service.find(2);
+			const mindmap = service.find(2);
 			assert.equal(mindmap, null);
 		});
 	});

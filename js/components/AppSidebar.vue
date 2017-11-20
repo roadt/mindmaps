@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="sidebar-content">
 			<div class="sidebar-header">
 				<h2>{{ t('Title') }}</h2>
-				<a class="close icon-close" href="#" title="Close"></a>
+				<a class="close icon-close" @click="closeSidebar" :title="t('Close')"></a>
 			</div>
 			<ul class="tabHeaders">
 				<li class="tabHeader selected" data-tabid="detailsTabView"><a href="#">{{ t('Details') }}</a></li>
@@ -57,22 +57,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
 	import Mixins from '../Mixins';
-	import {Acl} from '../models/Acl';
-	import {AclService} from '../services/AclService';
+	import Acl from '../models/Acl';
+	import AclService from '../services/AclService';
 
 	@Component({
 		mixins: [Mixins]
 	})
 	export default class AppSidebar extends Vue {
-		helpText: string = t('mindmaps', 'Select a node and double click anywhere in your mindmap to add a child node. ' +
+		helpText = t('mindmaps', 'Select a node and double click anywhere in your mindmap to add a child node. ' +
 			'You can also edit or delete nodes by simply clicking on them and choose the corresponding action icon. ' +
 			'App icon by <a href="https://icons8.com/" rel="noopener" target="_blank">Icons8</a> and mindmaps powered by ' +
 			'<a href="http://visjs.org/" rel="noopener" target="_blank">Vis.js</a>.');
 		shares: Array<Acl> = [];
-		description: string = '';
+		description = '';
 		created() {
-			let service = new AclService();
-			service.load(23).then((response) => {
+			const id = parseInt(this.$route.params.id);
+			const service = new AclService();
+			service.load(id).then((response) => {
 				this.shares = [];
 				response.data.forEach((share: Acl) => {
 					this.shares.push(share);
@@ -80,6 +81,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			}).catch((error) => {
 				console.error('Error: ' + error.message);
 			});
+		}
+		closeSidebar() {
+			// @ts-ignore
+			OC.Apps.hideAppSidebar();
 		}
 	}
 </script>

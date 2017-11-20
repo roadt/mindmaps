@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		<ul>
 			<template v-for="mindmap in mindmaps">
 				<li class="with-menu" :data-id="mindmap.id">
-					<router-link :to="`/${mindmap.id}`">{{ mindmap.title }}</router-link>
+					<router-link :to="`/mindmaps/${mindmap.id}`">{{ mindmap.title }}</router-link>
 					<div class="app-navigation-entry-utils">
 						<ul>
 							<li class="app-navigation-entry-utils-menu-share svg" v-if="mindmap.shared">
@@ -54,8 +54,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
 	import Mixins from '../Mixins';
-	import {MindmapService} from '../services/MindmapService';
-	import {Mindmap} from '../models/Mindmap';
+	import MindmapService from '../services/MindmapService';
+	import Mindmap from '../models/Mindmap';
 
 	@Component({
 		mixins: [Mixins],
@@ -67,12 +67,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		mindmaps: Array<Mindmap> = [];
 		created() {
 			this.mindmaps = [];
-			let service = new MindmapService();
+			const service = new MindmapService();
 			service.load().then((response) => {
 				this.mindmaps = [];
 				response.data.forEach((mindmap: Mindmap) => {
 					this.mindmaps.push(mindmap);
 				});
+				// Load the first mindmap
+				if (typeof this.$route.params.id === 'undefined' && this.mindmaps.length > 0) {
+					this.$router.push({path: `/mindmaps/${this.mindmaps[0].id}`});
+				}
 			}).catch((error) => {
 				console.error('Error: ' + error.message);
 			});

@@ -20,17 +20,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div id="app-settings">
-		<div id="app-settings-header">
-			<button class="settings-button" data-apps-slide-toggle="#app-settings-content">{{ t('Settings') }}</button>
-		</div>
-		<div id="app-settings-content">
-			<ul>
-				<li>
-					<label for="refreshInterval">{{ t('Refresh interval (in minutes)') }}</label>
-					<input id="refreshInterval" type="number" :value="refreshInterval">
-				</li>
-			</ul>
+	<div id="app-content-wrapper">
+		<div id="emptycontent">
+			<h2>{{ t('No mindmaps') }}</h2>
+			<p>{{ t('Create your first mindmap to get started…') }}</p>
 		</div>
 	</div>
 </template>
@@ -43,10 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	@Component({
 		mixins: [Mixins]
 	})
-	export default class AppSettings extends Vue {
-		refreshInterval = 0;
-		created() {
-			this.refreshInterval = 10;
-		}
+	export default class Index extends Vue {
+		
 	}
 </script>

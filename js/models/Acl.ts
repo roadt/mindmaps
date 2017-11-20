@@ -20,10 +20,10 @@
  *
  */
 
-import {Model} from './Model';
+import Model from './Model';
 import {AclType} from './enums/AclType';
 
-export class Acl extends Model {
+export default class Acl extends Model {
 	mindmapId: number;
 	participant: string;
 	type: AclType;

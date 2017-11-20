@@ -20,7 +20,7 @@
  *
  */
 
-export class System {
+export default class System {
 	static t(text: string): string {
 		return t('mindmaps', text);
 	}

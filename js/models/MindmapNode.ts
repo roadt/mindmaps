@@ -20,9 +20,9 @@
  *
  */
 
-import {Model} from './Model';
+import Model from './Model';
 
-export class MindmapNode extends Model {
+export default class MindmapNode extends Model {
 	mindmapId: number;
 	parentId: number;
 	userId: string;

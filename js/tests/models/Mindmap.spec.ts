@@ -21,11 +21,11 @@
  */
 
 import {expect} from 'chai';
-import {Mindmap} from '../../models/Mindmap';
+import Mindmap from '../../models/Mindmap';
 
 describe('Mindmap', () => {
 	it('Should be an instance of Mindmap', () => {
-		let mindmap = new Mindmap();
+		const mindmap = new Mindmap();
 		expect(mindmap).to.instanceOf(Mindmap);
 	});
 });

@@ -20,12 +20,12 @@
  *
  */
 
-import {Service} from './Service';
-import {Acl} from '../models/Acl';
+import Service from './Service';
+import Acl from '../models/Acl';
 import {default as Axios, AxiosPromise} from 'axios';
-import {System} from '../System';
+import System from '../System';
 
-export class AclService extends Service<Acl> {
+export default class AclService extends Service<Acl> {
 	constructor() {
 		super('/apps/mindmaps/acl');
 	}

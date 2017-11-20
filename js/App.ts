@@ -20,32 +20,14 @@
  *
  */
 
-import Vue, {ComponentOptions} from 'vue';
-// @ts-ignore
-import VueRouter from 'vue-router';
+import Vue from 'vue';
 import AppContent from './components/AppContent.vue';
 import AppNavigation from './components/AppNavigation.vue';
-import Mindmap from './components/Mindmap.vue';
+import Router from './Router';
 
-export class App {
+class App {
 	static start(): void {
-		Vue.use(VueRouter);
-
-		const routes = [
-			{
-				path: '/',
-				component: Mindmap as ComponentOptions<Vue>
-			},
-			{
-				path: '/:id',
-				component: Mindmap as ComponentOptions<Vue>
-			}
-		];
-
-		const router = new VueRouter({
-			routes
-		});
-
+		const router = Router.registerRoutes();
 		new Vue({
 			router,
 			el: '#app',

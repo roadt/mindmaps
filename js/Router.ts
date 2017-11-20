@@ -20,12 +20,29 @@
  *
  */
 
-import System from './System';
+import Vue, {ComponentOptions} from 'vue';
+// @ts-ignore
+import VueRouter from 'vue-router';
+import Mindmap from './components/Mindmap.vue';
+import Index from './components/Index.vue';
 
-export default {
-	methods: {
-		t(text: string): string {
-			return System.t(text);
-		}
+export default class Router {
+	static registerRoutes(): VueRouter {
+		Vue.use(VueRouter);
+
+		const routes = [
+			{
+				path: '/',
+				component: Index as ComponentOptions<Vue>
+			},
+			{
+				path: '/mindmaps/:id',
+				component: Mindmap as ComponentOptions<Vue>
+			}
+		];
+
+		return new VueRouter({
+			routes
+		});
 	}
 }
