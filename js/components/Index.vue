@@ -31,12 +31,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <script lang="ts">
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
-	import Mixins from '../Mixins';
 
-	@Component({
-		mixins: [Mixins]
-	})
+	@Component
 	export default class Index extends Vue {
-		
+
 	}
 </script>

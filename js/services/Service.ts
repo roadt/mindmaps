@@ -65,9 +65,7 @@ export default abstract class Service<T extends Model> {
 
 	create(obj: T): AxiosPromise {
 		return Axios.post(this.baseUrl,
-			{
-				data: obj
-			},
+			obj,
 			{
 				headers: this.headers
 			}
@@ -88,7 +86,7 @@ export default abstract class Service<T extends Model> {
 				headers: this.headers
 			}
 		).then((response) => {
-			let index = this.data.indexOf(obj);
+			const index = this.data.indexOf(obj);
 			this.data[index] = response.data;
 			return response.data;
 		}).catch((error) => {
@@ -104,7 +102,7 @@ export default abstract class Service<T extends Model> {
 		).then((response) => {
 			let entry = this.find(response.data.id);
 			if (entry != null) {
-				let index = this.data.indexOf(entry);
+				const index = this.data.indexOf(entry);
 				this.data.splice(index, 1);
 				return response.data;
 			}

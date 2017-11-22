@@ -38,15 +38,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <script lang="ts">
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
-	import Mixins from '../Mixins';
 
-	@Component({
-		mixins: [Mixins]
-	})
+	@Component
 	export default class AppSettings extends Vue {
 		refreshInterval = 0;
-		created() {
-			this.refreshInterval = 10;
+		created(): void {
+			// @ts-ignore
+			this.refreshInterval = OCP.AppConfig.getValue('refreshInterval');
 		}
 	}
 </script>

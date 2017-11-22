@@ -24,10 +24,15 @@ import Vue from 'vue';
 import AppContent from './components/AppContent.vue';
 import AppNavigation from './components/AppNavigation.vue';
 import Routes from './Routes';
+import Mixins from './Mixins';
 
 class App {
 	static start(): void {
+		// Add global mixins
+		Vue.mixin(Mixins);
+		// Register the routes
 		const router = Routes.register();
+		// Init Vue.js
 		new Vue({
 			router,
 			el: '#app',

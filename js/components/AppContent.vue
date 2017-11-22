@@ -26,13 +26,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script lang="ts">
-	import Mindmap from './Mindmap.vue';
 	import Vue from 'vue';
 	import Component from 'vue-class-component';
-	import Mixins from '../Mixins';
+	import Mindmap from './Mindmap.vue';
 
 	@Component({
-		mixins: [Mixins],
 		components: {
 			'mindmap': Mindmap
 		}
