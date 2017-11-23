@@ -158,3 +158,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	}
 </script>
+
+<style lang="scss" scoped>
+	#shareWith {
+		width: 100%;
+	}
+
+	.avatar {
+		margin-right: 8px;
+		display: inline-block;
+		overflow: hidden;
+		vertical-align: middle;
+		width: 32px;
+		height: 32px;
+	}
+
+	.username {
+		padding-right: 8px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		max-width: 254px;
+		display: inline-block;
+		overflow: hidden;
+		vertical-align: middle;
+	}
+</style>

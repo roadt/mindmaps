@@ -63,7 +63,7 @@ export default class AclService extends Service<Acl> {
 			}
 		).then((response) => {
 			if (response.data.ocs.meta.statuscode !== 100) {
-				return Promise.reject('Error while searching.');
+				Promise.reject('Error while searching.');
 			}
 			return response;
 		}).catch((error) => {

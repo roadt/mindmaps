@@ -67,3 +67,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	}
 </script>
+
+<style lang="scss" scoped>
+	.sidebar-header {
+		margin: 20px 0 0 20px;
+	}
+
+	.sidebar-header .icon-close {
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 15px;
+		height: 45px;
+		width: 46px;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+		opacity: 0.5;
+	}
+</style>

@@ -78,3 +78,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	}
 </script>
+
+<style lang="scss" scoped>
+	#new-mindmap-button {
+		display: block;
+		margin: 14px auto;
+		padding: 10px 10px 10px 34px;
+		width: calc(100% - 20px) !important;
+		text-align: left;
+		background-position: 10px center;
+	}
+
+	#app-navigation .app-navigation-entry-menu ul {
+		flex-direction: row;
+	}
+
+	#app-navigation .app-navigation-entry-utils .app-navigation-entry-utils-menu-share {
+		display: flex !important;
+		padding: 14px;
+		opacity: 0.5;
+	}
+</style>
