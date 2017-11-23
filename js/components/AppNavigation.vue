@@ -27,8 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				<router-link :to="`/mindmaps/${mindmap.id}`">{{ mindmap.title }}</router-link>
 				<div class="app-navigation-entry-utils">
 					<ul>
-						<li class="app-navigation-entry-utils-menu-share svg" v-if="mindmap.shared">
-							<i class="icon icon-share" :title="t('Shared with / by you')"></i>
+						<li class="app-navigation-entry-utils-menu-share" v-if="mindmap.shared">
+							<i class="icon icon-share svg" :title="t('Shared with / by you')"></i>
 						</li>
 						<li class="app-navigation-entry-utils-menu-button">
 							<button class="icon-more svg" :title="t('More')"></button>
@@ -48,8 +48,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
-	import Component from 'vue-class-component';
+	import {Component, Vue} from 'vue-property-decorator';
+	import * as _ from 'lodash';
 	import AppSettings from './AppSettings.vue';
 	import MindmapService from '../services/MindmapService';
 	import Mindmap from '../models/Mindmap';
@@ -61,16 +61,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	})
 	export default class AppNavigation extends Vue {
 		mindmaps: Array<Mindmap> = [];
+
 		created(): void {
-			this.mindmaps = [];
 			const service = new MindmapService();
 			service.load().then((response) => {
-				this.mindmaps = [];
 				response.data.forEach((mindmap: Mindmap) => {
 					this.mindmaps.push(mindmap);
 				});
 				// Load the first mindmap
-				if (typeof this.$route.params.id === 'undefined' && this.mindmaps.length > 0) {
+				if (_.isUndefined(this.$route.params.id) && this.mindmaps.length > 0) {
 					this.$router.push({path: `/mindmaps/${this.mindmaps[0].id}`});
 				}
 			}).catch((error) => {

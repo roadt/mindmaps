@@ -21,10 +21,9 @@
  */
 
 import Model from './Model';
-import {AclType} from './enums/AclType';
 
 export default class Acl extends Model {
 	mindmapId: number;
 	participant: string;
-	type: AclType;
+	type: number;
 }

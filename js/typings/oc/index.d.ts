@@ -20,6 +20,8 @@
  *
  */
 
+declare const OC: OC;
+
 declare function t(app: string, text: string, vars?: any, count?: number, options?: TranslationOptions): string;
 declare function n(app: string, textSingular: string, textPlural: string, count: number, vars?: any, options?: TranslationOptions): string;
 
@@ -27,29 +29,37 @@ interface TranslationOptions {
 	escape: boolean;
 }
 
-declare namespace OC {
-	let requestToken: string;
-
-	function generateUrl(url: string, params?: any[], options?: any[]): string;
-	function getCurrentUser(): CurrentUser;
-	function getLocale(): string;
-
-	interface CurrentUser {
-		uid: string;
-		displayName: string;
-	}
-
-	class Apps {
-		showAppSidebar(): void;
-		hideAppSidebar(): void;
-	}
+interface CurrentUser {
+	uid: string;
+	displayName: string;
 }
 
-declare namespace OCP {
-	class AppConfig {
-		getKeys(app: string, options: object): void;
-		getValue(app: string, key: string, defaultValue: string, options: object): void;
-		setValue(app: string, key: string, value: string, options: object): void;
-		deleteKey(app: string, key: string, options: object): void;
-	}
+interface Share {
+	SHARE_TYPE_USER: number,
+	SHARE_TYPE_GROUP: number,
+	SHARE_TYPE_REMOTE: number,
+	SHARE_TYPE_EMAIL: number,
+	SHARE_TYPE_CIRCLE: number
+}
+
+interface Apps {
+	showAppSidebar(): void;
+	hideAppSidebar(): void;
+}
+
+interface OC {
+	requestToken: string;
+	Share: Share;
+	Apps: Apps;
+
+	generateUrl(url: string, params?: any[], options?: any[]): string;
+	linkToOCS(url: string): string;
+	getCurrentUser(): CurrentUser;
+	getLocale(): string;
+}
+
+interface JQuery {
+	avatar(user?: string, size?: number, ie8fix?: boolean, hidedefault?: boolean, callback?: () => any, displayname?: string): void;
+	imageplaceholder(seed?: string, text?: string, size?: number): void;
+	clearimageplaceholder(): void;
 }

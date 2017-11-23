@@ -23,7 +23,7 @@
 import Vue, {ComponentOptions} from 'vue';
 // @ts-ignore
 import VueRouter from 'vue-router';
-import Mindmap from './components/Mindmap.vue';
+import MindmapView from './components/MindmapView.vue';
 import Index from './components/Index.vue';
 
 export default class Routes {
@@ -37,7 +37,7 @@ export default class Routes {
 			},
 			{
 				path: '/mindmaps/:id',
-				component: Mindmap as ComponentOptions<Vue>
+				component: MindmapView as ComponentOptions<Vue>
 			}
 		];
 

@@ -44,4 +44,30 @@ export default class AclService extends Service<Acl> {
 			return Promise.reject(error.response);
 		});
 	}
+
+	getAutocomplete(search: string): AxiosPromise {
+		return Axios.get(
+			OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
+			{
+				params: {
+					format: 'json',
+					search: search.trim(),
+					perPage: 10,
+					itemType: [
+						OC.Share.SHARE_TYPE_USER,
+						OC.Share.SHARE_TYPE_GROUP,
+						OC.Share.SHARE_TYPE_CIRCLE
+					]
+				},
+				headers: this.headers
+			}
+		).then((response) => {
+			if (response.data.ocs.meta.statuscode !== 100) {
+				return Promise.reject('Error while searching.');
+			}
+			return response;
+		}).catch((error) => {
+			return Promise.reject(error.response);
+		});
+	}
 }

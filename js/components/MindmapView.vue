@@ -24,28 +24,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="app-content-wrapper">
 			<div id="mindmap">{{ t('Mindmap loading…') }}</div>
 		</div>
-		<app-sidebar></app-sidebar>
+		<app-sidebar :mindmap="mindmap"></app-sidebar>
 	</div>
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
-	import Component from 'vue-class-component';
+	import {Component, Vue} from 'vue-property-decorator';
+	import * as _ from 'lodash';
+	import * as vis from 'vis';
 	import AppSidebar from './AppSidebar.vue';
 	import MindmapNodeService from '../services/MindmapNodeService';
 	import MindmapNode from '../models/MindmapNode';
-	import * as vis from 'vis';
+	import MindmapService from '../services/MindmapService';
+	import Mindmap from '../models/Mindmap';
 
 	@Component({
 		components: {
 			'app-sidebar': AppSidebar
 		}
 	})
-	export default class Mindmap extends Vue {
+	export default class MindmapView extends Vue {
+		mindmap: Mindmap = new Mindmap();
+
 		created(): void {
 			const id = parseInt(this.$route.params.id);
-			const service = new MindmapNodeService();
-			service.load(id).then((response) => {
+
+			const mindmapService = new MindmapService();
+			mindmapService.load().then(() => {
+				const mindmap = mindmapService.find(id);
+				if (!_.isNull(mindmap)) {
+					this.mindmap = mindmap;
+				}
+			}).catch((error) => {
+				console.error('Error: ' + error.message);
+			});
+
+			const mindmapNodeService = new MindmapNodeService();
+			mindmapNodeService.load(id).then((response) => {
 				const content = document.getElementById('app-content');
 				const wrapper = document.getElementById('app-content-wrapper');
 				const container = document.getElementById('mindmap');
@@ -57,7 +72,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				let nodes: Array<MindmapNode> = response.data;
 				let edges: Array<{from: number, to: number}> = [];
 
-				// TODO: This should be way more easy!
+				// TODO: Find a better solution here!
 				if (content !== null && wrapper !== null && container !== null) {
 					// The mindmap should use all of the wrappers place.
 					wrapper.style.height = content.clientHeight + 'px';

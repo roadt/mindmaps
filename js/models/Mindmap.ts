@@ -26,5 +26,6 @@ export default class Mindmap extends Model {
 	title: string;
 	description: string;
 	userId: string;
+	// Fake property
 	shared: boolean;
 }
