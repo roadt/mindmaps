@@ -2,10 +2,26 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-	entry: './js/App.ts',
+	entry: [
+		'webpack-dev-server/client?http://localhost:8080',
+		'webpack/hot/only-dev-server',
+		'./js/App.ts'
+	],
 	output: {
 		path: path.resolve(__dirname, './js'),
 		filename: 'bundle.js'
+	},
+	devServer: {
+		hot: true,
+		contentBase: path.resolve(__dirname, './js'),
+		publicPath: '/custom_apps/mindmaps/js/',
+		proxy: {
+			'*': {
+				target: 'http://localhost',
+				secure: false,
+				changeOrigin: false
+			}
+		}
 	},
 	module: {
 		rules: [

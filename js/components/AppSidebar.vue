@@ -51,7 +51,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	})
 	export default class AppSidebar extends Vue {
-		@Prop()
+		@Prop({required: true})
 		mindmap: Mindmap;
 
 		closeSidebar(): void {

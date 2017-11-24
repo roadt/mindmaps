@@ -21,8 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div id="sharingTabView" class="tab sharingTabView hidden">
-		<input id="shareWith" class="shareWithField" v-model="participant" type="text" :placeholder="t('Enter user / group / circle name and hit enter…')"
-			   autocomplete="off" @keyup.enter="submit">
+		<input id="shareWith" class="shareWithField" type="text" :placeholder="t('Enter user / group / circle name and hit enter…')"
+			   autocomplete="off">
 		<ul id="shareWithList" class="shareWithList">
 			<li v-for="share in shares" :key="share.id">
 				<div class="avatar" :data-participant="share.participant" :data-type="share.type"></div>
@@ -43,26 +43,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	@Component
 	export default class SharingTab extends Vue {
 		private aclService: AclService;
-		@Prop()
+		@Prop({required: true})
 		mindmap: Mindmap;
 		shares: Array<Acl> = [];
-		participant = '';
 
-		private filterSuggestions(type: number, suggestions: Array<any>): Array<any> {
+		private filterSuggestions(type: number, suggestions: Array<SharingInfo>): Array<SharingInfo> {
 			const sharedWith = this.shares.filter((share) => {
 				return share.type === type;
 			}).map((share) => {
 				return share.participant;
 			});
 
-			suggestions = suggestions.filter((share: any) => {
+			if (type === OC.Share.SHARE_TYPE_USER) {
+				sharedWith.push(OC.getCurrentUser().uid);
+			}
+
+			suggestions = suggestions.filter((share) => {
 				return sharedWith.indexOf(share.value.shareWith) < 0;
 			});
 
 			return suggestions;
 		}
 
-		@Watch('mindmap.id', { deep: true })
+		@Watch('mindmap.id', {deep: true})
 		onMindmapIdChanged(id: number): void {
 			if (id > 0) {
 				this.aclService.load(id).then((response) => {
@@ -73,48 +76,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					console.error('Error: ' + error.message);
 				});
 			}
-		}
-
-		@Watch('participant')
-		onParticipantChanged(newValue: string): void {
-			_.throttle(() => {
-				this.aclService.getAutocomplete(newValue).then((response) => {
-					const users = this.filterSuggestions(
-						OC.Share.SHARE_TYPE_USER,
-						response.data.ocs.data.exact.users.concat(
-							response.data.ocs.data.users,
-							[{value: {shareWidth: OC.getCurrentUser()}}]
-						)
-					);
-					const groups = this.filterSuggestions(
-						OC.Share.SHARE_TYPE_GROUP,
-						response.data.ocs.data.exact.groups.concat(response.data.ocs.data.groups)
-					);
-					let circles = [];
-					if (!_.isUndefined(response.data.ocs.data.circles)) {
-						circles = this.filterSuggestions(
-							OC.Share.SHARE_TYPE_CIRCLE,
-							response.data.ocs.data.exact.circles.concat(response.data.ocs.data.circles)
-						);
-					}
-					const suggestions  = users.concat(groups, circles);
-					suggestions.forEach((suggestion: any) => {
-						switch (suggestion.value.shareType) {
-							case OC.Share.SHARE_TYPE_USER:
-								console.log(suggestion.label + ' (user)');
-								break;
-							case OC.Share.SHARE_TYPE_GROUP:
-								console.log(suggestion.label + ' (group)');
-								break;
-							case OC.Share.SHARE_TYPE_CIRCLE:
-								console.log(suggestion.label + ' (' + suggestion.value.circleInfo + ', ' + suggestion.value.circleOwner + ')');
-								break;
-						}
-					});
-				}).catch((error) => {
-					console.error('Error: ' + error.message);
-				});
-			}, 250)();
 		}
 
 		created(): void {
@@ -133,18 +94,74 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					$item.imageplaceholder(participant);
 				}
 			});
+
+			$('#shareWith').autocomplete({
+				minLength: 1,
+				delay: 750,
+				select: this.selectParticipant,
+				source: this.autocompleteHandler
+				// @ts-ignore
+			}).data('ui-autocomplete')._renderItem = (ul: JQuery, item: SharingInfo) => {
+				let $insert = $('<li>').data('item.autocomplete-item', item);
+
+				switch (item.value.shareType) {
+					case OC.Share.SHARE_TYPE_USER:
+						$insert = $insert.append('<a>' + item.label + ' (user)</a>');
+						break;
+					case OC.Share.SHARE_TYPE_GROUP:
+						$insert = $insert.append('<a>' + item.label + ' (group)</a>');
+						break;
+					case OC.Share.SHARE_TYPE_CIRCLE:
+						$insert = $insert.append('<a>' + item.label + ' (' + item.value.circleInfo + ', ' + item.value.circleOwner + ')</a>');
+						break;
+					default:
+						$insert = $insert.append('<a>Error while rendering!</a>');
+				}
+
+				return $insert.appendTo(ul);
+			};
 		}
 
-		submit(): void {
-			const share = new Acl();
-			share.mindmapId = this.mindmap.id;
-			share.type = OC.Share.SHARE_TYPE_USER;
-			share.participant = this.participant;
-			this.aclService.create(share).then((response) => {
-				this.shares.push(response.data);
-				this.participant = '';
+		autocompleteHandler(search: {term: string}, callback: (data?: Array<SharingInfo>) => any): void {
+			this.aclService.getAutocomplete(search.term.trim()).then((response) => {
+				const users = this.filterSuggestions(
+					OC.Share.SHARE_TYPE_USER,
+					response.data.ocs.data.exact.users.concat(response.data.ocs.data.users)
+				);
+				const groups = this.filterSuggestions(
+					OC.Share.SHARE_TYPE_GROUP,
+					response.data.ocs.data.exact.groups.concat(response.data.ocs.data.groups)
+				);
+				let circles = [];
+				if (!_.isUndefined(response.data.ocs.data.circles)) {
+					circles = this.filterSuggestions(
+						OC.Share.SHARE_TYPE_CIRCLE,
+						response.data.ocs.data.exact.circles.concat(response.data.ocs.data.circles)
+					);
+				}
+
+				const suggestions  = users.concat(groups).concat(circles);
+				callback(suggestions);
 			}).catch((error) => {
 				console.error('Error: ' + error.message);
+				callback();
+			});
+		}
+
+		selectParticipant(event: Event, ui: {item: SharingInfo}): void {
+			event.preventDefault();
+			$(event.target).attr('disabled', true);
+			const share = new Acl();
+			share.mindmapId = this.mindmap.id;
+			share.type = ui.item.value.shareType;
+			share.participant = ui.item.value.shareWith;
+			this.aclService.create(share).then((response) => {
+				this.shares.push(response.data);
+				$(event.target).val('');
+				$(event.target).attr('disabled', false);
+			}).catch((error) => {
+				console.error('Error: ' + error.message);
+				$(event.target).attr('disabled', false);
 			});
 		}
 

@@ -29,6 +29,16 @@ interface TranslationOptions {
 	escape: boolean;
 }
 
+interface SharingInfo {
+	label: string;
+	value: {
+		shareWith: string;
+		shareType: number;
+		circleInfo: string;
+		circleOwner: string;
+	}
+}
+
 interface CurrentUser {
 	uid: string;
 	displayName: string;

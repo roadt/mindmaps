@@ -35,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 	@Component
 	export default class DetailsTab extends Vue {
-		@Prop()
+		@Prop({required: true})
 		mindmap: Mindmap;
 		helpText = t('mindmaps', 'Select a node and double click anywhere in your mindmap to add a child node. ' +
 			'You can also edit or delete nodes by simply clicking on them and choose the corresponding action icon. ' +
