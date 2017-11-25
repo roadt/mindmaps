@@ -39,6 +39,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import Acl from '../models/Acl';
 	import AclService from '../services/AclService';
 	import Mindmap from '../models/Mindmap';
+	import AutocompleteUIParams = JQueryUI.AutocompleteUIParams;
 
 	@Component
 	export default class SharingTab extends Vue {
@@ -132,7 +133,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					OC.Share.SHARE_TYPE_GROUP,
 					response.data.ocs.data.exact.groups.concat(response.data.ocs.data.groups)
 				);
-				let circles = [];
+				let circles: Array<SharingInfo> = [];
 				if (!_.isUndefined(response.data.ocs.data.circles)) {
 					circles = this.filterSuggestions(
 						OC.Share.SHARE_TYPE_CIRCLE,
@@ -148,9 +149,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		selectParticipant(event: Event, ui: {item: SharingInfo}): void {
+		selectParticipant(event: Event, ui: AutocompleteUIParams): void {
 			event.preventDefault();
-			$(event.target).attr('disabled', true);
+			$(event.target).prop('disabled', true);
 			const share = new Acl();
 			share.mindmapId = this.mindmap.id;
 			share.type = ui.item.value.shareType;
@@ -158,10 +159,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			this.aclService.create(share).then((response) => {
 				this.shares.push(response.data);
 				$(event.target).val('');
-				$(event.target).attr('disabled', false);
+				$(event.target).prop('disabled', false);
 			}).catch((error) => {
 				console.error('Error: ' + error.message);
-				$(event.target).attr('disabled', false);
+				$(event.target).prop('disabled', false);
 			});
 		}
 
