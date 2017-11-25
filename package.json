@@ -18,7 +18,7 @@
 		"Mindmaps"
 	],
 	"scripts": {
-		"dev": "cross-env NODE_ENV=development webpack-dev-server --open",
+		"dev": "cross-env NODE_ENV=development webpack-dev-server --hot --inline --open",
 		"build": "cross-env NODE_ENV=production webpack -p",
 		"build-dev": "cross-env NODE_ENV=development webpack -d",
 		"test": "mocha-webpack --include js/tests/Setup.ts js/tests/**/*.spec.ts"
@@ -61,6 +61,6 @@
 		"@types/moxios": "^0.4.7",
 		"@types/sinon": "^4.0.0",
 		"@types/vis": "^4.21.0",
-		"webpack-dev-server": "^2.9.4"
+		"webpack-dev-server": "2.7.1"
 	}
 }

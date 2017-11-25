@@ -12,11 +12,12 @@ module.exports = {
 		filename: 'bundle.js'
 	},
 	devServer: {
-		hot: true,
 		contentBase: path.resolve(__dirname, './js'),
+		// Path to the js folder in your mindmaps dir (as seen form Nextcloud / webserver)
 		publicPath: '/custom_apps/mindmaps/js/',
 		proxy: {
 			'*': {
+				// This is the url where your local Nextcloud instance lives
 				target: 'http://localhost',
 				secure: false,
 				changeOrigin: false
