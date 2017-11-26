@@ -35,10 +35,6 @@ use JsonSerializable;
  */
 class Acl extends Model implements JsonSerializable {
 
-    const PERMISSION_TYPE_USER = 0;
-    const PERMISSION_TYPE_GROUP = 1;
-    const PERMISSION_TYPE_CIRCLE = 2;
-
     protected $participant;
     protected $type;
     protected $mindmapId;
