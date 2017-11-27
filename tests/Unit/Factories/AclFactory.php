@@ -29,6 +29,6 @@ use OCA\Mindmaps\Db\Acl;
  */
 $fm->define('OCA\Mindmaps\Db\Acl')->setDefinitions([
 	'participant' => Faker::firstNameMale(),
-	'type' => Acl::PERMISSION_TYPE_USER
+	'type' => \OCP\Share::SHARE_TYPE_USER
 ]);
 

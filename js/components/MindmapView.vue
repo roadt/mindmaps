@@ -22,6 +22,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div id="app-content-wrapper">
+			<div class="popovermenu bubble" style="display: none">
+				<ul>
+					<li><button class="node-rename icon-rename svg" :title="t('Edit Mindmap')"></button></li>
+					<li><button class="node-delete icon-delete svg" :title="t('Delete Mindmap')"></button></li>
+				</ul>
+			</div>
 			<div id="mindmap">{{ t('Mindmap loading…') }}</div>
 		</div>
 		<app-sidebar :mindmap="mindmap"></app-sidebar>
@@ -48,8 +54,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 		created(): void {
 			const id = parseInt(this.$route.params.id);
-
 			const mindmapService = new MindmapService();
+			const mindmapNodeService = new MindmapNodeService();
+
 			mindmapService.load().then(() => {
 				const mindmap = mindmapService.find(id);
 				if (!_.isNull(mindmap)) {
@@ -59,7 +66,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				console.error('Error: ' + error.message);
 			});
 
-			const mindmapNodeService = new MindmapNodeService();
 			mindmapNodeService.load(id).then((response) => {
 				const content = document.getElementById('app-content');
 				const wrapper = document.getElementById('app-content-wrapper');
@@ -90,10 +96,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 						{nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges)},
 						options);
 					network.fit();
+
+					network.on('click', this.showPopover);
+					network.on('doubleClick', this.showNew);
 				}
 			}).catch((error) => {
 				console.error('Error: ' + error.message);
 			});
 		}
+
+		showPopover(params?: any): void {
+			const $popover = $('.popovermenu');
+			if (params.nodes.length === 1) {
+				$popover.css('display', 'block');
+				$popover.css('width', '72px');
+				$popover.css('top', params.pointer.DOM.y + 30);
+				$popover.css('left', params.pointer.DOM.x - 60);
+			} else {
+				$popover.css('display', 'none');
+			}
+		}
+
+		showNew(params?: any): void {
+			console.log('New node: ' + params);
+		}
+
 	}
 </script>
+
+<style lang="scss" scoped>
+	.popovermenu ul {
+		flex-direction: row;
+	}
+</style>

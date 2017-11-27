@@ -25,5 +25,6 @@ import Model from './Model';
 export default class Acl extends Model {
 	mindmapId: number;
 	participant: string;
+	participantDisplayName: string;
 	type: number;
 }

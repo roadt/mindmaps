@@ -98,7 +98,7 @@ class MindmapMapper extends Mapper {
     public function findAll($userId) {
     	// Get circle ids for the given user
 		$circleIds = [];
-		if (class_exists('\OCA\Circles\Api\v1\Circles')) {
+		if (class_exists('\OCA\Circles\ShareByCircleProvider')) {
 			/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 			$userCircles = \OCA\Circles\Api\v1\Circles::listCircles(\OCA\Circles\Model\Circle::CIRCLES_ALL);
 			foreach ($userCircles as $circle) {

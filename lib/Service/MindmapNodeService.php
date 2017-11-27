@@ -70,7 +70,7 @@ class MindmapNodeService extends Service {
      * @throws BadRequestException if parameters are invalid
      */
     public function create($mindmapId, $parentId, $label, $x, $y, $userId) {
-        if (!is_int($mindmapId) || $label === null || $label === '') {
+        if ($label === null || $label === '') {
             throw new BadRequestException();
         }
 

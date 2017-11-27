@@ -25,8 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			   autocomplete="off">
 		<ul id="shareWithList" class="shareWithList">
 			<li v-for="share in shares" :key="share.id">
-				<div class="avatar" :data-participant="share.participant" :data-type="share.type"></div>
-				<span class="username">{{ share.participant }}</span>
+				<div class="avatar" :data-participant="share.participant" :data-displayname="share.participantDisplayName" :data-type="share.type"></div>
+				<span class="participant">{{ share.participantDisplayName }}</span>
 				<a class="icon icon-delete delete" href="#" :title="t('Delete share')" @click="remove(share)"></a>
 			</li>
 		</ul>
@@ -40,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import AclService from '../services/AclService';
 	import Mindmap from '../models/Mindmap';
 	import AutocompleteUIParams = JQueryUI.AutocompleteUIParams;
+	import System from '../System';
 
 	@Component
 	export default class SharingTab extends Vue {
@@ -47,6 +48,49 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		@Prop({required: true})
 		mindmap: Mindmap;
 		shares: Array<Acl> = [];
+
+		private setAvatars(): void {
+			// @ts-ignore
+			$('.shareWithList > li').each((index: number, element: Node) => {
+				const $item = $(element).find('.avatar');
+				const type = parseInt($item.data('type') as string);
+				const participant = $item.data('participant') as string;
+				const displayname = $item.data('displayname') as string;
+				if (type === OC.Share.SHARE_TYPE_USER) {
+					$item.avatar(participant);
+				} else {
+					$item.imageplaceholder(displayname);
+				}
+
+			});
+		}
+
+		private registerAutocomplete(): void {
+			$('#shareWith').autocomplete({
+				minLength: 1,
+				delay: 750,
+				select: this.selectParticipant,
+				source: this.autocompleteHandler
+				// @ts-ignore
+			}).data('ui-autocomplete')._renderItem = this.renderItem;
+		}
+
+		private selectParticipant(event: Event, ui: AutocompleteUIParams): void {
+			event.preventDefault();
+			$(event.target).prop('disabled', true);
+			const share = new Acl();
+			share.mindmapId = this.mindmap.id;
+			share.type = ui.item.value.shareType;
+			share.participant = ui.item.value.shareWith;
+			this.aclService.create(share).then((response) => {
+				this.shares.push(response.data);
+				$(event.target).val('');
+				$(event.target).prop('disabled', false);
+			}).catch((error) => {
+				console.error('Error: ' + error.message);
+				$(event.target).prop('disabled', false);
+			});
+		}
 
 		private filterSuggestions(type: number, suggestions: Array<SharingInfo>): Array<SharingInfo> {
 			const sharedWith = this.shares.filter((share) => {
@@ -66,64 +110,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			return suggestions;
 		}
 
-		@Watch('mindmap.id', {deep: true})
-		onMindmapIdChanged(id: number): void {
-			if (id > 0) {
-				this.aclService.load(id).then((response) => {
-					response.data.forEach((share: Acl) => {
-						this.shares.push(share);
-					});
-				}).catch((error) => {
-					console.error('Error: ' + error.message);
-				});
-			}
-		}
-
-		created(): void {
-			this.aclService = new AclService();
-		}
-
-		updated(): void {
-			// @ts-ignore
-			$('.shareWithList > li').each((index: number, element: Node) => {
-				const $item = $(element).find('.avatar');
-				const type = parseInt($item.data('type') as string);
-				const participant = $item.data('participant') as string;
-				if (type === OC.Share.SHARE_TYPE_USER) {
-					$item.avatar(participant);
-				} else {
-					$item.imageplaceholder(participant);
-				}
-			});
-
-			$('#shareWith').autocomplete({
-				minLength: 1,
-				delay: 750,
-				select: this.selectParticipant,
-				source: this.autocompleteHandler
-				// @ts-ignore
-			}).data('ui-autocomplete')._renderItem = (ul: JQuery, item: SharingInfo) => {
-				let $insert = $('<li>').data('item.autocomplete-item', item);
-
-				switch (item.value.shareType) {
-					case OC.Share.SHARE_TYPE_USER:
-						$insert = $insert.append('<a>' + item.label + ' (user)</a>');
-						break;
-					case OC.Share.SHARE_TYPE_GROUP:
-						$insert = $insert.append('<a>' + item.label + ' (group)</a>');
-						break;
-					case OC.Share.SHARE_TYPE_CIRCLE:
-						$insert = $insert.append('<a>' + item.label + ' (' + item.value.circleInfo + ', ' + item.value.circleOwner + ')</a>');
-						break;
-					default:
-						$insert = $insert.append('<a>Error while rendering!</a>');
-				}
-
-				return $insert.appendTo(ul);
-			};
-		}
-
-		autocompleteHandler(search: {term: string}, callback: (data?: Array<SharingInfo>) => any): void {
+		private autocompleteHandler(search: {term: string}, callback: (data?: Array<SharingInfo>) => any): void {
 			this.aclService.getAutocomplete(search.term.trim()).then((response) => {
 				const users = this.filterSuggestions(
 					OC.Share.SHARE_TYPE_USER,
@@ -149,21 +136,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		selectParticipant(event: Event, ui: AutocompleteUIParams): void {
-			event.preventDefault();
-			$(event.target).prop('disabled', true);
-			const share = new Acl();
-			share.mindmapId = this.mindmap.id;
-			share.type = ui.item.value.shareType;
-			share.participant = ui.item.value.shareWith;
-			this.aclService.create(share).then((response) => {
-				this.shares.push(response.data);
-				$(event.target).val('');
-				$(event.target).prop('disabled', false);
-			}).catch((error) => {
-				console.error('Error: ' + error.message);
-				$(event.target).prop('disabled', false);
-			});
+		private renderItem(ul: JQuery, item: SharingInfo): JQuery {
+			let $insert = $('<li>').data('item.autocomplete-item', item);
+
+			switch (item.value.shareType) {
+				case OC.Share.SHARE_TYPE_USER:
+					$('<a>').text(System.t('{sharee} (user)', {sharee: item.label}, undefined, {escape: false})).appendTo($insert);
+				break;
+				case OC.Share.SHARE_TYPE_GROUP:
+					$('<a>').text(System.t('{sharee} (group)', {sharee: item.label}, undefined, {escape: false})).appendTo($insert);
+				break;
+				case OC.Share.SHARE_TYPE_CIRCLE:
+					$('<a>').text(
+						System.t(
+							'{sharee} ({type}, {owner})',
+							{sharee: item.label, type: item.value.circleInfo, owner: item.value.circleOwner}, undefined,
+							{escape: false}
+						)
+					).appendTo($insert);
+				break;
+				default:
+					$('<a>').text(System.t('Unexpected OCS response!')).appendTo($insert);
+			}
+
+			return $insert.appendTo(ul);
+		}
+
+		@Watch('mindmap.id', {deep: true})
+		onMindmapIdChanged(id: number): void {
+			if (id > 0) {
+				this.aclService.load(id).then((response) => {
+					response.data.forEach((share: Acl) => {
+						this.shares.push(share);
+					});
+				}).catch((error) => {
+					console.error('Error: ' + error.message);
+				});
+			}
+		}
+
+		created(): void {
+			this.aclService = new AclService();
+			this.setAvatars();
+			this.registerAutocomplete();
+		}
+
+		updated(): void {
+			this.setAvatars();
+			this.registerAutocomplete();
 		}
 
 		remove(acl: Acl): void {
@@ -191,7 +211,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		height: 32px;
 	}
 
-	.username {
+	.participant {
 		padding-right: 8px;
 		white-space: nowrap;
 		text-overflow: ellipsis;

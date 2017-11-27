@@ -1,5 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	entry: [
@@ -44,11 +45,14 @@ module.exports = {
 		]
 	},
 	resolve: {
-		extensions: ['.webpack.js', '.web.js', '.ts', '.js'],
+		extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.css'],
 		alias: {
 			'vue$': 'vue/dist/vue.esm.js'
 		}
-	}
+	},
+	plugins: [
+		CopyWebpackPlugin([{from: 'node_modules/vis/dist/vis.min.css', to: '../css/vendor/vis/vis.min.css'}])
+	]
 };
 
 if (process.env.NODE_ENV === 'production') {

@@ -67,7 +67,7 @@ class AclService extends Service {
      * @throws BadRequestException if parameters are invalid
      */
     public function create($mindmapId, $type, $participant) {
-        if (!is_int($mindmapId) || !is_int($type) || $participant === null || $participant === '') {
+        if ($participant === null || $participant === '') {
             throw new BadRequestException();
         }
 

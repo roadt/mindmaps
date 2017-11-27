@@ -21,7 +21,7 @@
  *
  */
 
-style('mindmaps', 'vendor/vis.min');
+style('mindmaps', 'vendor/vis/vis.min');
 style('mindmaps', 'main');
 
 script('mindmaps', 'bundle');

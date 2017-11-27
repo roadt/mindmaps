@@ -24,6 +24,9 @@
 namespace OCA\Mindmaps\Db;
 
 use JsonSerializable;
+use OCP\IGroupManager;
+use OCP\IUserManager;
+use OCP\Share;
 
 /**
  * @method string getParticipant()
@@ -35,6 +38,11 @@ use JsonSerializable;
  */
 class Acl extends Model implements JsonSerializable {
 
+	/** @var IUserManager */
+	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
+
     protected $participant;
     protected $type;
     protected $mindmapId;
@@ -43,9 +51,40 @@ class Acl extends Model implements JsonSerializable {
      * Acl constructor.
      */
     public function __construct() {
+    	$this->userManager = \OC::$server->query(IUserManager::class);
+    	$this->groupManager = \OC::$server->query(IGroupManager::class);
+
         $this->addType('type', 'integer');
         $this->addType('mindmapId', 'integer');
     }
+
+	/**
+	 * Returns the full name of the user / group / circle which is the participant.
+	 *
+	 * @return string
+	 */
+    public function participantDisplayName() {
+		if ($this->getType() === Share::SHARE_TYPE_USER) {
+			$sharedWith = $this->userManager->get($this->getParticipant());
+			return $sharedWith !== null ? $sharedWith->getDisplayName() : $this->getParticipant();
+		}
+
+		if ($this->getType() === Share::SHARE_TYPE_GROUP) {
+			$group = $this->groupManager->get($this->getParticipant());
+			return $group !== null ? $group->getDisplayName() : $this->getParticipant();
+		}
+
+		// Check if the circles app is installed and enabled for the current user
+		if ($this->getType() === Share::SHARE_TYPE_CIRCLE &&
+			class_exists('\OCA\Circles\ShareByCircleProvider') &&
+			\OC::$server->getAppManager()->isEnabledForUser('circles')) {
+			/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+			$circle = \OCA\Circles\Api\v1\Circles::detailsCircle($this->getParticipant());
+			return $circle !== null ? $circle->getName() : $this->getParticipant();
+		}
+
+		return '';
+	}
 
     /**
      * Return object as json string.
@@ -56,6 +95,7 @@ class Acl extends Model implements JsonSerializable {
         return [
 			'id' => $this->id,
 			'participant' => $this->participant,
+			'participantDisplayName' => $this->participantDisplayName(),
 			'type' => $this->type,
 			'mindmapId' => $this->mindmapId
         ];

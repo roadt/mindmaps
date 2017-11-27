@@ -52,9 +52,8 @@ abstract class Service {
     protected function handleException($ex) {
         if ($ex instanceof DoesNotExistException || $ex instanceof MultipleObjectsReturnedException) {
             throw new NotFoundException();
-        } else {
-            throw $ex;
         }
+		throw $ex;
     }
 
     /**

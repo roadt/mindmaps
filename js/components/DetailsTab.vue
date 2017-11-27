@@ -43,7 +43,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			'<a href="http://visjs.org/" rel="noopener" target="_blank">Vis.js</a>.');
 
 		updateDescription(): void {
-			// TODO: Remove shared property from Mindmap!
 			const mindmapService = new MindmapService();
 			mindmapService.update(this.mindmap).then(() => {
 				console.log('Description saved!');

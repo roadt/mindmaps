@@ -79,9 +79,7 @@ export default abstract class Service<T extends Model> {
 
 	update(obj: T): AxiosPromise {
 		return Axios.put(this.baseUrl + '/' + obj.id,
-			{
-				data: obj
-			},
+			obj,
 			{
 				headers: this.headers
 			}

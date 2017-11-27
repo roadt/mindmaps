@@ -20,13 +20,11 @@
  *
  */
 
-.popovermenu ul {
-	flex-direction: row;
-}
-
-.icon {
-    opacity: 0.5;
-    padding: 5px 15px;
-    display: inline;
-    float: right;
+#app-sidebar {
+	.icon {
+		opacity: 0.5;
+		padding: 5px 15px;
+		display: inline;
+		float: right;
+	}
 }
