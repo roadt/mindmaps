@@ -41,13 +41,11 @@ class PageControllerTest extends UnitTestCase {
 	 * {@inheritDoc}
 	 */
     public function setUp() {
-        $this->request = $this->getMockBuilder('OCP\IRequest')
+        $this->request = $this->getMockBuilder(IRequest::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->controller = new PageController(
-            'mindmaps', $this->request, $this->userId
-        );
+        $this->controller = new PageController('mindmaps', $this->request, $this->userId);
     }
 
 	/**

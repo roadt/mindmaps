@@ -27,7 +27,11 @@ use OCA\Mindmaps\Controller\AclController;
 use OCA\Mindmaps\Service\AclService;
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\IGroupManager;
+use OCP\IL10N;
 use OCP\IRequest;
+use OCP\IUserManager;
+use OCP\Share\IManager;
 
 class AclControllerTest extends UnitTestCase {
 
@@ -37,6 +41,14 @@ class AclControllerTest extends UnitTestCase {
     private $request;
     /** @var AclService */
     private $aclService;
+    /** @var IUserManager */
+	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
+	/** @var IManager */
+	private $shareManager;
+	/** @var IL10N */
+	private $l10n;
     /** @var string */
     private $userId = 'john';
 
@@ -44,16 +56,34 @@ class AclControllerTest extends UnitTestCase {
 	 * {@inheritDoc}
 	 */
     public function setUp() {
-        $this->request = $this->getMockBuilder('OCP\IRequest')
+        $this->request = $this->getMockBuilder(IRequest::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->aclService = $this->getMockBuilder(
-            '\OCA\Mindmaps\Service\AclService')
+        $this->aclService = $this->getMockBuilder(AclService::class)
             ->disableOriginalConstructor()
             ->getMock();
+		$this->userManager = $this->getMockBuilder(IUserManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->shareManager = $this->getMockBuilder(IManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->l10n = $this->getMockBuilder(IL10N::class)
+			->disableOriginalConstructor()
+			->getMock();
 
         $this->controller = new AclController(
-            'mindmaps', $this->request, $this->aclService, $this->userId
+            'mindmaps',
+			$this->request,
+			$this->aclService,
+			$this->userManager,
+			$this->groupManager,
+			$this->shareManager,
+			$this->l10n,
+			$this->userId
         );
     }
 

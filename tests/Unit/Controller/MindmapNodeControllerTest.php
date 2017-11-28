@@ -44,17 +44,19 @@ class MindmapNodeControllerTest extends UnitTestCase {
 	 * {@inheritDoc}
 	 */
     public function setUp() {
-        $this->request = $this->getMockBuilder('OCP\IRequest')
+        $this->request = $this->getMockBuilder(IRequest::class)
             ->disableOriginalConstructor()
             ->getMock();
-    	$this->mindmapNodeService = $this->getMockBuilder(
-            '\OCA\Mindmaps\Service\MindmapNodeService')
+    	$this->mindmapNodeService = $this->getMockBuilder(MindmapNodeService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->controller = new MindmapNodeController(
-            'mindmaps', $this->request, $this->mindmapNodeService, $this->userId
-        );
+        	'mindmaps',
+			$this->request,
+			$this->mindmapNodeService,
+			$this->userId
+		);
     }
 
 	/**

@@ -53,14 +53,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 </script>
 
-<style lang="scss" scoped>
-	#detailsTabView h3 {
-		padding-bottom: 4px;
-		border-bottom: 1px solid black;
-	}
+<style lang="scss">
+	#detailsTabView {
+		h3 {
+			padding-bottom: 4px;
+			border-bottom: 1px solid black;
+		}
 
-	#description {
-		width: 100%;
-		min-height: 100px;
+		#description {
+			width: 100%;
+			min-height: 100px;
+		}
 	}
 </style>

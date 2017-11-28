@@ -31,6 +31,8 @@ use OCA\Mindmaps\Db\MindmapNodeMapper;
 use OCA\Mindmaps\Service\MindmapService;
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 
 class MindmapServiceTest extends UnitTestCase {
 
@@ -44,6 +46,10 @@ class MindmapServiceTest extends UnitTestCase {
 	private $mindmapNodeMapper;
 	/** @var AclMapper */
 	private $aclMapper;
+	/** @var IUserManager */
+	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
 
 	/**
 	 * {@inheritDoc}
@@ -52,8 +58,20 @@ class MindmapServiceTest extends UnitTestCase {
 		parent::setUp();
 		$this->con = \OC::$server->getDatabaseConnection();
 		$this->aclMapper = new AclMapper($this->con);
-		$this->mindmapNodeMapper = new MindmapNodeMapper(($this->con));
-		$this->mindmapMapper = new MindmapMapper($this->con, $this->mindmapNodeMapper, $this->aclMapper);
+		$this->mindmapNodeMapper = new MindmapNodeMapper($this->con);
+		$this->userManager = $this->getMockBuilder(IUserManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->mindmapMapper = new MindmapMapper(
+			$this->con,
+			$this->mindmapNodeMapper,
+			$this->aclMapper,
+			$this->groupManager,
+			$this->userManager
+		);
 		$this->mindmapService = new MindmapService($this->mindmapMapper);
 	}
 
@@ -64,7 +82,7 @@ class MindmapServiceTest extends UnitTestCase {
 	 */
 	public function testCreate() {
 		/** @var Mindmap $mindmap */
-		$mindmap = $this->fm->instance('OCA\Mindmaps\Db\Mindmap');
+		$mindmap = $this->fm->instance(Mindmap::class);
 		$mindmapTmp = $this->mindmapService->create($mindmap->getTitle(), $mindmap->getDescription(), $mindmap->getUserId());
 		$this->assertInstanceOf(Mindmap::class, $mindmapTmp);
 		return $mindmapTmp;

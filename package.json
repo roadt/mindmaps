@@ -20,7 +20,7 @@
 	"scripts": {
 		"dev": "cross-env NODE_ENV=development webpack-dev-server --hot --inline --open",
 		"build": "cross-env NODE_ENV=production webpack -p",
-		"build-dev": "cross-env NODE_ENV=development webpack -d",
+		"build:dev": "cross-env NODE_ENV=development webpack -d",
 		"test": "mocha-webpack --include js/tests/Setup.ts js/tests/**/*.spec.ts"
 	},
 	"dependencies": {

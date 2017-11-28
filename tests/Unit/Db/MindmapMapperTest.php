@@ -30,6 +30,8 @@ use OCA\Mindmaps\Db\MindmapMapper;
 use OCA\Mindmaps\Db\MindmapNodeMapper;
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 
 class MindmapMapperTest extends UnitTestCase {
 
@@ -41,6 +43,10 @@ class MindmapMapperTest extends UnitTestCase {
 	private $mindmapNodeMapper;
 	/** @var AclMapper */
 	private $aclMapper;
+	/** @var IUserManager */
+	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
 
 	/**
 	 * {@inheritDoc}
@@ -49,8 +55,20 @@ class MindmapMapperTest extends UnitTestCase {
 		parent::setUp();
 		$this->con = \OC::$server->getDatabaseConnection();
 		$this->aclMapper = new AclMapper($this->con);
-		$this->mindmapNodeMapper = new MindmapNodeMapper(($this->con));
-		$this->mindmapMapper = new MindmapMapper($this->con, $this->mindmapNodeMapper, $this->aclMapper);
+		$this->mindmapNodeMapper = new MindmapNodeMapper($this->con);
+		$this->userManager = $this->getMockBuilder(IUserManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->mindmapMapper = new MindmapMapper(
+			$this->con,
+			$this->mindmapNodeMapper,
+			$this->aclMapper,
+			$this->groupManager,
+			$this->userManager
+		);
 	}
 
 	/**

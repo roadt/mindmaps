@@ -77,18 +77,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 		private selectParticipant(event: Event, ui: AutocompleteUIParams): void {
 			event.preventDefault();
-			$(event.target).prop('disabled', true);
+			$(event.currentTarget).prop('disabled', true);
 			const share = new Acl();
 			share.mindmapId = this.mindmap.id;
 			share.type = ui.item.value.shareType;
 			share.participant = ui.item.value.shareWith;
 			this.aclService.create(share).then((response) => {
 				this.shares.push(response.data);
-				$(event.target).val('');
-				$(event.target).prop('disabled', false);
+				$(event.currentTarget).val('');
+				$(event.currentTarget).prop('disabled', false);
 			}).catch((error) => {
 				console.error('Error: ' + error.message);
-				$(event.target).prop('disabled', false);
+				$(event.currentTarget).prop('disabled', false);
 			});
 		}
 
@@ -165,6 +165,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		@Watch('mindmap.id', {deep: true})
 		onMindmapIdChanged(id: number): void {
 			if (id > 0) {
+				this.registerAutocomplete();
 				this.aclService.load(id).then((response) => {
 					response.data.forEach((share: Acl) => {
 						this.shares.push(share);
@@ -177,13 +178,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 		created(): void {
 			this.aclService = new AclService();
-			this.setAvatars();
-			this.registerAutocomplete();
 		}
 
 		updated(): void {
 			this.setAvatars();
-			this.registerAutocomplete();
 		}
 
 		remove(acl: Acl): void {
@@ -197,27 +195,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 </script>
 
-<style lang="scss" scoped>
-	#shareWith {
-		width: 100%;
-	}
+<style lang="scss">
+	#sharingTabView {
+		#shareWith {
+			width: 100%;
+		}
 
-	.avatar {
-		margin-right: 8px;
-		display: inline-block;
-		overflow: hidden;
-		vertical-align: middle;
-		width: 32px;
-		height: 32px;
-	}
+		.avatar {
+			margin-right: 8px;
+			display: inline-block;
+			overflow: hidden;
+			vertical-align: middle;
+			width: 32px;
+			height: 32px;
+		}
 
-	.participant {
-		padding-right: 8px;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		max-width: 254px;
-		display: inline-block;
-		overflow: hidden;
-		vertical-align: middle;
+		.participant {
+			padding-right: 8px;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			max-width: 254px;
+			display: inline-block;
+			overflow: hidden;
+			vertical-align: middle;
+		}
 	}
 </style>

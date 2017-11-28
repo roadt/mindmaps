@@ -27,7 +27,7 @@ use OCA\Mindmaps\Db\Acl;
 /**
  * General factory for the acl model.
  */
-$fm->define('OCA\Mindmaps\Db\Acl')->setDefinitions([
+$fm->define(Acl::class)->setDefinitions([
 	'participant' => Faker::firstNameMale(),
 	'type' => \OCP\Share::SHARE_TYPE_USER
 ]);

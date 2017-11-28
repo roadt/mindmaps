@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<ul>
 				<li>
 					<label for="refreshInterval">{{ t('Refresh interval (in minutes)') }}</label>
-					<input id="refreshInterval" type="number" v-model="refreshInterval" @keyup.enter="submit">
+					<input id="refreshInterval" type="number" v-model="refreshInterval">
 				</li>
 			</ul>
 		</div>
@@ -44,10 +44,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 		created(): void {
 			this.refreshInterval = 10;
-		}
-
-		submit(): void {
-			this.refreshInterval = 20;
 		}
 	}
 </script>

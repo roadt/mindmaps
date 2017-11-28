@@ -105,7 +105,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		showPopover(params?: any): void {
+		showPopover(params: any): void {
 			const $popover = $('.popovermenu');
 			if (params.nodes.length === 1) {
 				$popover.css('display', 'block');
@@ -117,15 +117,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			}
 		}
 
-		showNew(params?: any): void {
-			console.log('New node: ' + params);
+		showNew(params: any): void {
+			console.log('New node at: ' + params.pointer.DOM.y + ' / ' + params.pointer.DOM.x);
 		}
 
 	}
 </script>
 
-<style lang="scss" scoped>
-	.popovermenu ul {
-		flex-direction: row;
+<style lang="scss">
+	#app-content-wrapper {
+		.popovermenu ul {
+			flex-direction: row;
+		}
 	}
 </style>
