@@ -4,26 +4,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	entry: [
-		'webpack-dev-server/client?http://localhost:8080',
-		'webpack/hot/only-dev-server',
 		'./js/App.ts'
 	],
 	output: {
 		path: path.resolve(__dirname, './js'),
 		filename: 'bundle.js'
-	},
-	devServer: {
-		contentBase: path.resolve(__dirname, './js'),
-		// Path to the js folder in your mindmaps dir (as seen form Nextcloud / webserver)
-		publicPath: '/custom_apps/mindmaps/js/',
-		proxy: {
-			'*': {
-				// This is the url where your local Nextcloud instance lives
-				target: 'http://localhost',
-				secure: false,
-				changeOrigin: false
-			}
-		}
 	},
 	module: {
 		rules: [
@@ -54,6 +39,27 @@ module.exports = {
 		CopyWebpackPlugin([{from: 'node_modules/vis/dist/vis.min.css', to: '../css/vendor/vis/vis.min.css'}])
 	]
 };
+
+if (process.env.NODE_ENV === 'development') {
+	module.exports.entry = (module.exports.entry || []).concat([
+		'webpack-dev-server/client?http://localhost:8080',
+		'webpack/hot/only-dev-server'
+	]);
+
+	module.exports.devServer = {
+		contentBase: path.resolve(__dirname, './js'),
+			// Path to the js folder in your mindmaps dir (as seen form Nextcloud / webserver)
+			publicPath: '/custom_apps/mindmaps/js/',
+			proxy: {
+			'*': {
+				// This is the url where your local Nextcloud instance lives
+				target: 'http://localhost',
+					secure: false,
+					changeOrigin: false
+			}
+		}
+	};
+}
 
 if (process.env.NODE_ENV === 'production') {
 	// See: http://vue-loader.vuejs.org/en/workflow/production.html

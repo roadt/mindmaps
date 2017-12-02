@@ -129,7 +129,7 @@ appstore:
 	fi
 
 .PHONY: test
-test: composer
+test: composer npm
 	$(CURDIR)/vendor/phpunit/phpunit/phpunit --coverage-clover clover.xml -c phpunit.xml
 	$(CURDIR)/vendor/phpunit/phpunit/phpunit -c phpunit.integration.xml
 	$(npm) run test

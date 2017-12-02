@@ -24,11 +24,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="sidebar-content">
 			<div class="sidebar-header">
 				<h2>{{ mindmap.title }}</h2>
-				<a class="close icon-close" @click="closeSidebar" :title="t('Close')"></a>
+				<a class="icon-close" @click="closeSidebar" :title="t('Close')">
+					<span class="hidden-visually">{{ t('Close') }}</span>
+				</a>
 			</div>
 			<ul class="tabHeaders">
-				<li class="tabHeader selected" data-tabid="detailsTabView" @click="switchTab"><a href="#">{{ t('Details') }}</a></li>
-				<li class="tabHeader" data-tabid="sharingTabView" @click="switchTab"><a href="#">{{ t('Sharing') }}</a></li>
+				<li class="tabHeader selected" data-tabid="detailsTabView" @click="switchTab">
+					<a href="#">{{ t('Details') }}</a>
+				</li>
+				<li class="tabHeader" data-tabid="sharingTabView" @click="switchTab">
+					<a href="#">{{ t('Sharing') }}</a>
+				</li>
 			</ul>
 			<div class="tabsContainer">
 				<details-tab :mindmap="mindmap"></details-tab>
@@ -77,12 +83,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				position: absolute;
 				top: 0;
 				right: 0;
-				padding: 15px;
-				height: 45px;
-				width: 46px;
-				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-				opacity: 0.5;
+				padding: 14px;
+				height: 44px;
+				width: 44px;
 			}
+		}
+
+		button[class^="icon-"] {
+			opacity: 0.5;
+			float: right;
+			background-color: transparent;
+			border: none;
 		}
 	}
 </style>

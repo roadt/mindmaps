@@ -27,7 +27,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<li v-for="share in shares" :key="share.id">
 				<div class="avatar" :data-participant="share.participant" :data-displayname="share.participantDisplayName" :data-type="share.type"></div>
 				<span class="participant">{{ share.participantDisplayName }}</span>
-				<a class="icon icon-delete delete" href="#" :title="t('Delete share')" @click="remove(share)"></a>
+				<button class="icon-delete" :title="t('Delete share')" @click="remove(share)">
+					<span class="hidden-visually">{{ t('Delete share') }}</span>
+				</button>
 			</li>
 		</ul>
 	</div>

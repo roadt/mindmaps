@@ -22,10 +22,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div id="app-content-wrapper">
-			<div class="popovermenu bubble" style="display: none">
+			<div class="popovermenu bubble">
 				<ul>
-					<li><button class="node-rename icon-rename svg" :title="t('Edit Mindmap')"></button></li>
-					<li><button class="node-delete icon-delete svg" :title="t('Delete Mindmap')"></button></li>
+					<li>
+						<button class="icon-rename" :title="t('Edit Mindmap node')" @click="showRename">
+							<span class="hidden-visually">{{ t('Edit Mindmap node') }}</span>
+						</button>
+					</li>
+					<li>
+						<button class="icon-delete" :title="t('Delete Mindmap node')" @click="remove">
+							<span class="hidden-visually">{{ t('Delete Mindmap node') }}</span>
+						</button>
+					</li>
 				</ul>
 			</div>
 			<div id="mindmap">{{ t('Mindmap loading…') }}</div>
@@ -50,13 +58,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	})
 	export default class MindmapView extends Vue {
+		private mindmapNodeService: MindmapNodeService;
 		mindmap: Mindmap = new Mindmap();
 
 		created(): void {
 			const id = parseInt(this.$route.params.id);
-			const mindmapService = new MindmapService();
-			const mindmapNodeService = new MindmapNodeService();
+			this.mindmapNodeService = new MindmapNodeService();
 
+			const mindmapService = new MindmapService();
 			mindmapService.load().then(() => {
 				const mindmap = mindmapService.find(id);
 				if (!_.isNull(mindmap)) {
@@ -66,7 +75,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				console.error('Error: ' + error.message);
 			});
 
-			mindmapNodeService.load(id).then((response) => {
+			this.mindmapNodeService.load(id).then((response) => {
 				const content = document.getElementById('app-content');
 				const wrapper = document.getElementById('app-content-wrapper');
 				const container = document.getElementById('mindmap');
@@ -75,11 +84,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					interaction: {dragNodes: false},
 					locale: OC.getLocale()
 				};
-				let nodes: Array<MindmapNode> = response.data;
-				let edges: Array<{from: number, to: number}> = [];
+				const nodes: Array<MindmapNode> = response.data;
+				const edges: Array<{from: number, to: number}> = [];
 
-				// TODO: Find a better solution here!
-				if (content !== null && wrapper !== null && container !== null) {
+				if (!_.isNull(content) && !_.isNull(wrapper) && !_.isNull(container)) {
 					// The mindmap should use all of the wrappers place.
 					wrapper.style.height = content.clientHeight + 'px';
 					container.style.height = wrapper.clientHeight + 'px';
@@ -91,7 +99,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					}
 				});
 
-				if (vis !== null && container !== null) {
+				if (!_.isNull(vis) && !_.isNull(container)) {
 					const network = new vis.Network(container,
 						{nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges)},
 						options);
@@ -99,6 +107,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 					network.on('click', this.showPopover);
 					network.on('doubleClick', this.showNew);
+				} else {
+					OC.dialogs.alert(t('mindmaps', 'The vis.js Framework is not available!'), t('mindmaps', 'Error'));
 				}
 			}).catch((error) => {
 				console.error('Error: ' + error.message);
@@ -108,17 +118,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		showPopover(params: any): void {
 			const $popover = $('.popovermenu');
 			if (params.nodes.length === 1) {
-				$popover.css('display', 'block');
-				$popover.css('width', '72px');
+				$('#mindmap').data('selected', params.nodes[0]);
+
+				$popover.addClass('open');
 				$popover.css('top', params.pointer.DOM.y + 30);
 				$popover.css('left', params.pointer.DOM.x - 60);
 			} else {
-				$popover.css('display', 'none');
+				$popover.removeClass('open');
 			}
 		}
 
 		showNew(params: any): void {
-			console.log('New node at: ' + params.pointer.DOM.y + ' / ' + params.pointer.DOM.x);
+			const parentId: number = parseInt($('#mindmap').data('selected') as string);
+			if (_.isNaN(parentId)) {
+				OC.dialogs.alert(t('mindmaps', 'Please select a parent node first!'), t('mindmaps', 'Error'));
+			} else {
+				console.log('New node at: ' + params.pointer.DOM.y + ' / ' + params.pointer.DOM.x + ' / Parent: ' + parentId);
+			}
+		}
+
+		showRename(): void {
+			const mindmapNodeId: number = parseInt($('#mindmap').data('selected') as string);
+			if (_.isNaN(mindmapNodeId)) {
+				console.log('Edit node: ' + mindmapNodeId);
+			}
+		}
+
+		remove(): void {
+			const mindmapNodeId: number = parseInt($('#mindmap').data('selected') as string);
+			this.mindmapNodeService.remove(mindmapNodeId).then(() => {
+				console.log('Node deleted!');
+			}).catch((error) => {
+				console.error('Error: ' + error.message);
+			});
 		}
 
 	}
@@ -126,8 +158,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <style lang="scss">
 	#app-content-wrapper {
-		.popovermenu ul {
-			flex-direction: row;
+		.popovermenu {
+			width: 80px;
+
+			ul {
+				flex-direction: row;
+			}
 		}
 	}
 </style>

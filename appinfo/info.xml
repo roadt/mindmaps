@@ -21,6 +21,7 @@
     <screenshot>https://raw.githubusercontent.com/splitt3r/mindmaps/master/screenshots/mindmaps_details.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/splitt3r/mindmaps/master/screenshots/mindmaps_sharing.png</screenshot>
     <dependencies>
-        <nextcloud min-version="11" max-version="13" />
+        <php min-version="7.0" min-int-size="64"/>
+        <nextcloud min-version="13" max-version="13" />
     </dependencies>
 </info>

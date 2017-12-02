@@ -57,10 +57,19 @@ interface Apps {
 	hideAppSidebar(): void;
 }
 
+interface Dialogs {
+	alert(text: string, title: string, callback?: () => void, modal?: boolean): void;
+	info(text: string, title: string, callback?: () => void, modal?: boolean): void;
+	confirm(text: string, title: string, callback?: () => void, modal?: boolean): void;
+	confirmHtml(text: string, title: string, callback?: () => void, modal?: boolean): void;
+	prompt(text: string, title: string, callback?: () => void, modal?: boolean, name?: string, password?: string): void;
+}
+
 interface OC {
 	requestToken: string;
 	Share: Share;
 	Apps: Apps;
+	dialogs: Dialogs;
 
 	generateUrl(url: string, params?: any[], options?: any[]): string;
 	linkToOCS(url: string): string;

@@ -21,9 +21,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div id="detailsTabView" class="tab detailsTabView">
-		<h3>{{ t('Help') }}<span class="icon icon-info" :title="t('Help')"></span></h3>
+		<h3>
+			{{ t('Help') }}
+			<span class="icon-info" :title="t('Help')"></span>
+		</h3>
 		<p v-html="helpText"></p>
-		<h3>{{ t('Description') }}<a class="icon icon-edit save" href="#" :title="t('Save description')" @click="updateDescription"></a></h3>
+		<h3>
+			{{ t('Description') }}
+			<button class="icon-edit" :title="t('Save description')" @click="updateDescription">
+				<span class="hidden-visually">{{ t('Save description') }}</span>
+			</button>
+		</h3>
 		<textarea id="description" v-model="mindmap.description" :placeholder="t('Add a description…')"></textarea>
 	</div>
 </template>
