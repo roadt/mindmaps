@@ -27,14 +27,16 @@ use OCA\Mindmaps\Db\AclMapper;
 use OCP\AppFramework\App;
 use OCP\IGroup;
 use OCP\IUser;
+use OCP\IGroupManager;
 use OCP\IUserManager;
+use OCP\Share;
 
 class Application extends App {
 
 	// The used table names.
-	public const  MINDMAPS_TABLE = 'mindmaps';
-	public const  MINDMAP_NODES_TABLE = 'mindmap_nodes';
-	public const  MINDMAP_ACL_TABLE = 'mindmap_acl';
+	const  MINDMAPS_TABLE = 'mindmaps';
+	const  MINDMAP_NODES_TABLE = 'mindmap_nodes';
+	const  MINDMAP_ACL_TABLE = 'mindmap_acl';
 
 	/**
 	 * Application constructor.
@@ -60,7 +62,7 @@ class Application extends App {
 		});
 
 		// Delete group acl entries when they get deleted
-		/** @var IUserManager $userManager */
+		/** @var IGroupManager $userManager */
 		$groupManager = $server->getGroupManager();
 		$groupManager->listen('\OC\Group', 'postDelete', function (IGroup $group) use ($container) {
 			/** @var AclMapper $aclMapper */

@@ -23,8 +23,8 @@
 
 namespace OCA\Mindmaps\Migration;
 
-use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use OC\DB\SchemaWrapper;
 use OCA\Mindmaps\AppInfo\Application;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
@@ -36,13 +36,13 @@ class Version001Date20171202130000 extends SimpleMigrationStep {
 
 	/**
 	 * @param IOutput $output
-	 * @param \Closure $schemaClosure The `\Closure` returns a `Schema`
+	 * @param \Closure $schemaClosure The `\Closure` returns a `SchemaWrapper`
 	 * @param array $options
-	 * @return null|Schema
+	 * @return null|SchemaWrapper
 	 * @since 13.0.0
 	 */
-	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options): Schema {
-		/** @var Schema $schema */
+	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options): SchemaWrapper {
+		/** @var SchemaWrapper $schema */
 		$schema = $schemaClosure();
 
 		// To create parent id foreign key the mindmap nodes table need to already exist.
