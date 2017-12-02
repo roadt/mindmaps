@@ -18,7 +18,7 @@ addons:
 
 env:
   global:
-    - CORE_BRANCH=stable12
+    - CORE_BRANCH=master
     - APP_NAME=mindmaps
   matrix:
     - DB=mysql
