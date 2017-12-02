@@ -27,85 +27,90 @@ use Exception;
 use OCA\Mindmaps\Db\Mindmap;
 use OCA\Mindmaps\Db\MindmapMapper;
 use OCA\Mindmaps\Exception\BadRequestException;
+use OCP\AppFramework\Db\Entity;
 
 class MindmapService extends Service {
 
-    private $mindmapMapper;
+	/** @var MindmapMapper */
+	private $mindmapMapper;
 
-    /**
-     * MindmapService constructor.
-     *
-     * @param MindmapMapper $mindmapMapper
-     */
-    public function __construct(MindmapMapper $mindmapMapper) {
-        parent::__construct($mindmapMapper);
+	/**
+	 * MindmapService constructor.
+	 *
+	 * @param MindmapMapper $mindmapMapper
+	 */
+	public function __construct(MindmapMapper $mindmapMapper) {
+		parent::__construct($mindmapMapper);
 
-        $this->mindmapMapper = $mindmapMapper;
-    }
+		$this->mindmapMapper = $mindmapMapper;
+	}
 
-    /**
-     * Return all mindmaps from mapper class by user id.
-     *
-     * @param string $userId
-     *
-     * @return \OCP\AppFramework\Db\Entity[]
-     */
-    public function findAll($userId) {
-        return $this->mindmapMapper->findAll($userId);
-    }
+	/**
+	 * Return all mindmaps from mapper class by user id.
+	 *
+	 * @param string $userId
+	 * @param null|integer $limit
+	 * @param null|integer $offset
+	 *
+	 * @return \OCP\AppFramework\Db\Entity[]
+	 */
+	public function findAll($userId, $limit = null, $offset = null): array {
+		return $this->mindmapMapper->findAll($userId, $limit, $offset);
+	}
 
-    /**
-     * Create a new mindmap object and insert it via mapper class.
-     *
-     * @param string $title
-     * @param string $description
-     * @param string $userId
-     *
-     * @return \OCP\AppFramework\Db\Entity
-     *
-     * @throws BadRequestException if parameters are invalid
-     */
-    public function create($title, $description, $userId) {
-        if ($title === null || $title === '') {
-            throw new BadRequestException();
-        }
+	/**
+	 * Create a new mindmap object and insert it via mapper class.
+	 *
+	 * @param string $title
+	 * @param string $description
+	 * @param string $userId
+	 *
+	 * @return \OCP\AppFramework\Db\Entity
+	 *
+	 * @throws BadRequestException if parameters are invalid
+	 */
+	public function create($title, $description, $userId): Entity {
+		if ($title === null || $title === '') {
+			throw new BadRequestException();
+		}
 
-        $mindmap = new Mindmap();
-        $mindmap->setTitle($title);
-        $mindmap->setDescription($description);
-        $mindmap->setUserId($userId);
+		$mindmap = new Mindmap();
+		$mindmap->setTitle($title);
+		$mindmap->setDescription($description);
+		$mindmap->setUserId($userId);
 
-        return $this->mindmapMapper->insert($mindmap);
-    }
+		return $this->mindmapMapper->insert($mindmap);
+	}
 
-    /**
-     * Find and update a given mindmap object.
-     *
-     * @param integer $mindmapId
-     * @param string $title
-     * @param string $description
-     * @param string $userId
-     *
-     * @return \OCP\AppFramework\Db\Entity
-     *
-     * @throws BadRequestException if parameters are invalid
-     */
-    public function update($mindmapId, $title, $description, $userId) {
-        if ($title === null || $title === '') {
-            throw new BadRequestException();
-        }
+	/**
+	 * Find and update a given mindmap object.
+	 *
+	 * @param integer $mindmapId
+	 * @param string $title
+	 * @param string $description
+	 * @param string $userId
+	 *
+	 * @return \OCP\AppFramework\Db\Entity
+	 *
+	 * @throws BadRequestException if parameters are invalid
+	 * @throws Exception
+	 */
+	public function update($mindmapId, $title, $description, $userId): Entity {
+		if ($title === null || $title === '') {
+			throw new BadRequestException();
+		}
 
-        try {
-            $mindmap = $this->find($mindmapId);
-            $mindmap->setTitle($title);
-            if ($description !== null && $mindmap->getDescription() !== $description) {
-                $mindmap->setDescription($description);
-            }
+		try {
+			$mindmap = $this->find($mindmapId);
+			$mindmap->setTitle($title);
+			if ($description !== null && $mindmap->getDescription() !== $description) {
+				$mindmap->setDescription($description);
+			}
 
-            return $this->mindmapMapper->update($mindmap);
-        } catch (Exception $e) {
-            $this->handleException($e);
-        }
-        return null;
-    }
+			return $this->mindmapMapper->update($mindmap);
+		} catch (Exception $e) {
+			$this->handleException($e);
+		}
+		return null;
+	}
 }

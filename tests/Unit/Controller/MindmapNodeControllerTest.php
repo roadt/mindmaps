@@ -32,38 +32,38 @@ use OCP\IRequest;
 class MindmapNodeControllerTest extends UnitTestCase {
 
 	/** @var MindmapNodeController */
-    private $controller;
-    /** @var IRequest */
-    private $request;
-    /** @var MindmapNodeService */
-    private $mindmapNodeService;
+	private $controller;
+	/** @var IRequest */
+	private $request;
+	/** @var MindmapNodeService */
+	private $mindmapNodeService;
 	/** @var string */
-    private $userId = 'john';
+	private $userId = 'john';
 
 	/**
 	 * {@inheritDoc}
 	 */
-    public function setUp() {
-        $this->request = $this->getMockBuilder(IRequest::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    	$this->mindmapNodeService = $this->getMockBuilder(MindmapNodeService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+	public function setUp() {
+		$this->request = $this->getMockBuilder(IRequest::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->mindmapNodeService = $this->getMockBuilder(MindmapNodeService::class)
+			->disableOriginalConstructor()
+			->getMock();
 
-        $this->controller = new MindmapNodeController(
-        	'mindmaps',
+		$this->controller = new MindmapNodeController(
+			'mindmaps',
 			$this->request,
 			$this->mindmapNodeService,
 			$this->userId
 		);
-    }
+	}
 
 	/**
 	 * Basic controller index route test.
 	 */
-    public function testIndex() {
-        $result = $this->controller->index(0);
+	public function testIndex() {
+		$result = $this->controller->index(0);
 		$this->assertInstanceOf(DataResponse::class, $result);
-    }
+	}
 }

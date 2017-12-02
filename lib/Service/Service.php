@@ -26,70 +26,74 @@ namespace OCA\Mindmaps\Service;
 use Exception;
 use OCA\Mindmaps\Exception\NotFoundException;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 abstract class Service {
 
-    protected $mapper;
+	/** @var \OCP\AppFramework\Db\Mapper */
+	protected $mapper;
 
-    /**
-     * Service constructor.
-     *
-     * @param \OCP\AppFramework\Db\Mapper $mapper
-     */
-    public function __construct($mapper) {
-        $this->mapper = $mapper;
-    }
+	/**
+	 * Service constructor.
+	 *
+	 * @param \OCP\AppFramework\Db\Mapper $mapper
+	 */
+	public function __construct($mapper) {
+		$this->mapper = $mapper;
+	}
 
-    /**
-     * Catch different exceptions and convert them to our own NotFoundException.
-     *
-     * @param Exception $ex
-     *
-     * @throws NotFoundException
-     * @throws Exception
-     */
-    protected function handleException($ex) {
-        if ($ex instanceof DoesNotExistException || $ex instanceof MultipleObjectsReturnedException) {
-            throw new NotFoundException();
-        }
+	/**
+	 * Catch different exceptions and convert them to our own NotFoundException.
+	 *
+	 * @param Exception $ex
+	 *
+	 * @throws NotFoundException
+	 * @throws Exception
+	 */
+	protected function handleException($ex): void {
+		if ($ex instanceof DoesNotExistException || $ex instanceof MultipleObjectsReturnedException) {
+			throw new NotFoundException();
+		}
 		throw $ex;
-    }
+	}
 
-    /**
-     * Find the entity by given id and user id.
-     *
-     * @param integer $id
-     *
-     * @return \OCP\AppFramework\Db\Entity
-     *
-     * @throws NotFoundException
-     */
-    public function find($id) {
-        try {
-            return $this->mapper->find($id);
-        } catch (Exception $e) {
-            $this->handleException($e);
-        }
-        return null;
-    }
+	/**
+	 * Find the entity by given id and user id.
+	 *
+	 * @param integer $id
+	 *
+	 * @return null|\OCP\AppFramework\Db\Entity
+	 *
+	 * @throws NotFoundException
+	 * @throws Exception
+	 */
+	public function find($id): Entity {
+		try {
+			return $this->mapper->find($id);
+		} catch (Exception $e) {
+			$this->handleException($e);
+		}
+		return null;
+	}
 
-    /**
-     * Find and delete the entity by given id and user id.
-     *
-     * @param integer $id
-     *
-     * @return \OCP\AppFramework\Db\Entity
-     *
-     * @throws NotFoundException
-     */
-    public function delete($id) {
-        try {
-            $entity = $this->find($id);
-            return $this->mapper->delete($entity);
-        } catch (Exception $e) {
-            $this->handleException($e);
-        }
-        return null;
-    }
+	/**
+	 * Find and delete the entity by given id and user id.
+	 *
+	 * @param integer $id
+	 *
+	 * @return null|\OCP\AppFramework\Db\Entity
+	 *
+	 * @throws NotFoundException
+	 * @throws Exception
+	 */
+	public function delete($id): Entity {
+		try {
+			$entity = $this->find($id);
+			return $this->mapper->delete($entity);
+		} catch (Exception $e) {
+			$this->handleException($e);
+		}
+		return null;
+	}
 }

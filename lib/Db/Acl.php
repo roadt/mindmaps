@@ -42,28 +42,30 @@ class Acl extends Model implements JsonSerializable {
 	private $userManager;
 	/** @var IGroupManager */
 	private $groupManager;
+	/** @var string */
+	protected $participant;
+	/** @var integer */
+	protected $type;
+	/** @var integer */
+	protected $mindmapId;
 
-    protected $participant;
-    protected $type;
-    protected $mindmapId;
+	/**
+	 * Acl constructor.
+	 */
+	public function __construct() {
+		$this->userManager = \OC::$server->query(IUserManager::class);
+		$this->groupManager = \OC::$server->query(IGroupManager::class);
 
-    /**
-     * Acl constructor.
-     */
-    public function __construct() {
-    	$this->userManager = \OC::$server->query(IUserManager::class);
-    	$this->groupManager = \OC::$server->query(IGroupManager::class);
-
-        $this->addType('type', 'integer');
-        $this->addType('mindmapId', 'integer');
-    }
+		$this->addType('type', 'integer');
+		$this->addType('mindmapId', 'integer');
+	}
 
 	/**
 	 * Returns the full name of the user / group / circle which is the participant.
 	 *
 	 * @return string
 	 */
-    public function participantDisplayName() {
+	public function participantDisplayName(): string {
 		if ($this->getType() === Share::SHARE_TYPE_USER) {
 			$sharedWith = $this->userManager->get($this->getParticipant());
 			return $sharedWith !== null ? $sharedWith->getDisplayName() : $this->getParticipant();
@@ -86,18 +88,18 @@ class Acl extends Model implements JsonSerializable {
 		return '';
 	}
 
-    /**
-     * Return object as json string.
-     *
-     * @return array
-     */
-    public function jsonSerialize() {
-        return [
+	/**
+	 * Return object as json string.
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize(): array {
+		return [
 			'id' => $this->id,
 			'participant' => $this->participant,
 			'participantDisplayName' => $this->participantDisplayName(),
 			'type' => $this->type,
 			'mindmapId' => $this->mindmapId
-        ];
-    }
+		];
+	}
 }

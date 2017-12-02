@@ -22,28 +22,28 @@
  */
 
 return [
-    'routes' => [
-        ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
+	'routes' => [
+		['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 
-        // mindmaps
-        ['name' => 'mindmap#index', 'url' => '/mindmaps', 'verb' => 'GET'],
-        ['name' => 'mindmap#create', 'url' => '/mindmaps', 'verb' => 'POST'],
-        ['name' => 'mindmap#update', 'url' => '/mindmaps/{mindmapId}', 'verb' => 'PUT'],
-        ['name' => 'mindmap#delete', 'url' => '/mindmaps/{mindmapId}', 'verb' => 'DELETE'],
+		// mindmaps
+		['name' => 'mindmap#index', 'url' => '/mindmaps', 'verb' => 'GET'],
+		['name' => 'mindmap#create', 'url' => '/mindmaps', 'verb' => 'POST'],
+		['name' => 'mindmap#update', 'url' => '/mindmaps/{mindmapId}', 'verb' => 'PUT'],
+		['name' => 'mindmap#delete', 'url' => '/mindmaps/{mindmapId}', 'verb' => 'DELETE'],
 
-        // mindmap nodes
-        ['name' => 'mindmapNode#index', 'url' => '/nodes/{mindmapId}', 'verb' => 'GET'],
-        ['name' => 'mindmapNode#create', 'url' => '/nodes', 'verb' => 'POST'],
-        ['name' => 'mindmapNode#update', 'url' => '/nodes/{mindmapNodeId}', 'verb' => 'PUT'],
-        ['name' => 'mindmapNode#delete', 'url' => '/nodes/{mindmapNodeId}', 'verb' => 'DELETE'],
+		// mindmap nodes
+		['name' => 'mindmapNode#index', 'url' => '/nodes/{mindmapId}', 'verb' => 'GET'],
+		['name' => 'mindmapNode#create', 'url' => '/nodes', 'verb' => 'POST'],
+		['name' => 'mindmapNode#update', 'url' => '/nodes/{mindmapNodeId}', 'verb' => 'PUT'],
+		['name' => 'mindmapNode#delete', 'url' => '/nodes/{mindmapNodeId}', 'verb' => 'DELETE'],
 
-        // mindmap node locks
-        ['name' => 'mindmapNode#lock', 'url' => '/nodes/{mindmapNodeId}/locks', 'verb' => 'POST'],
-        ['name' => 'mindmapNode#unlock', 'url' => '/nodes/{mindmapNodeId}/locks', 'verb' => 'DELETE'],
+		// mindmap node locks
+		['name' => 'mindmapNode#lock', 'url' => '/nodes/{mindmapNodeId}/locks', 'verb' => 'POST'],
+		['name' => 'mindmapNode#unlock', 'url' => '/nodes/{mindmapNodeId}/locks', 'verb' => 'DELETE'],
 
-        // mindmap acls
-        ['name' => 'acl#index', 'url' => '/acl/{mindmapId}', 'verb' => 'GET'],
-        ['name' => 'acl#create', 'url' => '/acl', 'verb' => 'POST'],
-        ['name' => 'acl#delete', 'url' => '/acl/{aclId}', 'verb' => 'DELETE']
-    ]
+		// mindmap acls
+		['name' => 'acl#index', 'url' => '/acl/{mindmapId}', 'verb' => 'GET'],
+		['name' => 'acl#create', 'url' => '/acl', 'verb' => 'POST'],
+		['name' => 'acl#delete', 'url' => '/acl/{aclId}', 'verb' => 'DELETE']
+	]
 ];

@@ -23,7 +23,6 @@
 
 namespace OCA\Mindmaps\AppInfo;
 
-use OCA\Mindmaps\Db\Acl;
 use OCA\Mindmaps\Db\AclMapper;
 use OCP\AppFramework\App;
 use OCP\IGroup;
@@ -32,57 +31,64 @@ use OCP\IUserManager;
 
 class Application extends App {
 
-    /**
-     * Application constructor.
-     *
-     * @param array $urlParams
-     */
-    public function __construct(array $urlParams = array()) {
-        parent::__construct('mindmaps', $urlParams);
+	// The used table names.
+	public const  MINDMAPS_TABLE = 'mindmaps';
+	public const  MINDMAP_NODES_TABLE = 'mindmap_nodes';
+	public const  MINDMAP_ACL_TABLE = 'mindmap_acl';
 
-        $container = $this->getContainer();
-        $server = $container->getServer();
+	/**
+	 * Application constructor.
+	 *
+	 * @param array $urlParams
+	 */
+	public function __construct(array $urlParams = array()) {
+		parent::__construct('mindmaps', $urlParams);
 
-        // Delete user acl entries when they get deleted
-        /** @var IUserManager $userManager */
-        $userManager = $server->getUserManager();
-        $userManager->listen('\OC\User', 'postDelete', function (IUser $user) use ($container) {
-            /** @var AclMapper $aclMapper */
-            $aclMapper = $container->query(AclMapper::class);
-            $acls = $aclMapper->findByParticipant(Acl::PERMISSION_TYPE_USER, $user->getUID());
-            foreach ($acls as $acl) {
-                $aclMapper->delete($acl);
-            }
-        });
+		$container = $this->getContainer();
+		$server = $container->getServer();
 
-        // Delete group acl entries when they get deleted
-        /** @var IUserManager $userManager */
-        $groupManager = $server->getGroupManager();
-        $groupManager->listen('\OC\Group', 'postDelete', function (IGroup $group) use ($container) {
-            /** @var AclMapper $aclMapper */
-            $aclMapper = $container->query(AclMapper::class);
-            $acls = $aclMapper->findByParticipant(Acl::PERMISSION_TYPE_GROUP, $group->getGID());
-            foreach ($acls as $acl) {
-                $aclMapper->delete($acl);
-            }
-        });
-    }
+		// Delete user acl entries when they get deleted
+		/** @var IUserManager $userManager */
+		$userManager = $server->getUserManager();
+		$userManager->listen('\OC\User', 'postDelete', function (IUser $user) use ($container) {
+			/** @var AclMapper $aclMapper */
+			$aclMapper = $container->query(AclMapper::class);
+			$acls = $aclMapper->findByParticipant(Share::SHARE_TYPE_USER, $user->getUID());
+			foreach ($acls as $acl) {
+				$aclMapper->delete($acl);
+			}
+		});
 
-    /**
-     * Register navigation entry for main navigation.
-     */
-    public function registerNavigationEntry() {
-        $container = $this->getContainer();
-        $container->query('OCP\INavigationManager')->add(function () use ($container) {
-            $urlGenerator = $container->query('OCP\IURLGenerator');
-            $l10n = $container->query('OCP\IL10N');
-            return [
-                'id' => 'mindmaps',
-                'order' => 10,
-                'href' => $urlGenerator->linkToRoute('mindmaps.page.index'),
-                'icon' => $urlGenerator->imagePath('mindmaps', 'app.svg'),
-                'name' => $l10n->t('Mindmaps')
-            ];
-        });
-    }
+		// Delete group acl entries when they get deleted
+		/** @var IUserManager $userManager */
+		$groupManager = $server->getGroupManager();
+		$groupManager->listen('\OC\Group', 'postDelete', function (IGroup $group) use ($container) {
+			/** @var AclMapper $aclMapper */
+			$aclMapper = $container->query(AclMapper::class);
+			$acls = $aclMapper->findByParticipant(Share::SHARE_TYPE_GROUP, $group->getGID());
+			foreach ($acls as $acl) {
+				$aclMapper->delete($acl);
+			}
+		});
+	}
+
+	/**
+	 * Register navigation entry for main navigation.
+	 *
+	 * @throws \OCP\AppFramework\QueryException
+	 */
+	public function registerNavigationEntry() {
+		$container = $this->getContainer();
+		$container->query('OCP\INavigationManager')->add(function () use ($container) {
+			$urlGenerator = $container->query('OCP\IURLGenerator');
+			$l10n = $container->query('OCP\IL10N');
+			return [
+				'id' => 'mindmaps',
+				'order' => 10,
+				'href' => $urlGenerator->linkToRoute('mindmaps.page.index'),
+				'icon' => $urlGenerator->imagePath('mindmaps', 'app.svg'),
+				'name' => $l10n->t('Mindmaps')
+			];
+		});
+	}
 }

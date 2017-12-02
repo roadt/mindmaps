@@ -36,12 +36,12 @@ use OCP\Share\IManager;
 class AclControllerTest extends UnitTestCase {
 
 	/** @var AclController */
-    private $controller;
-    /** @var IRequest */
-    private $request;
-    /** @var AclService */
-    private $aclService;
-    /** @var IUserManager */
+	private $controller;
+	/** @var IRequest */
+	private $request;
+	/** @var AclService */
+	private $aclService;
+	/** @var IUserManager */
 	private $userManager;
 	/** @var IGroupManager */
 	private $groupManager;
@@ -49,19 +49,19 @@ class AclControllerTest extends UnitTestCase {
 	private $shareManager;
 	/** @var IL10N */
 	private $l10n;
-    /** @var string */
-    private $userId = 'john';
+	/** @var string */
+	private $userId = 'john';
 
 	/**
 	 * {@inheritDoc}
 	 */
-    public function setUp() {
-        $this->request = $this->getMockBuilder(IRequest::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->aclService = $this->getMockBuilder(AclService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+	public function setUp() {
+		$this->request = $this->getMockBuilder(IRequest::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->aclService = $this->getMockBuilder(AclService::class)
+			->disableOriginalConstructor()
+			->getMock();
 		$this->userManager = $this->getMockBuilder(IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -75,8 +75,8 @@ class AclControllerTest extends UnitTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-        $this->controller = new AclController(
-            'mindmaps',
+		$this->controller = new AclController(
+			'mindmaps',
 			$this->request,
 			$this->aclService,
 			$this->userManager,
@@ -84,14 +84,14 @@ class AclControllerTest extends UnitTestCase {
 			$this->shareManager,
 			$this->l10n,
 			$this->userId
-        );
-    }
+		);
+	}
 
 	/**
 	 * Basic controller index route test.
 	 */
-    public function testIndex() {
-        $result = $this->controller->index(0);
-        $this->assertInstanceOf(DataResponse::class, $result);
-    }
+	public function testIndex() {
+		$result = $this->controller->index(0);
+		$this->assertInstanceOf(DataResponse::class, $result);
+	}
 }

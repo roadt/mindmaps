@@ -25,17 +25,14 @@ namespace OCA\Mindmaps\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use OCA\Mindmaps\AppInfo\Application;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
 
 /**
  * Installation class for the mindmaps app.
  */
-class Version001Date20171202132906 extends SimpleMigrationStep {
-
-	const  MINDMAPS_TABLE = 'mindmaps';
-	const  MINDMAP_NODES_TABLE = 'mindmap_nodes';
-	const  MINDMAP_ACL_TABLE = 'mindmap_acl';
+class Version001Date20171202120000 extends SimpleMigrationStep {
 
 	/**
 	 * @param IOutput $output
@@ -44,13 +41,13 @@ class Version001Date20171202132906 extends SimpleMigrationStep {
 	 * @return null|Schema
 	 * @since 13.0.0
 	 */
-	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options) {
+	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options): Schema {
 		/** @var Schema $schema */
 		$schema = $schemaClosure();
 
 		// Create the main mindmaps table which holds basic information about the mindmap.
-		if (!$schema->hasTable(static::MINDMAPS_TABLE)) {
-			$table = $schema->createTable(static::MINDMAPS_TABLE);
+		if (!$schema->hasTable(Application::MINDMAPS_TABLE)) {
+			$table = $schema->createTable(Application::MINDMAPS_TABLE);
 			$table->addColumn('id', Type::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -73,8 +70,8 @@ class Version001Date20171202132906 extends SimpleMigrationStep {
 		}
 
 		// Create the mindmap_nodes table which holds information about the mindmaps single nodes.
-		if (!$schema->hasTable(static::MINDMAP_NODES_TABLE)) {
-			$table = $schema->createTable(static::MINDMAP_NODES_TABLE);
+		if (!$schema->hasTable(Application::MINDMAP_NODES_TABLE)) {
+			$table = $schema->createTable(Application::MINDMAP_NODES_TABLE);
 			$table->addColumn('id', Type::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -111,13 +108,12 @@ class Version001Date20171202132906 extends SimpleMigrationStep {
 				'length' => 64
 			]);
 			$table->setPrimaryKey(['id']);
-			$table->addForeignKeyConstraint(static::MINDMAP_NODES_TABLE, ['parent_id'], ['id']);
-			$table->addForeignKeyConstraint(static::MINDMAPS_TABLE, ['mindmap_id'], ['id']);
+			$table->addForeignKeyConstraint(Application::MINDMAPS_TABLE, ['mindmap_id'], ['id']);
 		}
 
 		// Create the mindmap_acl table which holds sharing information like user / group / circle name.
-		if (!$schema->hasTable(static::MINDMAP_ACL_TABLE)) {
-			$table = $schema->createTable(static::MINDMAP_ACL_TABLE);
+		if (!$schema->hasTable(Application::MINDMAP_ACL_TABLE)) {
+			$table = $schema->createTable(Application::MINDMAP_ACL_TABLE);
 			$table->addColumn('id', Type::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -136,7 +132,7 @@ class Version001Date20171202132906 extends SimpleMigrationStep {
 				'length' => 64
 			]);
 			$table->setPrimaryKey(['id']);
-			$table->addForeignKeyConstraint(static::MINDMAPS_TABLE, ['mindmap_id'], ['id']);
+			$table->addForeignKeyConstraint(Application::MINDMAPS_TABLE, ['mindmap_id'], ['id']);
 		}
 		return $schema;
 	}

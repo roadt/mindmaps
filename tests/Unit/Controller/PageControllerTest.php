@@ -31,29 +31,29 @@ use OCP\IRequest;
 class PageControllerTest extends UnitTestCase {
 
 	/** @var PageController */
-    private $controller;
-    /** @var IRequest */
-    private $request;
+	private $controller;
+	/** @var IRequest */
+	private $request;
 	/** @var string */
-    private $userId = 'john';
+	private $userId = 'john';
 
 	/**
 	 * {@inheritDoc}
 	 */
-    public function setUp() {
-        $this->request = $this->getMockBuilder(IRequest::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+	public function setUp() {
+		$this->request = $this->getMockBuilder(IRequest::class)
+			->disableOriginalConstructor()
+			->getMock();
 
-        $this->controller = new PageController('mindmaps', $this->request, $this->userId);
-    }
+		$this->controller = new PageController('mindmaps', $this->request, $this->userId);
+	}
 
 	/**
 	 * Basic controller index route test.
 	 */
-    public function testIndex() {
-        $result = $this->controller->index();
-        $this->assertEquals('index', $result->getTemplateName());
+	public function testIndex() {
+		$result = $this->controller->index();
+		$this->assertEquals('index', $result->getTemplateName());
 		$this->assertInstanceOf(TemplateResponse::class, $result);
-    }
+	}
 }

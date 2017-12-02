@@ -83,7 +83,8 @@ class MindmapServiceTest extends UnitTestCase {
 	public function testCreate() {
 		/** @var Mindmap $mindmap */
 		$mindmap = $this->fm->instance(Mindmap::class);
-		$mindmapTmp = $this->mindmapService->create($mindmap->getTitle(), $mindmap->getDescription(), $mindmap->getUserId());
+		$mindmapTmp = $this->mindmapService->create($mindmap->getTitle(), $mindmap->getDescription(),
+			$mindmap->getUserId());
 		$this->assertInstanceOf(Mindmap::class, $mindmapTmp);
 		return $mindmapTmp;
 	}
