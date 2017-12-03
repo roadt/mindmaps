@@ -51,7 +51,7 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 			$table->addColumn('id', Type::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
-				'length' => 11
+				'length' => 20
 			]);
 			$table->addColumn('title', Type::STRING, [
 				'notnull' => true,
@@ -66,7 +66,7 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 				'length' => 64
 			]);
 			$table->setPrimaryKey(['id']);
-			$table->addIndex(['user_id'], 'mindmaps_user_id_idx');
+			$table->addIndex(['user_id']);
 		}
 
 		// Create the mindmap_nodes table which holds information about the mindmaps single nodes.
@@ -75,15 +75,15 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 			$table->addColumn('id', Type::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
-				'length' => 11
+				'length' => 20
 			]);
 			$table->addColumn('mindmap_id', Type::INTEGER, [
 				'notnull' => true,
-				'length' => 11
+				'length' => 20
 			]);
 			$table->addColumn('parent_id', Type::INTEGER, [
 				'notnull' => false,
-				'length' => 11
+				'length' => 20
 			]);
 			$table->addColumn('user_id', Type::STRING, [
 				'notnull' => true,
@@ -91,12 +91,12 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 			]);
 			$table->addColumn('x', Type::INTEGER, [
 				'notnull' => true,
-				'length' => 11,
+				'length' => 10,
 				'default' => 0
 			]);
 			$table->addColumn('y', Type::INTEGER, [
 				'notnull' => true,
-				'length' => 11,
+				'length' => 10,
 				'default' => 0
 			]);
 			$table->addColumn('label', Type::STRING, [
@@ -108,7 +108,16 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 				'length' => 64
 			]);
 			$table->setPrimaryKey(['id']);
-			$table->addForeignKeyConstraint(Application::MINDMAPS_TABLE, ['mindmap_id'], ['id']);
+			$table->addForeignKeyConstraint(
+				$schema->getTable(Application::MINDMAPS_TABLE),
+				['mindmap_id'],
+				['id']
+			);
+			$table->addForeignKeyConstraint(
+				$schema->getTable(Application::MINDMAP_NODES_TABLE),
+				['parent_id'],
+				['id']
+			);
 		}
 
 		// Create the mindmap_acl table which holds sharing information like user / group / circle name.
@@ -117,11 +126,11 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 			$table->addColumn('id', Type::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
-				'length' => 11
+				'length' => 20
 			]);
 			$table->addColumn('mindmap_id', Type::INTEGER, [
 				'notnull' => true,
-				'length' => 11
+				'length' => 20
 			]);
 			$table->addColumn('type', Type::INTEGER, [
 				'notnull' => true,
@@ -132,7 +141,11 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 				'length' => 64
 			]);
 			$table->setPrimaryKey(['id']);
-			$table->addForeignKeyConstraint(Application::MINDMAPS_TABLE, ['mindmap_id'], ['id']);
+			$table->addForeignKeyConstraint(
+				$schema->getTable(Application::MINDMAPS_TABLE),
+				['mindmap_id'],
+				['id']
+			);
 		}
 		return $schema;
 	}
