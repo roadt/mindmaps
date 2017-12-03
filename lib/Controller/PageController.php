@@ -23,6 +23,7 @@
 
 namespace OCA\Mindmaps\Controller;
 
+use OCA\Mindmaps\AppInfo\Application;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 
@@ -37,6 +38,6 @@ class PageController extends Controller {
 	 * @return TemplateResponse
 	 */
 	public function index(): TemplateResponse {
-		return new TemplateResponse('mindmaps', 'index');
+		return new TemplateResponse(Application::APP_NAME, 'index');
 	}
 }

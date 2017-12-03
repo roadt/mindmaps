@@ -78,7 +78,7 @@ class MindmapMapperTest extends UnitTestCase {
 	 */
 	public function testCreate() {
 		/** @var Mindmap $mindmap */
-		$mindmap = $this->fm->instance('OCA\Mindmaps\Db\Mindmap');
+		$mindmap = $this->fm->instance(Mindmap::class);
 		$this->assertInstanceOf(Mindmap::class, $this->mindmapMapper->insert($mindmap));
 		return $mindmap;
 	}

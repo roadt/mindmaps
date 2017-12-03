@@ -23,7 +23,7 @@ App icon by [Icons8](https://icons8.com) and mindmaps powered by [Vis.js](http:/
 ![Sharing](https://github.com/splitt3r/mindmaps/blob/master/screenshots/mindmaps_sharing.png)
 
 ## Installation / Update
-This app is supposed to work on Nextcloud version 11+.
+This app is supposed to work on [Nextcloud 13+](https://github.com/nextcloud/server/wiki/Maintenance-and-Release-Schedule) and [PHP 7+](http://php.net/supported-versions.php).
 
 ### Install latest release
 You can download and install the latest release from the [Nextcloud app store](https://apps.nextcloud.com/apps/mindmaps).
@@ -33,8 +33,7 @@ If you want to run the latest development version from git source, you need to c
 
 ```
 git clone https://github.com/splitt3r/mindmaps.git
-npm install
-npm run build
+make npm
 ```
 
 ## Contribution Guidelines

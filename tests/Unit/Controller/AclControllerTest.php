@@ -23,6 +23,7 @@
 
 namespace OCA\Mindmaps\Tests\Unit\Controller;
 
+use OCA\Mindmaps\AppInfo\Application;
 use OCA\Mindmaps\Controller\AclController;
 use OCA\Mindmaps\Service\AclService;
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
@@ -76,7 +77,7 @@ class AclControllerTest extends UnitTestCase {
 			->getMock();
 
 		$this->controller = new AclController(
-			'mindmaps',
+			Application::APP_NAME,
 			$this->request,
 			$this->aclService,
 			$this->userManager,

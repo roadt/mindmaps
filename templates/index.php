@@ -21,10 +21,12 @@
  *
  */
 
-vendor_style('mindmaps', 'vis/vis.min');
-style('mindmaps', 'main');
+use OCA\Mindmaps\AppInfo\Application;
 
-script('mindmaps', 'bundle');
+vendor_style(Application::APP_NAME, 'vis/vis.min');
+style(Application::APP_NAME, 'main');
+
+script(Application::APP_NAME, 'bundle');
 ?>
 
 <div id="app">

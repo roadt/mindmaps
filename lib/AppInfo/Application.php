@@ -33,6 +33,8 @@ use OCP\Share;
 
 class Application extends App {
 
+	// App name.
+	const APP_NAME = 'mindmaps';
 	// The used table names.
 	const  MINDMAPS_TABLE = 'mindmaps';
 	const  MINDMAP_NODES_TABLE = 'mindmap_nodes';
@@ -44,7 +46,7 @@ class Application extends App {
 	 * @param array $urlParams
 	 */
 	public function __construct(array $urlParams = array()) {
-		parent::__construct('mindmaps', $urlParams);
+		parent::__construct(static::APP_NAME, $urlParams);
 
 		$container = $this->getContainer();
 		$server = $container->getServer();
@@ -85,10 +87,10 @@ class Application extends App {
 			$urlGenerator = $container->query('OCP\IURLGenerator');
 			$l10n = $container->query('OCP\IL10N');
 			return [
-				'id' => 'mindmaps',
+				'id' => static::APP_NAME,
 				'order' => 10,
-				'href' => $urlGenerator->linkToRoute('mindmaps.page.index'),
-				'icon' => $urlGenerator->imagePath('mindmaps', 'app.svg'),
+				'href' => $urlGenerator->linkToRoute(static::APP_NAME . '.page.index'),
+				'icon' => $urlGenerator->imagePath(static::APP_NAME, 'app.svg'),
 				'name' => $l10n->t('Mindmaps')
 			];
 		});

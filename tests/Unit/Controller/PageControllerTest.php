@@ -23,6 +23,7 @@
 
 namespace OCA\Mindmaps\Tests\Unit\Controller;
 
+use OCA\Mindmaps\AppInfo\Application;
 use OCA\Mindmaps\Controller\PageController;
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -45,7 +46,7 @@ class PageControllerTest extends UnitTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->controller = new PageController('mindmaps', $this->request, $this->userId);
+		$this->controller = new PageController(Application::APP_NAME, $this->request, $this->userId);
 	}
 
 	/**

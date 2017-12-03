@@ -23,6 +23,7 @@
 
 namespace OCA\Mindmaps\Tests\Unit\Controller;
 
+use OCA\Mindmaps\AppInfo\Application;
 use OCA\Mindmaps\Controller\MindmapNodeController;
 use OCA\Mindmaps\Service\MindmapNodeService;
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
@@ -52,7 +53,7 @@ class MindmapNodeControllerTest extends UnitTestCase {
 			->getMock();
 
 		$this->controller = new MindmapNodeController(
-			'mindmaps',
+			Application::APP_NAME,
 			$this->request,
 			$this->mindmapNodeService,
 			$this->userId
