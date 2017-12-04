@@ -24,8 +24,7 @@
 namespace OCA\Mindmaps\Service;
 
 use Exception;
-use OCA\Mindmaps\Db\MindmapNode;
-use OCA\Mindmaps\Db\MindmapNodeMapper;
+use OCA\Mindmaps\Db\{MindmapNode, MindmapNodeMapper};
 use OCA\Mindmaps\Exception\BadRequestException;
 use OCP\AppFramework\Db\Entity;
 

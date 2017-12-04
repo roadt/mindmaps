@@ -24,12 +24,8 @@
 namespace OCA\Mindmaps\AppInfo;
 
 use OCA\Mindmaps\Db\AclMapper;
+use OCP\{IGroup, IGroupManager, IUser, IUserManager, Share};
 use OCP\AppFramework\App;
-use OCP\IGroup;
-use OCP\IUser;
-use OCP\IGroupManager;
-use OCP\IUserManager;
-use OCP\Share;
 
 class Application extends App {
 
@@ -37,8 +33,8 @@ class Application extends App {
 	const APP_NAME = 'mindmaps';
 	// The used table names.
 	const  MINDMAPS_TABLE = 'mindmaps';
-	const  MINDMAP_NODES_TABLE = 'mindmap_nodes';
-	const  MINDMAP_ACL_TABLE = 'mindmap_acl';
+	const  MINDMAP_NODES_TABLE = 'mindmaps_nodes';
+	const  MINDMAP_ACL_TABLE = 'mindmaps_acl';
 
 	/**
 	 * Application constructor.

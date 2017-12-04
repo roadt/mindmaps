@@ -25,8 +25,7 @@ namespace OCA\Mindmaps\Tests\Integration\Controller;
 
 use OCA\Mindmaps\AppInfo\Application;
 use OCP\App\IAppManager;
-use OCP\AppFramework\App;
-use OCP\AppFramework\IAppContainer;
+use OCP\AppFramework\{App, IAppContainer};
 use PHPUnit_Framework_TestCase;
 
 /**

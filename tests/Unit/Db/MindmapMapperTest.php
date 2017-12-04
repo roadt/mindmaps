@@ -24,14 +24,9 @@
 namespace OCA\Mindmaps\Tests\Unit\Db;
 
 use League\FactoryMuffin\Faker\Facade as Faker;
-use OCA\Mindmaps\Db\AclMapper;
-use OCA\Mindmaps\Db\Mindmap;
-use OCA\Mindmaps\Db\MindmapMapper;
-use OCA\Mindmaps\Db\MindmapNodeMapper;
+use OCA\Mindmaps\Db\{AclMapper, Mindmap, MindmapMapper, MindmapNodeMapper};
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
-use OCP\IDBConnection;
-use OCP\IGroupManager;
-use OCP\IUserManager;
+use OCP\{IDBConnection, IGroupManager, IUserManager};
 
 class MindmapMapperTest extends UnitTestCase {
 

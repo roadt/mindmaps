@@ -28,10 +28,7 @@ use OCA\Mindmaps\Controller\AclController;
 use OCA\Mindmaps\Service\AclService;
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\IGroupManager;
-use OCP\IL10N;
-use OCP\IRequest;
-use OCP\IUserManager;
+use OCP\{IL10N, IRequest, IUserManager, IGroupManager};
 use OCP\Share\IManager;
 
 class AclControllerTest extends UnitTestCase {

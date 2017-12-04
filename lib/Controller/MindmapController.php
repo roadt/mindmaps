@@ -23,8 +23,7 @@
 
 namespace OCA\Mindmaps\Controller;
 
-use OCA\Mindmaps\Exception\BadRequestException;
-use OCA\Mindmaps\Exception\NotFoundException;
+use OCA\Mindmaps\Exception\{BadRequestException, NotFoundException};
 use OCA\Mindmaps\Service\MindmapService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;

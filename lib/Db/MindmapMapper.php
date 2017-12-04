@@ -24,11 +24,8 @@
 namespace OCA\Mindmaps\Db;
 
 use OCA\Mindmaps\AppInfo\Application;
-use OCP\AppFramework\Db\Entity;
-use OCP\AppFramework\Db\Mapper;
-use OCP\IDBConnection;
-use OCP\IGroupManager;
-use OCP\IUserManager;
+use OCP\AppFramework\Db\{Entity, Mapper};
+use OCP\{IDBConnection, IGroupManager, IUserManager};
 
 class MindmapMapper extends Mapper {
 

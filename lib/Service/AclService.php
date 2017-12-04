@@ -23,8 +23,7 @@
 
 namespace OCA\Mindmaps\Service;
 
-use OCA\Mindmaps\Db\Acl;
-use OCA\Mindmaps\Db\AclMapper;
+use OCA\Mindmaps\Db\{Acl, AclMapper};
 use OCA\Mindmaps\Exception\BadRequestException;
 use OCP\AppFramework\Db\Entity;
 

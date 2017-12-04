@@ -24,9 +24,7 @@
 namespace OCA\Mindmaps\Db;
 
 use JsonSerializable;
-use OCP\IGroupManager;
-use OCP\IUserManager;
-use OCP\Share;
+use OCP\{IGroupManager, IUserManager, Share};
 
 /**
  * @method string getParticipant()

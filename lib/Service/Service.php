@@ -25,9 +25,7 @@ namespace OCA\Mindmaps\Service;
 
 use Exception;
 use OCA\Mindmaps\Exception\NotFoundException;
-use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\AppFramework\Db\Entity;
-use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Db\{DoesNotExistException, Entity, MultipleObjectsReturnedException};
 
 abstract class Service {
 

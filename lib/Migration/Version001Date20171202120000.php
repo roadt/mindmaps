@@ -26,8 +26,7 @@ namespace OCA\Mindmaps\Migration;
 use Doctrine\DBAL\Types\Type;
 use OC\DB\SchemaWrapper;
 use OCA\Mindmaps\AppInfo\Application;
-use OCP\Migration\IOutput;
-use OCP\Migration\SimpleMigrationStep;
+use OCP\Migration\{IOutput, SimpleMigrationStep};
 
 /**
  * Installation class for the mindmaps app.

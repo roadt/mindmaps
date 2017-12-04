@@ -23,16 +23,11 @@
 
 namespace OCA\Mindmaps\Controller;
 
-use OCA\Mindmaps\Exception\BadRequestException;
-use OCA\Mindmaps\Exception\NotFoundException;
+use OCA\Mindmaps\Exception\{BadRequestException, NotFoundException};
 use OCA\Mindmaps\Service\AclService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\IGroupManager;
-use OCP\IL10N;
-use OCP\IRequest;
-use OCP\IUserManager;
-use OCP\Share;
+use OCP\{IL10N, IRequest, IUserManager, IGroupManager, Share};
 use OCP\Share\IManager;
 
 class AclController extends Controller {
