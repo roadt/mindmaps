@@ -21,20 +21,10 @@
  *
  */
 
-use OCA\Mindmaps\AppInfo\Application;
+namespace OCA\Mindmaps\Tests\Unit\Db;
 
-if (!defined('PHPUNIT_RUN')) {
-	define('PHPUNIT_RUN', 1);
+use OCA\Mindmaps\Tests\Unit\UnitTestCase;
+
+class MindmapNodeMapperTest extends UnitTestCase {
+
 }
-
-require_once __DIR__ . '/../../../lib/base.php';
-require_once __DIR__ . '/../vendor/autoload.php';
-
-\OC::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
-\OC_App::loadApp(Application::APP_NAME);
-
-if (!class_exists('PHPUnit_Framework_TestCase')) {
-	require_once 'PHPUnit/Autoload.php';
-}
-
-\OC_Hook::clear();
