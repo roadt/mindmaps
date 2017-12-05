@@ -24,8 +24,11 @@
 namespace OCA\Mindmaps\AppInfo;
 
 use OCA\Mindmaps\Db\AclMapper;
-use OCP\{IGroup, IGroupManager, IUser, IUserManager, Share};
-use OCP\AppFramework\App;
+use OCA\Mindmaps\Utils;
+use OCP\{
+	AppFramework\App, IGroup, IGroupManager, IUser, IUserManager, Share
+};
+use Symfony\Component\EventDispatcher\{EventDispatcher, GenericEvent};
 
 class Application extends App {
 
@@ -40,19 +43,23 @@ class Application extends App {
 	 * Application constructor.
 	 *
 	 * @param array $urlParams
+	 *
+	 * @throws \OCP\AppFramework\QueryException
 	 */
 	public function __construct(array $urlParams = array()) {
 		parent::__construct(static::APP_NAME, $urlParams);
 
+		/** @var \OCP\AppFramework\IAppContainer $container */
 		$container = $this->getContainer();
+		/** @var \OCP\IServerContainer $server */
 		$server = $container->getServer();
+		/** @var AclMapper $aclMapper */
+		$aclMapper = $container->query(AclMapper::class);
 
 		// Delete user acl entries when they get deleted
 		/** @var IUserManager $userManager */
 		$userManager = $server->getUserManager();
-		$userManager->listen('\OC\User', 'postDelete', function (IUser $user) use ($container) {
-			/** @var AclMapper $aclMapper */
-			$aclMapper = $container->query(AclMapper::class);
+		$userManager->listen('\OC\User', 'postDelete', function (IUser $user) use ($aclMapper) {
 			$acls = $aclMapper->findByParticipant(Share::SHARE_TYPE_USER, $user->getUID());
 			foreach ($acls as $acl) {
 				$aclMapper->delete($acl);
@@ -62,14 +69,29 @@ class Application extends App {
 		// Delete group acl entries when they get deleted
 		/** @var IGroupManager $userManager */
 		$groupManager = $server->getGroupManager();
-		$groupManager->listen('\OC\Group', 'postDelete', function (IGroup $group) use ($container) {
-			/** @var AclMapper $aclMapper */
-			$aclMapper = $container->query(AclMapper::class);
+		$groupManager->listen('\OC\Group', 'postDelete', function (IGroup $group) use ($aclMapper) {
 			$acls = $aclMapper->findByParticipant(Share::SHARE_TYPE_GROUP, $group->getGID());
 			foreach ($acls as $acl) {
 				$aclMapper->delete($acl);
 			}
 		});
+
+		if (Utils::isCirclesAppEnabled()) {
+			// Delete circle acl entries when they get deleted
+			/** @var EventDispatcher $dispatcher */
+			$dispatcher = $container->query(EventDispatcher::class);
+			$dispatcher->addListener(
+				'\OCA\Circles::onCircleDestruction',
+				function (GenericEvent $event) use ($aclMapper) {
+					/** @var \OCA\Circles\Model\Circle $circle */
+					$circle = $event['circle'];
+					$acls = $aclMapper->findByParticipant(Share::SHARE_TYPE_CIRCLE, $circle->getUniqueId());
+					foreach ($acls as $acl) {
+						$aclMapper->delete($acl);
+					}
+				}
+			);
+		}
 	}
 
 	/**

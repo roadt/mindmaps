@@ -24,6 +24,7 @@
 namespace OCA\Mindmaps\Db;
 
 use JsonSerializable;
+use OCA\Mindmaps\Utils;
 use OCP\{IGroupManager, IUserManager, Share};
 
 /**
@@ -75,9 +76,7 @@ class Acl extends Model implements JsonSerializable {
 		}
 
 		// Check if the circles app is installed and enabled for the current user
-		if ($this->getType() === Share::SHARE_TYPE_CIRCLE &&
-			class_exists('\OCA\Circles\ShareByCircleProvider') &&
-			\OC::$server->getAppManager()->isEnabledForUser('circles')) {
+		if ($this->getType() === Share::SHARE_TYPE_CIRCLE && Utils::isCirclesAppEnabled()) {
 			/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 			$circle = \OCA\Circles\Api\v1\Circles::detailsCircle($this->getParticipant());
 			return $circle !== null ? $circle->getName() : $this->getParticipant();

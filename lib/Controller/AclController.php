@@ -25,6 +25,7 @@ namespace OCA\Mindmaps\Controller;
 
 use OCA\Mindmaps\Exception\{BadRequestException, NotFoundException};
 use OCA\Mindmaps\Service\AclService;
+use OCA\Mindmaps\Utils;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\{IL10N, IRequest, IUserManager, IGroupManager, Share};
@@ -122,8 +123,7 @@ class AclController extends Controller {
 				} else {
 					if ($type === Share::SHARE_TYPE_CIRCLE) {
 						// Circles app is required to share with a circle
-						if (!class_exists('\OCA\Circles\ShareByCircleProvider') ||
-							!\OC::$server->getAppManager()->isEnabledForUser('circles')) {
+						if (!Utils::isCirclesAppEnabled()) {
 							throw new NotFoundException($this->l10n->t('You cannot share to a circle if the app is not enabled'));
 						}
 
