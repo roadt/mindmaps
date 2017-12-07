@@ -35,7 +35,7 @@ class MindmapNodeMapper extends Mapper {
 	 * @param IDBConnection $db
 	 */
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, Application::MINDMAP_NODES_TABLE);
+		parent::__construct($db, Application::MINDMAPS_NODES_TABLE);
 	}
 
 	/**
@@ -65,17 +65,5 @@ class MindmapNodeMapper extends Mapper {
 	public function findAll($mindmapId, $limit = null, $offset = null): array {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE mindmap_id = ?';
 		return $this->findEntities($sql, [$mindmapId], $limit, $offset);
-	}
-
-	/**
-	 * Delete all child nodes for a given mindmap.
-	 *
-	 * @param integer $mindmapId
-	 */
-	public function deleteByMindmapId($mindmapId) {
-		$mindmapNodes = $this->findAll($mindmapId);
-		foreach ($mindmapNodes as $node) {
-			$this->delete($node);
-		}
 	}
 }

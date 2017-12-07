@@ -67,19 +67,19 @@ class Acl extends Model implements JsonSerializable {
 	public function participantDisplayName(): string {
 		if ($this->getType() === Share::SHARE_TYPE_USER) {
 			$sharedWith = $this->userManager->get($this->getParticipant());
-			return $sharedWith !== null ? $sharedWith->getDisplayName() : $this->getParticipant();
+			return ($sharedWith !== null) ? $sharedWith->getDisplayName() : $this->getParticipant();
 		}
 
 		if ($this->getType() === Share::SHARE_TYPE_GROUP) {
 			$group = $this->groupManager->get($this->getParticipant());
-			return $group !== null ? $group->getDisplayName() : $this->getParticipant();
+			return ($group !== null) ? $group->getDisplayName() : $this->getParticipant();
 		}
 
 		// Check if the circles app is installed and enabled for the current user
 		if ($this->getType() === Share::SHARE_TYPE_CIRCLE && Utils::isCirclesAppEnabled()) {
 			/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 			$circle = \OCA\Circles\Api\v1\Circles::detailsCircle($this->getParticipant());
-			return $circle !== null ? $circle->getName() : $this->getParticipant();
+			return ($circle !== null) ? $circle->getName() : $this->getParticipant();
 		}
 
 		return '';

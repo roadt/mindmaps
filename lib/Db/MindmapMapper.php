@@ -115,14 +115,14 @@ class MindmapMapper extends Mapper {
 
 		// Build the SQL string
 		$sql = 'SELECT ' .
-			'  DISTINCT(*PREFIX*' . Application::MINDMAP_ACL_TABLE . '.mindmap_id) IS NOT NULL AS shared, ' .
+			'  DISTINCT(*PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.mindmap_id) IS NOT NULL AS shared, ' .
 			'  ' . $this->getTableName() . '.* ' .
 			'FROM ' . $this->getTableName() . ' ' .
-			'  LEFT JOIN *PREFIX*' . Application::MINDMAP_ACL_TABLE . ' ON ' . $this->getTableName() . '.id = *PREFIX*' . Application::MINDMAP_ACL_TABLE . '.mindmap_id ' .
+			'  LEFT JOIN *PREFIX*' . Application::MINDMAPS_ACL_TABLE . ' ON ' . $this->getTableName() . '.id = *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.mindmap_id ' .
 			'WHERE ' . $this->getTableName() . '.user_id = ? OR ' .
-			'      *PREFIX*' . Application::MINDMAP_ACL_TABLE . '.participant = ? AND *PREFIX*' . Application::MINDMAP_ACL_TABLE . '.type = ? OR ' .
-			'      *PREFIX*' . Application::MINDMAP_ACL_TABLE . '.participant IN (' . $this->arrayToSqlList($groupIds) . ') AND *PREFIX*' . Application::MINDMAP_ACL_TABLE . '.type = ? OR ' .
-			'      *PREFIX*' . Application::MINDMAP_ACL_TABLE . '.participant IN (' . $this->arrayToSqlList($circleIds) . ') AND *PREFIX*' . Application::MINDMAP_ACL_TABLE . '.type = ? ' .
+			'      *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.participant = ? AND *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.type = ? OR ' .
+			'      *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.participant IN (' . $this->arrayToSqlList($groupIds) . ') AND *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.type = ? OR ' .
+			'      *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.participant IN (' . $this->arrayToSqlList($circleIds) . ') AND *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.type = ? ' .
 			'ORDER BY ' . $this->getTableName() . '.id';
 
 		return $this->findEntities(
@@ -137,18 +137,5 @@ class MindmapMapper extends Mapper {
 			$limit,
 			$offset
 		);
-	}
-
-	/**
-	 * Deletes an entity from the table.
-	 *
-	 * @param \OCP\AppFramework\Db\Entity $entity the entity that should be deleted
-	 *
-	 * @return \OCP\AppFramework\Db\Entity the deleted entity
-	 */
-	public function delete(Entity $entity): Entity {
-		$this->mindmapNodeMapper->deleteByMindmapId($entity->getId());
-		$this->aclMapper->deleteByMindmapId($entity->getId());
-		return parent::delete($entity);
 	}
 }

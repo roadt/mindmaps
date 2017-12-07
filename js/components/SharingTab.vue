@@ -21,8 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div id="sharingTabView" class="tab sharingTabView hidden">
-		<input id="shareWith" class="shareWithField" type="text" :placeholder="t('Enter user / group / circle name and hit enter…')"
-			   autocomplete="off">
+		<input id="shareWith" class="shareWithField" type="text" :placeholder="t('Enter user / group / circle name…')" autocomplete="off">
 		<ul id="shareWithList" class="shareWithList">
 			<li v-for="share in shares" :key="share.id">
 				<div class="avatar" :data-participant="share.participant" :data-displayname="share.participantDisplayName" :data-type="share.type"></div>

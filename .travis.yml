@@ -22,7 +22,6 @@ env:
     - APP_NAME=mindmaps
   matrix:
     - DB=mysql
-    - DB=sqlite
     - DB=pgsql
 
 cache:

@@ -35,7 +35,7 @@ class AclMapper extends Mapper {
 	 * @param IDBConnection $db
 	 */
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, Application::MINDMAP_ACL_TABLE);
+		parent::__construct($db, Application::MINDMAPS_ACL_TABLE);
 	}
 
 	/**
@@ -78,17 +78,5 @@ class AclMapper extends Mapper {
 	public function findAll($mindmapId, $limit = null, $offset = null): array {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE mindmap_id = ?';
 		return $this->findEntities($sql, [$mindmapId], $limit, $offset);
-	}
-
-	/**
-	 * Delete all acls for a given mindmap.
-	 *
-	 * @param integer $mindmapId
-	 */
-	public function deleteByMindmapId($mindmapId) {
-		$acls = $this->findAll($mindmapId);
-		foreach ($acls as $acl) {
-			$this->delete($acl);
-		}
 	}
 }

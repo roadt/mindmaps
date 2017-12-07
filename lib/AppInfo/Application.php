@@ -36,8 +36,8 @@ class Application extends App {
 	const APP_NAME = 'mindmaps';
 	// The used table names.
 	const  MINDMAPS_TABLE = 'mindmaps';
-	const  MINDMAP_NODES_TABLE = 'mindmaps_nodes';
-	const  MINDMAP_ACL_TABLE = 'mindmaps_acl';
+	const  MINDMAPS_NODES_TABLE = 'mindmaps_nodes';
+	const  MINDMAPS_ACL_TABLE = 'mindmaps_acl';
 
 	/**
 	 * Application constructor.
@@ -85,9 +85,11 @@ class Application extends App {
 				function (GenericEvent $event) use ($aclMapper) {
 					/** @var \OCA\Circles\Model\Circle $circle */
 					$circle = $event['circle'];
-					$acls = $aclMapper->findByParticipant(Share::SHARE_TYPE_CIRCLE, $circle->getUniqueId());
-					foreach ($acls as $acl) {
-						$aclMapper->delete($acl);
+					if ($circle !== null) {
+						$acls = $aclMapper->findByParticipant(Share::SHARE_TYPE_CIRCLE, $circle->getUniqueId());
+						foreach ($acls as $acl) {
+							$aclMapper->delete($acl);
+						}
 					}
 				}
 			);
