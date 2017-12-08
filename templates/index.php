@@ -24,7 +24,6 @@
 use OCA\Mindmaps\AppInfo\Application;
 
 vendor_style(Application::APP_NAME, 'vis/vis.min');
-style(Application::APP_NAME, 'main');
 
 script(Application::APP_NAME, 'bundle');
 ?>

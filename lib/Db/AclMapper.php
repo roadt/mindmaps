@@ -41,14 +41,14 @@ class AclMapper extends Mapper {
 	/**
 	 * Return a acl object by given id.
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return \OCP\AppFramework\Db\Entity
 	 *
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find($id): Entity {
+	public function find(int $id): Entity {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id = ?';
 		return $this->findEntity($sql, [$id]);
 	}
@@ -56,12 +56,12 @@ class AclMapper extends Mapper {
 	/**
 	 * Return a acl object by given type and participant name.
 	 *
-	 * @param integer $type
+	 * @param int $type
 	 * @param string $participant
 	 *
 	 * @return \OCP\AppFramework\Db\Entity[]
 	 */
-	public function findByParticipant($type, $participant): array {
+	public function findByParticipant(int $type, string $participant): array {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE type = ? AND participant = ?';
 		return $this->findEntities($sql, [$type, $participant]);
 	}
@@ -70,12 +70,12 @@ class AclMapper extends Mapper {
 	 * Return all acl entities for a specific mindmap grouped by limit and offset.
 	 *
 	 * @param $mindmapId
-	 * @param null|integer $limit
-	 * @param null|integer $offset
+	 * @param null|int $limit
+	 * @param null|int $offset
 	 *
 	 * @return \OCP\AppFramework\Db\Entity[]
 	 */
-	public function findAll($mindmapId, $limit = null, $offset = null): array {
+	public function findAll(int $mindmapId, int $limit = null, int $offset = null): array {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE mindmap_id = ?';
 		return $this->findEntities($sql, [$mindmapId], $limit, $offset);
 	}

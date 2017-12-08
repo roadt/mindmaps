@@ -25,18 +25,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="popovermenu bubble">
 				<ul>
 					<li>
-						<button class="icon-rename" :title="t('Edit Mindmap node')" @click="showRename">
-							<span class="hidden-visually">{{ t('Edit Mindmap node') }}</span>
-						</button>
+						<a href="#" @click="showRename">
+							<span class="icon-rename"></span>
+							<span>{{ t('Edit') }}</span>
+						</a>
 					</li>
 					<li>
-						<button class="icon-delete" :title="t('Delete Mindmap node')" @click="remove">
-							<span class="hidden-visually">{{ t('Delete Mindmap node') }}</span>
-						</button>
+						<a href="#" @click="remove">
+							<span class="icon-delete"></span>
+							<span>{{ t('Delete') }}</span>
+						</a>
 					</li>
 				</ul>
 			</div>
-			<div id="mindmap">{{ t('Mindmap loading…') }}</div>
+			<div id="mindmap" class="loading"></div>
 		</div>
 		<app-sidebar :mindmap="mindmap"></app-sidebar>
 	</div>
@@ -59,7 +61,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	})
 	export default class MindmapView extends Vue {
 		private mindmapNodeService: MindmapNodeService;
-		mindmap: Mindmap = new Mindmap();
+		// @ts-ignore
+		private mindmap: Mindmap = new Mindmap();
 
 		created(): void {
 			const id = parseInt(this.$route.params.id);
@@ -67,15 +70,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 			const mindmapService = new MindmapService();
 			mindmapService.load().then(() => {
+				$('#mindmap').removeClass('loading');
 				const mindmap = mindmapService.find(id);
 				if (!_.isNull(mindmap)) {
 					this.mindmap = mindmap;
 				}
-			}).catch((error) => {
+			}).catch(error => {
+				$('#mindmap').removeClass('loading');
 				console.error('Error: ' + error.message);
 			});
 
-			this.mindmapNodeService.load(id).then((response) => {
+			this.mindmapNodeService.load(id).then(response => {
 				const content = document.getElementById('app-content');
 				const wrapper = document.getElementById('app-content-wrapper');
 				const container = document.getElementById('mindmap');
@@ -94,7 +99,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				}
 
 				nodes.forEach((val: MindmapNode) => {
-					if (val.parentId !== 0) {
+					if (val.parentId !== null) {
 						edges.push({from: val.parentId, to: val.id});
 					}
 				});
@@ -110,7 +115,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				} else {
 					OC.dialogs.alert(t('mindmaps', 'The vis.js Framework is not available!'), t('mindmaps', 'Error'));
 				}
-			}).catch((error) => {
+			}).catch(error => {
 				console.error('Error: ' + error.message);
 			});
 		}
@@ -148,7 +153,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			const mindmapNodeId: number = parseInt($('#mindmap').data('selected') as string);
 			this.mindmapNodeService.remove(mindmapNodeId).then(() => {
 				console.log('Node deleted!');
-			}).catch((error) => {
+			}).catch(error => {
 				console.error('Error: ' + error.message);
 			});
 		}
@@ -159,11 +164,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <style lang="scss">
 	#app-content-wrapper {
 		.popovermenu {
-			width: 80px;
-
-			ul {
-				flex-direction: row;
-			}
+			width: 84px;
 		}
 	}
 </style>

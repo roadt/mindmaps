@@ -21,16 +21,17 @@
  *
  */
 
-namespace OCA\Mindmaps\Exception;
+namespace OCA\Mindmaps;
 
-use Exception;
-use OCP\AppFramework\Http;
+class Util {
 
-class NotFoundException extends Exception {
-
-	public function __construct(
-		string $msg = 'We could not find the given object.'
-	) {
-		parent::__construct($msg, Http::STATUS_NOT_FOUND);
+	/**
+	 * Check if the Circles app is installed and available.
+	 *
+	 * @return bool
+	 */
+	public static function isCirclesAppEnabled(): bool {
+		return class_exists('\OCA\Circles\Api\v1\Circles') &&
+			\OC::$server->getAppManager()->isEnabledForUser('circles');
 	}
 }

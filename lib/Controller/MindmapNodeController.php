@@ -45,10 +45,10 @@ class MindmapNodeController extends Controller {
 	 * @param string $userId
 	 */
 	public function __construct(
-		$appName,
+		string $appName,
 		IRequest $request,
 		MindmapNodeService $mindmapNodeService,
-		$userId
+		string $userId
 	) {
 		parent::__construct($appName, $request);
 		$this->mindmapNodeService = $mindmapNodeService;
@@ -60,14 +60,16 @@ class MindmapNodeController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param integer $mindmapId
-	 * @param null|integer $limit
-	 * @param null|integer $offset
+	 * @param int $mindmapId
+	 * @param null|int $limit
+	 * @param null|int $offset
 	 *
 	 * @return DataResponse
 	 */
-	public function index($mindmapId, $limit = null, $offset = null): DataResponse {
-		return new DataResponse($this->mindmapNodeService->findAll($mindmapId, $this->userId, $limit, $offset));
+	public function index(int $mindmapId, int $limit = null, int $offset = null): DataResponse {
+		return new DataResponse(
+			$this->mindmapNodeService->findAll($mindmapId, $this->userId, $limit, $offset)
+		);
 	}
 
 	/**
@@ -75,18 +77,26 @@ class MindmapNodeController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param integer $mindmapId
-	 * @param integer $parentId
+	 * @param int $mindmapId
+	 * @param int $parentId
 	 * @param string $label
-	 * @param integer $x
-	 * @param integer $y
+	 * @param int $x
+	 * @param int $y
 	 *
 	 * @return DataResponse
 	 */
-	public function create($mindmapId, $parentId, $label, $x, $y): DataResponse {
+	public function create(int $mindmapId, int $parentId, string $label, int $x, int $y): DataResponse {
 		try {
-			return new DataResponse($this->mindmapNodeService->create($mindmapId, $parentId, $label, $x, $y,
-				$this->userId));
+			return new DataResponse(
+				$this->mindmapNodeService->create(
+					$mindmapId,
+					$parentId,
+					$label,
+					$x,
+					$y,
+					$this->userId
+				)
+			);
 		} catch (BadRequestException $ex) {
 			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
 		}
@@ -97,41 +107,47 @@ class MindmapNodeController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param integer $mindmapNodeId
-	 * @param integer $parentId
+	 * @param int $id
+	 * @param int $parentId
 	 * @param string $label
-	 * @param integer $x
-	 * @param integer $y
+	 * @param int $x
+	 * @param int $y
 	 *
 	 * @return DataResponse
 	 *
 	 * @throws \Exception
 	 */
-	public function update($mindmapNodeId, $parentId, $label, $x, $y) {
+	public function update(int $id, int $parentId, string $label, int $x, int $y) {
 		try {
-			return new DataResponse($this->mindmapNodeService->update($mindmapNodeId, $parentId, $label, $x, $y,
-				$this->userId));
-		} catch (NotFoundException $ex) {
-			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
-		} catch (BadRequestException $ex) {
+			return new DataResponse(
+				$this->mindmapNodeService->update(
+					$id,
+					$parentId,
+					$label,
+					$x,
+					$y,
+					$this->userId
+				)
+			);
+		} catch (BadRequestException | NotFoundException $ex) {
 			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
 		}
 	}
 
 	/**
-	 * Delete the given mindmap node.
+	 * Delete a given mindmap node.
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param integer $mindmapNodeId
+	 * @param int $id
 	 *
 	 * @return DataResponse
 	 *
 	 * @throws \Exception
 	 */
-	public function delete($mindmapNodeId): DataResponse {
+	public function delete(int $id): DataResponse {
 		try {
-			return new DataResponse($this->mindmapNodeService->delete($mindmapNodeId));
+			return new DataResponse($this->mindmapNodeService->delete($id, $this->userId));
 		} catch (NotFoundException $ex) {
 			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
 		}
@@ -142,16 +158,16 @@ class MindmapNodeController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param integer $mindmapNodeId
+	 * @param int $id
 	 *
 	 * @return DataResponse
 	 *
 	 * @throws \Exception
 	 */
-	public function lock($mindmapNodeId): DataResponse {
+	public function lock(int $id): DataResponse {
 		try {
-			return new DataResponse($this->mindmapNodeService->lock($mindmapNodeId, $this->userId));
-		} catch (NotFoundException $ex) {
+			return new DataResponse($this->mindmapNodeService->lock($id, $this->userId));
+		} catch (BadRequestException | NotFoundException $ex) {
 			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
 		}
 	}
@@ -161,15 +177,15 @@ class MindmapNodeController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param integer $mindmapNodeId
+	 * @param int $id
 	 *
 	 * @return DataResponse
 	 *
 	 * @throws \Exception
 	 */
-	public function unlock($mindmapNodeId): DataResponse {
+	public function unlock(int $id): DataResponse {
 		try {
-			return new DataResponse($this->mindmapNodeService->unlock($mindmapNodeId, $this->userId));
+			return new DataResponse($this->mindmapNodeService->unlock($id, $this->userId));
 		} catch (NotFoundException $ex) {
 			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
 		}

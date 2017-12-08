@@ -21,14 +21,14 @@
  */
 
 import {assert, expect} from 'chai';
-import Mindmap from '../../models/Mindmap';
-import MindmapService from '../../services/MindmapService';
+import MindmapNode from '../../models/MindmapNode';
+import MindmapNodeService from '../../services/MindmapNodeService';
 import * as moxios from 'moxios';
 import * as sinon from 'sinon';
 
-describe('MindmapService', () => {
-	let service: MindmapService;
-	let data: Array<Mindmap>;
+describe('MindmapNodeService', () => {
+	let service: MindmapNodeService;
+	let data: Array<MindmapNode>;
 
 	beforeEach(() => {
 		moxios.install();
@@ -39,39 +39,44 @@ describe('MindmapService', () => {
 	});
 
 	describe('load', () => {
-		it('Should return one mindmap', done => {
+		it('Should return one mindmap node', done => {
 			data = [{
 				'id': 1,
-				'title': 'Test',
-				'description': 'Test',
+				'mindmapId': 1,
+				'parentId': null,
 				'userId': 'test',
-				'shared': true
+				'x': 0,
+				'y': 0,
+				'label': 'Test',
+				'lockedBy': 'test',
+				'title': 'Test',
+				'color': 'red'
 			}];
-			moxios.stubRequest('/apps/mindmaps/mindmaps', {
+			moxios.stubRequest('/apps/mindmaps/nodes/1', {
 				status: 200,
 				responseText: JSON.stringify(data)
 			});
 
 			const onFulfilled = sinon.spy();
-			service = new MindmapService();
-			service.load().then(onFulfilled);
+			service = new MindmapNodeService();
+			service.load(data[0].mindmapId).then(onFulfilled);
 
 			moxios.wait(() => {
-				expect(onFulfilled.getCall(0).args[0].data[0].title).to.string(data[0].title);
+				expect(onFulfilled.getCall(0).args[0].data[0].label).to.string(data[0].label);
 				done();
 			});
 		});
 
-		it('Should return the mindmap with id 1', () => {
-			const mindmap = service.find(1);
-			if (mindmap !== null) {
-				expect(mindmap.title).to.string(data[0].title);
+		it('Should return the mindmap node with id 1', () => {
+			const mindmapNode = service.find(1);
+			if (mindmapNode !== null) {
+				expect(mindmapNode.userId).to.string(data[0].userId);
 			}
 		});
 
-		it('Should return null for the mindmap with id 2', () => {
-			const mindmap = service.find(2);
-			assert.equal(mindmap, null);
+		it('Should return null for the mindmap node with id 2', () => {
+			const mindmapNode = service.find(2);
+			assert.equal(mindmapNode, null);
 		});
 	});
 });

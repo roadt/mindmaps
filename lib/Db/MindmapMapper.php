@@ -78,14 +78,14 @@ class MindmapMapper extends Mapper {
 	/**
 	 * Return a mindmap object by given id.
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return \OCP\AppFramework\Db\Entity
 	 *
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find($id): Entity {
+	public function find(int $id): Entity {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id = ?';
 		return $this->findEntity($sql, [$id]);
 	}
@@ -94,12 +94,12 @@ class MindmapMapper extends Mapper {
 	 * Return all mindmaps for a specific user also includes shared mindmaps.
 	 *
 	 * @param string $userId
-	 * @param null|integer $limit
-	 * @param null|integer $offset
+	 * @param null|int $limit
+	 * @param null|int $offset
 	 *
 	 * @return \OCP\AppFramework\Db\Entity[]
 	 */
-	public function findAll($userId, $limit = null, $offset = null): array {
+	public function findAll(string $userId, int $limit = null, int $offset = null): array {
 		// Get circle ids for the given user
 		$circleIds = [];
 		if (class_exists('\OCA\Circles\ShareByCircleProvider')) {
@@ -137,5 +137,22 @@ class MindmapMapper extends Mapper {
 			$limit,
 			$offset
 		);
+	}
+
+	/**
+	 * Check if a given user has access to the passed mindmap.
+	 *
+	 * @param int $mindmapId
+	 * @param string $userId
+	 * @return bool
+	 */
+	public function hasUserAccess(int $mindmapId, string $userId): bool {
+		$userMindmaps = $this->findAll($userId);
+		foreach ($userMindmaps as $mindmap) {
+			if ($mindmap->getId() === $mindmapId) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

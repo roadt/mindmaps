@@ -23,7 +23,7 @@ App icon by [Icons8](https://icons8.com) and mindmaps powered by [Vis.js](http:/
 ![Sharing](https://github.com/splitt3r/mindmaps/blob/master/screenshots/mindmaps_sharing.png)
 
 ## Installation / Update
-This app is supposed to work on [Nextcloud 13+](https://github.com/nextcloud/server/wiki/Maintenance-and-Release-Schedule) and [PHP 7+](http://php.net/supported-versions.php).
+This app is supposed to work on Nextcloud 13+ and PHP 7+ with MySQL 5.5+ / MariaDB 5.5+ or PostgreSQL 9.4+.
 
 ### Install latest release
 You can download and install the latest release from the [Nextcloud app store](https://apps.nextcloud.com/apps/mindmaps).

@@ -41,14 +41,14 @@ class MindmapNodeMapper extends Mapper {
 	/**
 	 * Return a mindmap node object by given id.
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return \OCP\AppFramework\Db\Entity
 	 *
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find($id): Entity {
+	public function find(int $id): Entity {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id = ?';
 		return $this->findEntity($sql, [$id]);
 	}
@@ -56,13 +56,13 @@ class MindmapNodeMapper extends Mapper {
 	/**
 	 * Return all mindmap nodes for a given mindmap.
 	 *
-	 * @param integer $mindmapId
-	 * @param null|integer $limit
-	 * @param null|integer $offset
+	 * @param int $mindmapId
+	 * @param null|int $limit
+	 * @param null|int $offset
 	 *
 	 * @return \OCP\AppFramework\Db\Entity[]
 	 */
-	public function findAll($mindmapId, $limit = null, $offset = null): array {
+	public function findAll(int $mindmapId, int $limit = null, int $offset = null): array {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE mindmap_id = ?';
 		return $this->findEntities($sql, [$mindmapId], $limit, $offset);
 	}

@@ -59,7 +59,7 @@ abstract class Service {
 	/**
 	 * Find the entity by given id and user id.
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return null|\OCP\AppFramework\Db\Entity
 	 *
@@ -69,26 +69,6 @@ abstract class Service {
 	public function find($id): Entity {
 		try {
 			return $this->mapper->find($id);
-		} catch (Exception $e) {
-			$this->handleException($e);
-		}
-		return null;
-	}
-
-	/**
-	 * Find and delete the entity by given id and user id.
-	 *
-	 * @param integer $id
-	 *
-	 * @return null|\OCP\AppFramework\Db\Entity
-	 *
-	 * @throws NotFoundException
-	 * @throws Exception
-	 */
-	public function delete($id): Entity {
-		try {
-			$entity = $this->find($id);
-			return $this->mapper->delete($entity);
 		} catch (Exception $e) {
 			$this->handleException($e);
 		}

@@ -24,10 +24,9 @@
 namespace OCA\Mindmaps\AppInfo;
 
 use OCA\Mindmaps\Db\AclMapper;
-use OCA\Mindmaps\Utils;
-use OCP\{
-	AppFramework\App, IGroup, IGroupManager, IUser, IUserManager, Share
-};
+use OCA\Mindmaps\Util;
+use OCP\{IGroup, IGroupManager, IUser, IUserManager, Share};
+use OCP\AppFramework\App;
 use Symfony\Component\EventDispatcher\{EventDispatcher, GenericEvent};
 
 class Application extends App {
@@ -76,7 +75,7 @@ class Application extends App {
 			}
 		});
 
-		if (Utils::isCirclesAppEnabled()) {
+		if (Util::isCirclesAppEnabled()) {
 			// Delete circle acl entries when they get deleted
 			/** @var EventDispatcher $dispatcher */
 			$dispatcher = $container->query(EventDispatcher::class);

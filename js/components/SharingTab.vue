@@ -26,8 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<li v-for="share in shares" :key="share.id">
 				<div class="avatar" :data-participant="share.participant" :data-displayname="share.participantDisplayName" :data-type="share.type"></div>
 				<span class="participant">{{ share.participantDisplayName }}</span>
-				<button class="icon-delete" :title="t('Delete share')" @click="remove(share)">
-					<span class="hidden-visually">{{ t('Delete share') }}</span>
+				<button class="icon-delete" :title="t('Delete')" @click="remove(share)">
+					<span class="hidden-visually">{{ t('Delete') }}</span>
 				</button>
 			</li>
 		</ul>
@@ -47,8 +47,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	export default class SharingTab extends Vue {
 		private aclService: AclService;
 		@Prop({required: true})
-		mindmap: Mindmap;
-		shares: Array<Acl> = [];
+		private mindmap: Mindmap;
+		private shares: Array<Acl> = [];
 
 		private setAvatars(): void {
 			// @ts-ignore
@@ -83,20 +83,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			share.mindmapId = this.mindmap.id;
 			share.type = ui.item.value.shareType;
 			share.participant = ui.item.value.shareWith;
-			this.aclService.create(share).then((response) => {
+			this.aclService.create(share).then(response => {
 				this.shares.push(response.data);
 				$(event.currentTarget).val('');
 				$(event.currentTarget).prop('disabled', false);
-			}).catch((error) => {
+			}).catch(error => {
 				console.error('Error: ' + error.message);
 				$(event.currentTarget).prop('disabled', false);
 			});
 		}
 
 		private filterSuggestions(type: number, suggestions: Array<SharingInfo>): Array<SharingInfo> {
-			const sharedWith = this.shares.filter((share) => {
+			const sharedWith = this.shares.filter(share => {
 				return share.type === type;
-			}).map((share) => {
+			}).map(share => {
 				return share.participant;
 			});
 
@@ -104,7 +104,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				sharedWith.push(OC.getCurrentUser().uid);
 			}
 
-			suggestions = suggestions.filter((share) => {
+			suggestions = suggestions.filter(share => {
 				return sharedWith.indexOf(share.value.shareWith) < 0;
 			});
 
@@ -112,7 +112,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 
 		private autocompleteHandler(search: {term: string}, callback: (data?: Array<SharingInfo>) => any): void {
-			this.aclService.getAutocomplete(search.term.trim()).then((response) => {
+			this.aclService.getAutocomplete(search.term.trim()).then(response => {
 				const users = this.filterSuggestions(
 					OC.Share.SHARE_TYPE_USER,
 					response.data.ocs.data.exact.users.concat(response.data.ocs.data.users)
@@ -131,7 +131,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 				const suggestions  = users.concat(groups).concat(circles);
 				callback(suggestions);
-			}).catch((error) => {
+			}).catch(error => {
 				console.error('Error: ' + error.message);
 				callback();
 			});
@@ -167,11 +167,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		onMindmapIdChanged(id: number): void {
 			if (id > 0) {
 				this.registerAutocomplete();
-				this.aclService.load(id).then((response) => {
+				this.aclService.load(id).then(response => {
 					response.data.forEach((share: Acl) => {
 						this.shares.push(share);
 					});
-				}).catch((error) => {
+				}).catch(error => {
 					console.error('Error: ' + error.message);
 				});
 			}
@@ -189,7 +189,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			this.aclService.remove(acl.id).then(() => {
 				const index = this.shares.indexOf(acl);
 				this.shares.splice(index, 1);
-			}).catch((error) => {
+			}).catch(error => {
 				console.error('Error: ' + error.message);
 			});
 		}

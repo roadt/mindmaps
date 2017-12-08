@@ -20,14 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div id="app-navigation">
+	<div id="app-navigation" class="loading">
 		<ul>
 			<li>
 				<a class="icon-add" @click="showNew">{{ t('New Mindmap') }}</a>
 				<div class="app-navigation-entry-edit">
 					<form @submit.prevent="create">
 						<input type="text" :placeholder="t('New mindmap')" maxlength="255" v-model="title">
-						<input type="submit" value="" class="icon-close">
+						<input type="button" value="" class="icon-close">
 						<input type="submit" value="" class="icon-checkmark">
 					</form>
 				</div>
@@ -49,21 +49,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="app-navigation-entry-menu">
 					<ul>
 						<li>
-							<button class="icon-rename" :title="t('Rename Mindmap')" @click="showEdit">
-								<span class="hidden-visually">{{ t('Rename Mindmap') }}</span>
-							</button>
+							<a href="#" @click="showEdit">
+								<span class="icon-rename"></span>
+								<span>{{ t('Edit') }}</span>
+							</a>
 						</li>
 						<li>
-							<button class="icon-delete" :title="t('Delete Mindmap')" @click="remove(mindmap)">
-								<span class="hidden-visually">{{ t('Delete Mindmap') }}</span>
-							</button>
+							<a href="#" @click="remove(mindmap)">
+								<span class="icon-delete"></span>
+								<span>{{ t('Delete') }}</span>
+							</a>
 						</li>
 					</ul>
 				</div>
 				<div class="app-navigation-entry-edit">
 					<form @submit.prevent="update(mindmap)">
 						<input type="text" maxlength="255" v-model="mindmap.title">
-						<input type="submit" value="" class="icon-close">
+						<input type="button" value="" class="icon-close">
 						<input type="submit" value="" class="icon-checkmark">
 					</form>
 				</div>
@@ -87,13 +89,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	})
 	export default class AppNavigation extends Vue {
 		private mindmapService: MindmapService;
-		mindmaps: Array<Mindmap> = [];
-		title: string;
+		private mindmaps: Array<Mindmap> = [];
+		private title: string;
 
 		created(): void {
 			this.title = '';
 			this.mindmapService = new MindmapService();
-			this.mindmapService.load().then((response) => {
+			this.mindmapService.load().then(response => {
+				$('#app-navigation').removeClass('loading');
 				response.data.forEach((mindmap: Mindmap) => {
 					this.mindmaps.push(mindmap);
 				});
@@ -101,7 +104,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				if (_.isUndefined(this.$route.params.id) && this.mindmaps.length > 0) {
 					this.$router.push({path: `/mindmaps/${this.mindmaps[0].id}`});
 				}
-			}).catch((error) => {
+			}).catch(error => {
+				$('#app-navigation').removeClass('loading');
 				console.error('Error: ' + error.message);
 			});
 
@@ -127,11 +131,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			let mindmap = new Mindmap();
 			mindmap.title = this.title;
 			mindmap.description = '';
-			this.mindmapService.create(mindmap).then((response) => {
+			this.mindmapService.create(mindmap).then(response => {
 				this.mindmaps.push(response.data);
 				this.title = '';
 				$('#app-navigation').find('ul > li').first().removeClass('editing');
-			}).catch((error) => {
+			}).catch(error => {
 				console.error('Error: ' + error.message);
 			});
 		}
@@ -139,7 +143,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		update(mindmap: Mindmap): void {
 			this.mindmapService.update(mindmap).then(() => {
 				$(`.with-menu[data-id=${mindmap.id}]`).removeClass('editing');
-			}).catch((error) => {
+			}).catch(error => {
 				console.error('Error: ' + error.message);
 			});
 		}
@@ -148,17 +152,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			this.mindmapService.remove(mindmap.id).then(() => {
 				const index = this.mindmaps.indexOf(mindmap);
 				this.mindmaps.splice(index, 1);
-			}).catch((error) => {
+			}).catch(error => {
 				console.error('Error: ' + error.message);
 			});
 		}
 	}
 </script>
-
-<style lang="scss">
-	#app-navigation {
-		.app-navigation-entry-menu ul {
-			flex-direction: row !important;
-		}
-	}
-</style>

@@ -20,9 +20,29 @@
  *
  */
 
-.app-navigation-entry-menu, .popovermenu {
-	button[class^="icon-"] {
-		height: 20px;
-		margin: 6px 0 6px 0;
-	}
-}
+import {expect} from 'chai';
+import MindmapNode from '../../models/MindmapNode';
+
+describe('MindmapNode', () => {
+	it('Should be an instance of the MindmapNode class', () => {
+		const mindmapNode = new MindmapNode();
+		mindmapNode.id = 1;
+		mindmapNode.mindmapId = 1;
+		mindmapNode.parentId = null;
+		mindmapNode.userId = 'test';
+		mindmapNode.x = 0;
+		mindmapNode.y = 0;
+		mindmapNode.label = 'Test';
+		mindmapNode.lockedBy = 'test';
+
+		expect(mindmapNode).to.instanceOf(MindmapNode);
+		expect(mindmapNode.id).to.eq(1);
+		expect(mindmapNode.mindmapId).to.eq(1);
+		expect(mindmapNode.parentId).to.eq(null);
+		expect(mindmapNode.userId).to.eq('test');
+		expect(mindmapNode.x).to.eq(0);
+		expect(mindmapNode.y).to.eq(0);
+		expect(mindmapNode.label).to.eq('Test');
+		expect(mindmapNode.lockedBy).to.eq('test');
+	});
+});

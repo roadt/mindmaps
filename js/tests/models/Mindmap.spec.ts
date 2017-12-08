@@ -24,8 +24,19 @@ import {expect} from 'chai';
 import Mindmap from '../../models/Mindmap';
 
 describe('Mindmap', () => {
-	it('Should be an instance of Mindmap', () => {
+	it('Should be an instance of the Mindmap class', () => {
 		const mindmap = new Mindmap();
+		mindmap.id = 1;
+		mindmap.title = 'Test';
+		mindmap.description = 'Test';
+		mindmap.userId = 'test';
+		mindmap.shared = true;
+
 		expect(mindmap).to.instanceOf(Mindmap);
+		expect(mindmap.id).to.eq(1);
+		expect(mindmap.title).to.eq('Test');
+		expect(mindmap.description).to.eq('Test');
+		expect(mindmap.userId).to.eq('test');
+		expect(mindmap.shared).to.eq(true);
 	});
 });

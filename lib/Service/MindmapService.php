@@ -25,7 +25,7 @@ namespace OCA\Mindmaps\Service;
 
 use Exception;
 use OCA\Mindmaps\Db\{Mindmap, MindmapMapper};
-use OCA\Mindmaps\Exception\BadRequestException;
+use OCA\Mindmaps\Exception\{BadRequestException, NotFoundException};
 use OCP\AppFramework\Db\Entity;
 
 class MindmapService extends Service {
@@ -48,12 +48,12 @@ class MindmapService extends Service {
 	 * Return all mindmaps from mapper class by user id.
 	 *
 	 * @param string $userId
-	 * @param null|integer $limit
-	 * @param null|integer $offset
+	 * @param null|int $limit
+	 * @param null|int $offset
 	 *
 	 * @return \OCP\AppFramework\Db\Entity[]
 	 */
-	public function findAll($userId, $limit = null, $offset = null): array {
+	public function findAll(string $userId, int $limit = null, int $offset = null): array {
 		return $this->mindmapMapper->findAll($userId, $limit, $offset);
 	}
 
@@ -68,7 +68,7 @@ class MindmapService extends Service {
 	 *
 	 * @throws BadRequestException if parameters are invalid
 	 */
-	public function create($title, $description, $userId): Entity {
+	public function create(string $title, string $description, string $userId): Entity {
 		if ($title === null || $title === '') {
 			throw new BadRequestException();
 		}
@@ -84,7 +84,7 @@ class MindmapService extends Service {
 	/**
 	 * Find and update a given mindmap object.
 	 *
-	 * @param integer $mindmapId
+	 * @param int $id
 	 * @param string $title
 	 * @param string $description
 	 * @param string $userId
@@ -92,21 +92,49 @@ class MindmapService extends Service {
 	 * @return \OCP\AppFramework\Db\Entity
 	 *
 	 * @throws BadRequestException if parameters are invalid
+	 * @throws NotFoundException if user is not allowed to update it
 	 * @throws Exception
 	 */
-	public function update($mindmapId, $title, $description, $userId): Entity {
+	public function update(int $id, string $title, string $description, string $userId): Entity {
 		if ($title === null || $title === '') {
 			throw new BadRequestException();
 		}
 
 		try {
-			$mindmap = $this->find($mindmapId);
+			$mindmap = $this->find($id);
+			if (!$this->mindmapMapper->hasUserAccess($id, $userId)) {
+				throw new NotFoundException();
+			}
 			$mindmap->setTitle($title);
 			if ($description !== null && $mindmap->getDescription() !== $description) {
 				$mindmap->setDescription($description);
 			}
 
 			return $this->mindmapMapper->update($mindmap);
+		} catch (Exception $e) {
+			$this->handleException($e);
+		}
+		return null;
+	}
+
+	/**
+	 * Find and delete the entity by given id and user id.
+	 *
+	 * @param int $id
+	 * @param string $userId
+	 *
+	 * @return null|\OCP\AppFramework\Db\Entity
+	 *
+	 * @throws NotFoundException if the mindmap does not exist or user is not allowed to delete it
+	 * @throws Exception
+	 */
+	public function delete(int $id, string $userId): Entity {
+		try {
+			$entity = $this->find($id);
+			if (!$this->mindmapMapper->hasUserAccess($id, $userId)) {
+				throw new NotFoundException();
+			}
+			return $this->mapper->delete($entity);
 		} catch (Exception $e) {
 			$this->handleException($e);
 		}

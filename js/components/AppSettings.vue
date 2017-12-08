@@ -40,7 +40,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 	@Component
 	export default class AppSettings extends Vue {
-		refreshInterval = 0;
+		// @ts-ignore
+		private refreshInterval = 0;
 
 		created(): void {
 			this.refreshInterval = 10;

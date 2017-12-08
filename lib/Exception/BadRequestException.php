@@ -29,7 +29,7 @@ use OCP\AppFramework\Http;
 class BadRequestException extends Exception {
 
 	public function __construct(
-		$msg = 'Something went wrong with your request. Maybe some parameters are wrong or missing.'
+		string $msg = 'Something went wrong with your request. Maybe some parameters are wrong or missing.'
 	) {
 		parent::__construct($msg, Http::STATUS_BAD_REQUEST);
 	}

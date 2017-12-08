@@ -24,7 +24,7 @@ import Model from './Model';
 
 export default class MindmapNode extends Model {
 	mindmapId: number;
-	parentId: number;
+	parentId: null | number;
 	userId: string;
 	x: number;
 	y: number;

@@ -25,7 +25,7 @@ namespace OCA\Mindmaps\Controller;
 
 use OCA\Mindmaps\Exception\{BadRequestException, NotFoundException};
 use OCA\Mindmaps\Service\AclService;
-use OCA\Mindmaps\Utils;
+use OCA\Mindmaps\Util;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\{IL10N, IRequest, IUserManager, IGroupManager, Share};
@@ -59,14 +59,14 @@ class AclController extends Controller {
 	 * @param string $userId
 	 */
 	public function __construct(
-		$appName,
+		string $appName,
 		IRequest $request,
 		AclService $aclService,
 		IUserManager $userManager,
 		IGroupManager $groupManager,
 		IManager $shareManager,
 		IL10N $l10n,
-		$userId
+		string $userId
 	) {
 		parent::__construct($appName, $request);
 		$this->aclService = $aclService;
@@ -82,84 +82,98 @@ class AclController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param integer $mindmapId
-	 * @param null|integer $limit
-	 * @param null|integer $offset
+	 * @param int $mindmapId
+	 * @param null|int $limit
+	 * @param null|int $offset
 	 *
 	 * @return DataResponse
 	 */
-	public function index($mindmapId, $limit = null, $offset = null): DataResponse {
+	public function index(
+		int $mindmapId,
+		int $limit = null,
+		int $offset = null
+	): DataResponse {
 		return new DataResponse($this->aclService->findAll($mindmapId, $limit, $offset));
 	}
 
 	/**
-	 * Create a mindmap acl entry with the given parameters.
+	 * Create an acl entry with the given parameters.
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param integer $mindmapId
-	 * @param integer $type
+	 * @param int $mindmapId
+	 * @param int $type
 	 * @param string $participant
 	 *
 	 * @return DataResponse
 	 */
-	public function create($mindmapId, $type, $participant): DataResponse {
+	public function create(
+		int $mindmapId,
+		int $type,
+		string $participant
+	): DataResponse {
 		try {
 			if ($type === Share::SHARE_TYPE_USER) {
 				// Valid user is required to share
 				if ($participant === null || !$this->userManager->userExists($participant)) {
-					throw new NotFoundException($this->l10n->t('Please specify a valid user'));
+					throw new NotFoundException(
+						$this->l10n->t('Please specify a valid user')
+					);
+				}
+			} else if ($type === Share::SHARE_TYPE_GROUP) {
+				if (!$this->shareManager->allowGroupSharing()) {
+					throw new NotFoundException(
+						$this->l10n->t('Group sharing is disabled by the administrator')
+					);
+				}
+
+				// Valid group is required to share
+				if ($participant === null || !$this->groupManager->groupExists($participant)) {
+					throw new NotFoundException(
+						$this->l10n->t('Please specify a valid group')
+					);
 				}
 			} else {
-				if ($type === Share::SHARE_TYPE_GROUP) {
-					if (!$this->shareManager->allowGroupSharing()) {
-						throw new NotFoundException($this->l10n->t('Group sharing is disabled by the administrator'));
+				if ($type === Share::SHARE_TYPE_CIRCLE) {
+					// Circles app is required to share with a circle
+					if (!Util::isCirclesAppEnabled()) {
+						throw new NotFoundException(
+							$this->l10n->t('You cannot share to a circle if the app is not enabled')
+						);
 					}
 
-					// Valid group is required to share
-					if ($participant === null || !$this->groupManager->groupExists($participant)) {
-						throw new NotFoundException($this->l10n->t('Please specify a valid group'));
-					}
-				} else {
-					if ($type === Share::SHARE_TYPE_CIRCLE) {
-						// Circles app is required to share with a circle
-						if (!Utils::isCirclesAppEnabled()) {
-							throw new NotFoundException($this->l10n->t('You cannot share to a circle if the app is not enabled'));
-						}
+					/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+					$circle = \OCA\Circles\Api\v1\Circles::detailsCircle($participant);
 
-						/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-						$circle = \OCA\Circles\Api\v1\Circles::detailsCircle($participant);
-
-						// Valid circle is required to share
-						if ($circle === null) {
-							throw new NotFoundException($this->l10n->t('Please specify a valid circle'));
-						}
+					// Valid circle is required to share
+					if ($circle === null) {
+						throw new NotFoundException(
+							$this->l10n->t('Please specify a valid circle')
+						);
 					}
 				}
 			}
 
 			return new DataResponse($this->aclService->create($mindmapId, $type, $participant));
-		} catch (BadRequestException $ex) {
-			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
-		} catch (NotFoundException $ex) {
+		} catch (BadRequestException | NotFoundException $ex) {
 			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
 		}
 	}
 
 	/**
-	 * Delete the given mindmap acl entry.
+	 * Delete a given acl entry.
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param integer $aclId
+	 * @param int $id
 	 *
 	 * @return DataResponse
 	 *
 	 * @throws \Exception
 	 */
-	public function delete($aclId): DataResponse {
+	public function delete(int $id): DataResponse {
 		try {
-			return new DataResponse($this->aclService->delete($aclId));
+			return new DataResponse($this->aclService->delete($id, $this->userId));
 		} catch (NotFoundException $ex) {
 			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
 		}

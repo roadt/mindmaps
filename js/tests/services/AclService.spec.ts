@@ -21,14 +21,14 @@
  */
 
 import {assert, expect} from 'chai';
-import Mindmap from '../../models/Mindmap';
-import MindmapService from '../../services/MindmapService';
+import Acl from '../../models/Acl';
+import AclService from '../../services/AclService';
 import * as moxios from 'moxios';
 import * as sinon from 'sinon';
 
-describe('MindmapService', () => {
-	let service: MindmapService;
-	let data: Array<Mindmap>;
+describe('AclService', () => {
+	let service: AclService;
+	let data: Array<Acl>;
 
 	beforeEach(() => {
 		moxios.install();
@@ -39,39 +39,39 @@ describe('MindmapService', () => {
 	});
 
 	describe('load', () => {
-		it('Should return one mindmap', done => {
+		it('Should return one acl', done => {
 			data = [{
 				'id': 1,
-				'title': 'Test',
-				'description': 'Test',
-				'userId': 'test',
-				'shared': true
+				'mindmapId': 1,
+				'participant': 'test',
+				'participantDisplayName': 'Test',
+				'type': 0
 			}];
-			moxios.stubRequest('/apps/mindmaps/mindmaps', {
+			moxios.stubRequest('/apps/mindmaps/acl/1', {
 				status: 200,
 				responseText: JSON.stringify(data)
 			});
 
 			const onFulfilled = sinon.spy();
-			service = new MindmapService();
-			service.load().then(onFulfilled);
+			service = new AclService();
+			service.load(data[0].mindmapId).then(onFulfilled);
 
 			moxios.wait(() => {
-				expect(onFulfilled.getCall(0).args[0].data[0].title).to.string(data[0].title);
+				expect(onFulfilled.getCall(0).args[0].data[0].participant).to.string(data[0].participant);
 				done();
 			});
 		});
 
-		it('Should return the mindmap with id 1', () => {
-			const mindmap = service.find(1);
-			if (mindmap !== null) {
-				expect(mindmap.title).to.string(data[0].title);
+		it('Should return the acl with id 1', () => {
+			const acl = service.find(1);
+			if (acl !== null) {
+				expect(acl.participantDisplayName).to.string(data[0].participantDisplayName);
 			}
 		});
 
-		it('Should return null for the mindmap with id 2', () => {
-			const mindmap = service.find(2);
-			assert.equal(mindmap, null);
+		it('Should return null for the acl with id 2', () => {
+			const acl = service.find(2);
+			assert.equal(acl, null);
 		});
 	});
 });

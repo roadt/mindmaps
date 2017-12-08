@@ -44,8 +44,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	@Component
 	export default class DetailsTab extends Vue {
 		@Prop({required: true})
-		mindmap: Mindmap;
-		helpText = t('mindmaps', 'Select a node and double click anywhere in your mindmap to add a child node. ' +
+		private mindmap: Mindmap;
+		// @ts-ignore
+		private helpText = t('mindmaps', 'Select a node and double click anywhere in your mindmap to add a child node. ' +
 			'You can also edit or delete nodes by simply clicking on them and choose the corresponding action icon. ' +
 			'App icon by <a href="https://icons8.com/" rel="noopener" target="_blank">Icons8</a> and mindmaps powered by ' +
 			'<a href="http://visjs.org/" rel="noopener" target="_blank">Vis.js</a>.');
@@ -54,7 +55,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			const mindmapService = new MindmapService();
 			mindmapService.update(this.mindmap).then(() => {
 				console.log('Description saved!');
-			}).catch((error) => {
+			}).catch(error => {
 				console.error('Error: ' + error.message);
 			});
 		}
