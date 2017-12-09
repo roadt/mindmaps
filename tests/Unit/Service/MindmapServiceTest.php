@@ -74,24 +74,35 @@ class MindmapServiceTest extends UnitTestCase {
 	 * Test the creation of an mindmap object and save it to the database.
 	 *
 	 * @return Mindmap
+	 *
+	 * @throws \OCA\Mindmaps\Exception\BadRequestException
 	 */
-	public function testCreate() {
+	public function testCreate(): Mindmap {
 		/** @var Mindmap $mindmap */
 		$mindmap = $this->fm->instance(Mindmap::class);
-		$mindmapTmp = $this->mindmapService->create($mindmap->getTitle(), $mindmap->getDescription(),
-			$mindmap->getUserId());
-		$this->assertInstanceOf(Mindmap::class, $mindmapTmp);
-		return $mindmapTmp;
+		$mindmap = $this->mindmapService->create(
+			$mindmap->getTitle(),
+			$mindmap->getDescription(),
+			$mindmap->getUserId()
+		);
+		$this->assertInstanceOf(Mindmap::class, $mindmap);
+		return $mindmap;
 	}
 
 	/**
 	 * Update the previously created mindmap.
 	 *
 	 * @depends testCreate
+	 *
 	 * @param Mindmap $mindmap
+	 *
 	 * @return Mindmap
+	 *
+	 * @throws \OCA\Mindmaps\Exception\BadRequestException
+	 * @throws \OCA\Mindmaps\Exception\NotFoundException
+	 * @throws \Exception
 	 */
-	public function testUpdate(Mindmap $mindmap) {
+	public function testUpdate(Mindmap $mindmap): Mindmap {
 		$title = Faker::sentence(10);
 		$description = Faker::sentence(20);
 		$this->mindmapService->update($mindmap->getId(), $title(), $description(), $mindmap->getUserId());
@@ -102,9 +113,13 @@ class MindmapServiceTest extends UnitTestCase {
 	 * Delete the previously created mindmap from the database.
 	 *
 	 * @depends testUpdate
+	 *
 	 * @param Mindmap $mindmap
+	 *
+	 * @throws \OCA\Mindmaps\Exception\NotFoundException
+	 * @throws \Exception
 	 */
 	public function testDelete(Mindmap $mindmap) {
-		$this->mindmapService->delete($mindmap->id);
+		$this->mindmapService->delete($mindmap->id, $mindmap->getUserId());
 	}
 }

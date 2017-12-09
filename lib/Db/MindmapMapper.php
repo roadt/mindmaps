@@ -24,6 +24,7 @@
 namespace OCA\Mindmaps\Db;
 
 use OCA\Mindmaps\AppInfo\Application;
+use OCA\Mindmaps\Util;
 use OCP\AppFramework\Db\{Entity, Mapper};
 use OCP\{IDBConnection, IGroupManager, IUserManager};
 
@@ -102,8 +103,9 @@ class MindmapMapper extends Mapper {
 	public function findAll(string $userId, int $limit = null, int $offset = null): array {
 		// Get circle ids for the given user
 		$circleIds = [];
-		if (class_exists('\OCA\Circles\ShareByCircleProvider')) {
+		if (Util::isCirclesAppEnabled()) {
 			/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+			/** @var \OCA\Circles\Model\Circle[] $userCircles */
 			$userCircles = \OCA\Circles\Api\v1\Circles::listCircles(\OCA\Circles\Model\Circle::CIRCLES_ALL);
 			foreach ($userCircles as $circle) {
 				$circleIds[] = $circle->getUniqueId();
@@ -111,7 +113,17 @@ class MindmapMapper extends Mapper {
 		}
 		// Get group ids for the given user
 		$user = $this->userManager->get($userId);
-		$groupIds = $this->groupManager->getUserGroupIds($user);
+		$groupIds = [];
+		if ($user !== null) {
+			$groupIds = $this->groupManager->getUserGroupIds($user);
+		}
+
+		// The parameter bindings need to be variable depending on the circles / groups
+		$queryParameters = [
+			$userId,
+			$userId,
+			\OCP\Share::SHARE_TYPE_USER
+		];
 
 		// Build the SQL string
 		$sql = 'SELECT ' .
@@ -120,20 +132,25 @@ class MindmapMapper extends Mapper {
 			'FROM ' . $this->getTableName() . ' ' .
 			'  LEFT JOIN *PREFIX*' . Application::MINDMAPS_ACL_TABLE . ' ON ' . $this->getTableName() . '.id = *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.mindmap_id ' .
 			'WHERE ' . $this->getTableName() . '.user_id = ? OR ' .
-			'      *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.participant = ? AND *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.type = ? OR ' .
-			'      *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.participant IN (' . $this->arrayToSqlList($groupIds) . ') AND *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.type = ? OR ' .
-			'      *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.participant IN (' . $this->arrayToSqlList($circleIds) . ') AND *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.type = ? ' .
-			'ORDER BY ' . $this->getTableName() . '.id';
+			'      *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.participant = ? AND *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.type = ? ';
+
+		// Do we need to query by group?
+		if (\count($groupIds) > 0) {
+			$sql .= 'OR *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.participant IN (' . $this->arrayToSqlList($groupIds) . ') AND *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.type = ? ';
+			$queryParameters[] = \OCP\Share::SHARE_TYPE_GROUP;
+		}
+
+		// Do we need to query by circle?
+		if (\count($circleIds) > 0) {
+			$sql .= 'OR *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.participant IN (' . $this->arrayToSqlList($circleIds) . ') AND *PREFIX*' . Application::MINDMAPS_ACL_TABLE . '.type = ? ';
+			$queryParameters[] = \OCP\Share::SHARE_TYPE_CIRCLE;
+		}
+
+		$sql .= 'ORDER BY ' . $this->getTableName() . '.id';
 
 		return $this->findEntities(
 			$sql,
-			[
-				$userId,
-				$userId,
-				\OCP\Share::SHARE_TYPE_USER,
-				\OCP\Share::SHARE_TYPE_GROUP,
-				\OCP\Share::SHARE_TYPE_CIRCLE
-			],
+			$queryParameters,
 			$limit,
 			$offset
 		);
@@ -154,5 +171,18 @@ class MindmapMapper extends Mapper {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Deletes an entity and its children from the tables.
+	 *
+	 * @param \OCP\AppFramework\Db\Entity $entity the entity that should be deleted
+	 *
+	 * @return \OCP\AppFramework\Db\Entity the deleted entity
+	 */
+	public function delete(Entity $entity): Entity {
+		$this->mindmapNodeMapper->deleteByMindmapId($entity->getId());
+		$this->aclMapper->deleteByMindmapId($entity->getId());
+		return parent::delete($entity);
 	}
 }

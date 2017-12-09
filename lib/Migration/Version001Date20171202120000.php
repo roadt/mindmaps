@@ -69,7 +69,8 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 			$table->setPrimaryKey(['id']);
 			$table->addIndex(['user_id']);
 
-			$output->advance(1, 'Table ' . Application::MINDMAPS_TABLE . ' was created successfully!');
+			$output->advance();
+			$output->info('Table ' . Application::MINDMAPS_TABLE . ' was created successfully!');
 		}
 
 		// Create the mindmaps_nodes table which holds information about the mindmaps single nodes.
@@ -115,11 +116,11 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 			$table->addForeignKeyConstraint(
 				$schema->getTable(Application::MINDMAPS_NODES_TABLE),
 				['parent_id'],
-				['id'],
-				['onDelete' => 'CASCADE']
+				['id']
 			);
 
-			$output->advance(2, 'Table ' . Application::MINDMAPS_NODES_TABLE . ' was created successfully!');
+			$output->advance(2);
+			$output->info('Table ' . Application::MINDMAPS_NODES_TABLE . ' was created successfully!');
 		}
 
 		// Create the mindmaps_acl table which holds sharing information like user / group / circle name.
@@ -144,11 +145,11 @@ class Version001Date20171202120000 extends SimpleMigrationStep {
 			$table->addForeignKeyConstraint(
 				$schema->getTable(Application::MINDMAPS_TABLE),
 				['mindmap_id'],
-				['id'],
-				['onDelete' => 'CASCADE']
+				['id']
 			);
 
-			$output->advance(3, 'Table ' . Application::MINDMAPS_ACL_TABLE . ' was created successfully!');
+			$output->advance(3);
+			$output->info('Table ' . Application::MINDMAPS_ACL_TABLE . ' was created successfully!');
 		}
 
 		$output->finishProgress();

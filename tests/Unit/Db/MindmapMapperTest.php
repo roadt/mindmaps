@@ -67,14 +67,15 @@ class MindmapMapperTest extends UnitTestCase {
 	}
 
 	/**
-	 * Test the creation of an mindmap object and save it to the database.
+	 * Test the creation of a mindmap object and save it to the database.
 	 *
 	 * @return Mindmap
 	 */
-	public function testCreate() {
+	public function testCreate(): Mindmap {
 		/** @var Mindmap $mindmap */
 		$mindmap = $this->fm->instance(Mindmap::class);
-		$this->assertInstanceOf(Mindmap::class, $this->mindmapMapper->insert($mindmap));
+		$mindmap = $this->mindmapMapper->insert($mindmap);
+		$this->assertInstanceOf(Mindmap::class, $mindmap);
 		return $mindmap;
 	}
 
@@ -82,10 +83,12 @@ class MindmapMapperTest extends UnitTestCase {
 	 * Update the previously created mindmap.
 	 *
 	 * @depends testCreate
+	 *
 	 * @param Mindmap $mindmap
+	 *
 	 * @return Mindmap
 	 */
-	public function testUpdate(Mindmap $mindmap) {
+	public function testUpdate(Mindmap $mindmap): Mindmap {
 		$title = Faker::sentence(10);
 		$description = Faker::sentence(20);
 		$mindmap->setTitle($title());
@@ -99,6 +102,7 @@ class MindmapMapperTest extends UnitTestCase {
 	 * Delete the previously created mindmap from the database.
 	 *
 	 * @depends testUpdate
+	 *
 	 * @param Mindmap $mindmap
 	 */
 	public function testDelete(Mindmap $mindmap) {

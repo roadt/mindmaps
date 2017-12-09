@@ -40,6 +40,7 @@ class MindmapNodeService extends Service {
 	/**
 	 * MindmapNodeService constructor.
 	 *
+	 * @param MindmapMapper $mindmapMapper
 	 * @param MindmapNodeMapper $mindmapNodeMapper
 	 */
 	public function __construct(
@@ -61,8 +62,13 @@ class MindmapNodeService extends Service {
 	 * @param null|int $offset
 	 *
 	 * @return \OCP\AppFramework\Db\Entity[]
+	 *
+	 * @throws NotFoundException if user has no access to the given mindmap
 	 */
 	public function findAll(int $mindmapId, string $userId, int $limit = null, int $offset = null): array {
+		if (!$this->mindmapMapper->hasUserAccess($mindmapId, $userId)) {
+			throw new NotFoundException();
+		}
 		return $this->mindmapNodeMapper->findAll($mindmapId, $limit, $offset);
 	}
 
@@ -70,17 +76,17 @@ class MindmapNodeService extends Service {
 	 * Create a new mindmap node object and insert it via mapper class.
 	 *
 	 * @param int $mindmapId
-	 * @param int $parentId
 	 * @param string $label
 	 * @param int $x
 	 * @param int $y
 	 * @param string $userId
+	 * @param null|int $parentId
 	 *
 	 * @return \OCP\AppFramework\Db\Entity
 	 *
 	 * @throws BadRequestException if parameters are invalid
 	 */
-	public function create(int $mindmapId, int $parentId, string $label, int $x, int $y, string $userId): Entity {
+	public function create(int $mindmapId, string $label, int $x, int $y, string $userId, int $parentId = null): Entity {
 		if ($label === null || $label === '') {
 			throw new BadRequestException();
 		}
@@ -100,11 +106,11 @@ class MindmapNodeService extends Service {
 	 * Find and update a given mindmap node object.
 	 *
 	 * @param int $id
-	 * @param int $parentId
 	 * @param string $label
 	 * @param int $x
 	 * @param int $y
 	 * @param string $userId
+	 * @param null|int $parentId
 	 *
 	 * @return \OCP\AppFramework\Db\Entity
 	 *
@@ -112,7 +118,7 @@ class MindmapNodeService extends Service {
 	 * @throws NotFoundException if user is not allowed to update it
 	 * @throws Exception
 	 */
-	public function update(int $id, int $parentId, string $label, int $x, int $y, string $userId): Entity {
+	public function update(int $id, string $label, int $x, int $y, string $userId, int $parentId = null): Entity {
 		if ($label === null || $label === '') {
 			throw new BadRequestException();
 		}

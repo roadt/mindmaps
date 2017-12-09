@@ -79,4 +79,16 @@ class AclMapper extends Mapper {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE mindmap_id = ?';
 		return $this->findEntities($sql, [$mindmapId], $limit, $offset);
 	}
+
+	/**
+	 * Delete all acls for a given mindmap.
+	 *
+	 * @param integer $mindmapId
+	 */
+	public function deleteByMindmapId($mindmapId) {
+		$acls = $this->findAll($mindmapId);
+		foreach ($acls as $acl) {
+			$this->delete($acl);
+		}
+	}
 }

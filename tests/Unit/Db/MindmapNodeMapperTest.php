@@ -23,8 +23,97 @@
 
 namespace OCA\Mindmaps\Tests\Unit\Db;
 
+use League\FactoryMuffin\Faker\Facade as Faker;
+use OCA\Mindmaps\Db\{
+	AclMapper, Mindmap, MindmapMapper, MindmapNode, MindmapNodeMapper
+};
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
+use OCP\{IDBConnection, IGroupManager, IUserManager};
 
 class MindmapNodeMapperTest extends UnitTestCase {
 
+	/** @var IDBConnection */
+	private $con;
+	/** @var MindmapMapper */
+	private $mindmapMapper;
+	/** @var MindmapNodeMapper */
+	private $mindmapNodeMapper;
+	/** @var AclMapper */
+	private $aclMapper;
+	/** @var IUserManager */
+	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setUp() {
+		parent::setUp();
+		$this->con = \OC::$server->getDatabaseConnection();
+		$this->aclMapper = new AclMapper($this->con);
+		$this->mindmapNodeMapper = new MindmapNodeMapper($this->con);
+		$this->userManager = $this->getMockBuilder(IUserManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->mindmapMapper = new MindmapMapper(
+			$this->con,
+			$this->mindmapNodeMapper,
+			$this->aclMapper,
+			$this->groupManager,
+			$this->userManager
+		);
+	}
+
+	/**
+	 * Test the creation of a mindmap node object and save it to the database.
+	 *
+	 * @return MindmapNode
+	 */
+	public function testCreate(): MindmapNode {
+		/** @var Mindmap $mindmap */
+		$mindmap = $this->fm->instance(Mindmap::class);
+		$mindmap = $this->mindmapMapper->insert($mindmap);
+		/** @var MindmapNode $mindmapNode */
+		$mindmapNode = $this->fm->instance(MindmapNode::class);
+		$mindmapNode->setMindmapId($mindmap->getId());
+		$mindmapNode = $this->mindmapNodeMapper->insert($mindmapNode);
+		$this->assertInstanceOf(MindmapNode::class, $mindmapNode);
+		return $mindmapNode;
+	}
+
+	/**
+	 * Update the previously created mindmap node.
+	 *
+	 * @depends testCreate
+	 *
+	 * @param MindmapNode $mindmapNode
+	 *
+	 * @return MindmapNode
+	 */
+	public function testUpdate(MindmapNode $mindmapNode): MindmapNode {
+		$label = Faker::sentence(2);
+		$mindmapNode->setLabel($label());
+		$this->mindmapNodeMapper->update($mindmapNode);
+		return $mindmapNode;
+	}
+
+	/**
+	 * Delete the previously created mindmap node from the database.
+	 *
+	 * @depends testUpdate
+	 *
+	 * @param MindmapNode $mindmapNode
+	 *
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 */
+	public function testDelete(MindmapNode $mindmapNode) {
+		/** @var Mindmap $this */
+		$mindmap = $this->mindmapMapper->find($mindmapNode->getMindmapId());
+		$this->mindmapMapper->delete($mindmap);
+	}
 }

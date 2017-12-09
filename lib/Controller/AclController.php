@@ -155,7 +155,9 @@ class AclController extends Controller {
 			}
 
 			return new DataResponse($this->aclService->create($mindmapId, $type, $participant));
-		} catch (BadRequestException | NotFoundException $ex) {
+		} catch (BadRequestException $ex) {
+			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
+		} catch (NotFoundException $ex) {
 			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
 		}
 	}

@@ -35,8 +35,6 @@ class PageControllerTest extends UnitTestCase {
 	private $controller;
 	/** @var IRequest */
 	private $request;
-	/** @var string */
-	private $userId = 'john';
 
 	/**
 	 * {@inheritDoc}
@@ -46,7 +44,7 @@ class PageControllerTest extends UnitTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->controller = new PageController(Application::APP_NAME, $this->request, $this->userId);
+		$this->controller = new PageController(Application::APP_NAME, $this->request);
 	}
 
 	/**

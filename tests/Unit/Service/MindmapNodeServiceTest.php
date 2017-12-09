@@ -23,8 +23,127 @@
 
 namespace OCA\Mindmaps\Tests\Unit\Service;
 
+use League\FactoryMuffin\Faker\Facade as Faker;
+use OCA\Mindmaps\Db\{
+	AclMapper, Mindmap, MindmapMapper, MindmapNode, MindmapNodeMapper
+};
+use OCA\Mindmaps\Service\{MindmapNodeService, MindmapService};
 use OCA\Mindmaps\Tests\Unit\UnitTestCase;
+use OCP\{IDBConnection, IGroupManager, IUserManager};
 
 class MindmapNodeServiceTest extends UnitTestCase {
 
+	/** @var IDBConnection */
+	private $con;
+	/** @var MindmapService */
+	private $mindmapService;
+	/** @var MindmapNodeService */
+	private $mindmapNodeService;
+	/** @var MindmapMapper */
+	private $mindmapMapper;
+	/** @var MindmapNodeMapper */
+	private $mindmapNodeMapper;
+	/** @var AclMapper */
+	private $aclMapper;
+	/** @var IUserManager */
+	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setUp() {
+		parent::setUp();
+		$this->con = \OC::$server->getDatabaseConnection();
+		$this->aclMapper = new AclMapper($this->con);
+		$this->mindmapNodeMapper = new MindmapNodeMapper($this->con);
+		$this->userManager = $this->getMockBuilder(IUserManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->mindmapMapper = new MindmapMapper(
+			$this->con,
+			$this->mindmapNodeMapper,
+			$this->aclMapper,
+			$this->groupManager,
+			$this->userManager
+		);
+		$this->mindmapService = new MindmapService($this->mindmapMapper);
+		$this->mindmapNodeService = new MindmapNodeService(
+			$this->mindmapMapper,
+			$this->mindmapNodeMapper
+		);
+	}
+
+	/**
+	 * Test the creation of a mindmap node object and save it to the database.
+	 *
+	 * @return MindmapNode
+	 *
+	 * @throws \OCA\Mindmaps\Exception\BadRequestException
+	 */
+	public function testCreate(): MindmapNode {
+		/** @var Mindmap $mindmap */
+		$mindmap = $this->fm->instance(Mindmap::class);
+		$mindmap = $this->mindmapService->create(
+			$mindmap->getTitle(),
+			$mindmap->getDescription(),
+			$mindmap->getUserId()
+		);
+		/** @var MindmapNode $mindmapNode */
+		$mindmapNode = $this->fm->instance(MindmapNode::class);
+		$mindmapNode = $this->mindmapNodeService->create(
+			$mindmap->getId(),
+			$mindmapNode->getLabel(),
+			$mindmapNode->getX(),
+			$mindmapNode->getY(),
+			$mindmap->getUserId()
+		);
+		$this->assertInstanceOf(MindmapNode::class, $mindmapNode);
+		return $mindmapNode;
+	}
+
+	/**
+	 * Update the previously created mindmap node.
+	 *
+	 * @depends testCreate
+	 *
+	 * @param MindmapNode $mindmapNode
+	 *
+	 * @return MindmapNode
+	 *
+	 * @throws \OCA\Mindmaps\Exception\BadRequestException
+	 * @throws \OCA\Mindmaps\Exception\NotFoundException
+	 * @throws \Exception
+	 */
+	public function testUpdate(MindmapNode $mindmapNode): MindmapNode {
+		$label = Faker::sentence(2);
+		$this->mindmapNodeService->update(
+			$mindmapNode->getId(),
+			$label(),
+			$mindmapNode->getX(),
+			$mindmapNode->getY(),
+			$mindmapNode->getUserId()
+		);
+		return $mindmapNode;
+	}
+
+	/**
+	 * Delete the previously created mindmap node from the database.
+	 *
+	 * @depends testUpdate
+	 *
+	 * @param MindmapNode $mindmapNode
+	 *
+	 * @throws \OCA\Mindmaps\Exception\NotFoundException
+	 * @throws \Exception
+	 */
+	public function testDelete(MindmapNode $mindmapNode) {
+		/** @var Mindmap $mindmap */
+		$mindmap = $this->mindmapService->find($mindmapNode->getMindmapId());
+		$this->mindmapService->delete($mindmap->id, $mindmap->getUserId());
+	}
 }

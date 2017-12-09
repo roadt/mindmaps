@@ -41,6 +41,7 @@ class AclService extends Service {
 	 * AclService constructor.
 	 *
 	 * @param AclMapper $aclMapper
+	 * @param MindmapMapper $mindmapMapper
 	 */
 	public function __construct(
 		MindmapMapper $mindmapMapper,
