@@ -23,6 +23,7 @@ env:
   matrix:
     - DB=mysql
     - DB=pgsql
+    - DB=sqlite
 
 cache:
   directories:

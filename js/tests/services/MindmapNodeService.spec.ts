@@ -28,7 +28,7 @@ import * as sinon from 'sinon';
 
 describe('MindmapNodeService', () => {
 	let service: MindmapNodeService;
-	let data: Array<MindmapNode>;
+	let data: MindmapNode[];
 
 	beforeEach(() => {
 		moxios.install();

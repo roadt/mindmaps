@@ -89,7 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	})
 	export default class AppNavigation extends Vue {
 		private mindmapService: MindmapService;
-		private mindmaps: Array<Mindmap> = [];
+		private mindmaps: Mindmap[] = [];
 		private title: string;
 
 		created(): void {
@@ -97,7 +97,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			this.mindmapService = new MindmapService();
 			this.mindmapService.load().then(response => {
 				$('#app-navigation').removeClass('loading');
-				response.data.forEach((mindmap: Mindmap) => {
+				response.data.forEach(mindmap => {
 					this.mindmaps.push(mindmap);
 				});
 				// Load the first mindmap

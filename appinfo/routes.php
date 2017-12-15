@@ -27,6 +27,7 @@ return [
 
 		// mindmaps
 		['name' => 'mindmap#index', 'url' => '/mindmaps', 'verb' => 'GET'],
+		['name' => 'mindmap#read', 'url' => '/mindmaps/{id}', 'verb' => 'GET'],
 		['name' => 'mindmap#create', 'url' => '/mindmaps', 'verb' => 'POST'],
 		['name' => 'mindmap#update', 'url' => '/mindmaps/{id}', 'verb' => 'PUT'],
 		['name' => 'mindmap#delete', 'url' => '/mindmaps/{id}', 'verb' => 'DELETE'],

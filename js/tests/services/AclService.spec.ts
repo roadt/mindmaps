@@ -28,7 +28,7 @@ import * as sinon from 'sinon';
 
 describe('AclService', () => {
 	let service: AclService;
-	let data: Array<Acl>;
+	let data: Acl[];
 
 	beforeEach(() => {
 		moxios.install();

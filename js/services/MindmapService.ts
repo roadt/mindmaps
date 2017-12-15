@@ -22,6 +22,8 @@
 
 import Service from './Service';
 import Mindmap from '../models/Mindmap';
+import {AxiosPromise} from 'axios';
+import Axios from 'axios';
 
 export default class MindmapService extends Service<Mindmap> {
 	private active: Mindmap | null;
@@ -29,6 +31,16 @@ export default class MindmapService extends Service<Mindmap> {
 	constructor() {
 		super('/apps/mindmaps/mindmaps');
 		this.active = null;
+	}
+
+	get(id: number): AxiosPromise<Mindmap> {
+		return Axios.get(this.baseUrl + '/' + id, {
+			headers: this.headers
+		}).then(response => {
+			return response;
+		}).catch(error => {
+			return Promise.reject(error.response);
+		});
 	}
 
 	getActive(): Mindmap | null {

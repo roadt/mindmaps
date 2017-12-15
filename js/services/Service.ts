@@ -21,13 +21,14 @@
  */
 
 import Axios, {AxiosPromise} from 'axios';
+import * as _ from 'lodash';
 import Model from '../models/Model';
 import System from '../System';
 
 export default abstract class Service<T extends Model> {
 	protected baseUrl: string;
 	protected headers: object;
-	protected data: Array<T>;
+	protected data: T[];
 
 	constructor(baseUrl: string) {
 		this.baseUrl = System.generateUrl(baseUrl);
@@ -40,7 +41,7 @@ export default abstract class Service<T extends Model> {
 
 	find(id: number): T | null {
 		let obj: T | null = null;
-		this.data.forEach((entry) => {
+		this.data.forEach(entry => {
 			if (entry.id === id) {
 				obj = entry;
 			}
@@ -48,64 +49,64 @@ export default abstract class Service<T extends Model> {
 		return obj;
 	}
 
-	getAll(): Array<T> {
+	getAll(): T[] {
 		return this.data;
 	}
 
-	load(): AxiosPromise {
+	load(): AxiosPromise<T[]> {
 		return Axios.get(this.baseUrl, {
 			headers: this.headers
-		}).then((response) => {
+		}).then(response => {
 			this.data = response.data;
 			return response;
-		}).catch((error) => {
+		}).catch(error => {
 			return Promise.reject(error.response);
 		});
 	}
 
-	create(obj: T): AxiosPromise {
+	create(obj: T): AxiosPromise<T> {
 		return Axios.post(this.baseUrl,
 			obj,
 			{
 				headers: this.headers
 			}
-		).then((response) => {
+		).then(response => {
 			this.data.push(response.data);
 			return response;
-		}).catch((error) => {
+		}).catch(error => {
 			return Promise.reject(error.response);
 		});
 	}
 
-	update(obj: T): AxiosPromise {
+	update(obj: T): AxiosPromise<T> {
 		return Axios.put(this.baseUrl + '/' + obj.id,
 			obj,
 			{
 				headers: this.headers
 			}
-		).then((response) => {
+		).then(response => {
 			const index = this.data.indexOf(obj);
 			this.data[index] = response.data;
 			return response.data;
-		}).catch((error) => {
+		}).catch(error => {
 			return Promise.reject(error.response);
 		});
 	}
 
-	remove(id: number): AxiosPromise {
+	remove(id: number): AxiosPromise<T> {
 		return Axios.delete(this.baseUrl + '/' + id,
 			{
 				headers: this.headers
 			}
-		).then((response) => {
+		).then(response => {
 			let entry = this.find(response.data.id);
-			if (entry != null) {
+			if (!_.isNull(entry)) {
 				const index = this.data.indexOf(entry);
 				this.data.splice(index, 1);
 				return response.data;
 			}
 			return Promise.reject(System.t('Object not found.'));
-		}).catch((error) => {
+		}).catch(error => {
 			return Promise.reject(error.response);
 		});
 	}

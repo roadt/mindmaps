@@ -20,9 +20,10 @@
  *
  */
 
+import Axios, {AxiosPromise} from 'axios';
+import * as _ from 'lodash';
 import Service from './Service';
 import Acl from '../models/Acl';
-import {default as Axios, AxiosPromise} from 'axios';
 import System from '../System';
 
 export default class AclService extends Service<Acl> {
@@ -30,22 +31,22 @@ export default class AclService extends Service<Acl> {
 		super('/apps/mindmaps/acl');
 	}
 
-	load(mindmapId?: number): AxiosPromise {
-		if (typeof mindmapId === 'undefined') {
+	load(mindmapId?: number): AxiosPromise<Acl[]> {
+		if (_.isUndefined(mindmapId)) {
 			throw new Error(System.t('Please specify a mindmapId.'));
 		}
 
 		return Axios.get(this.baseUrl + '/' + mindmapId, {
 			headers: this.headers
-		}).then((response) => {
+		}).then(response => {
 			this.data = response.data;
 			return response;
-		}).catch((error) => {
+		}).catch(error => {
 			return Promise.reject(error.response);
 		});
 	}
 
-	getAutocomplete(search: string): AxiosPromise {
+	getAutocomplete(search: string): AxiosPromise<any> {
 		return Axios.get(
 			OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
 			{
@@ -61,12 +62,12 @@ export default class AclService extends Service<Acl> {
 				},
 				headers: this.headers
 			}
-		).then((response) => {
+		).then(response => {
 			if (response.data.ocs.meta.statuscode !== 100) {
 				Promise.reject('Error while searching.');
 			}
 			return response;
-		}).catch((error) => {
+		}).catch(error => {
 			return Promise.reject(error.response);
 		});
 	}

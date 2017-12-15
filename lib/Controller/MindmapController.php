@@ -72,6 +72,25 @@ class MindmapController extends Controller {
 	}
 
 	/**
+	 * Return a single mindmap by its id.
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @param int $id
+	 *
+	 * @return DataResponse
+	 *
+	 * @throws \Exception
+	 */
+	public function read(int $id) {
+		try {
+			return new DataResponse($this->mindmapService->find($id));
+		} catch (NotFoundException $ex) {
+			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
+		}
+	}
+
+	/**
 	 * Create a mindmap with the given parameters.
 	 *
 	 * @NoAdminRequired

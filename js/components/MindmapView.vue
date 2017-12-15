@@ -23,7 +23,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div id="app-content-wrapper">
 			<div class="popovermenu bubble">
-				<ul>
+				<form @submit.prevent="create" v-show="createOrEdit">
+					<input type="text" :placeholder="t('Edit mindmap node')" maxlength="255" v-model="title">
+					<input type="button" value="" class="icon-close">
+					<input type="submit" value="" class="icon-checkmark">
+				</form>
+				<ul v-show="!createOrEdit">
 					<li>
 						<a href="#" @click="showRename">
 							<span class="icon-rename"></span>
@@ -45,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script lang="ts">
-	import {Component, Vue} from 'vue-property-decorator';
+	import {Component, Vue, Watch} from 'vue-property-decorator';
 	import * as _ from 'lodash';
 	import * as vis from 'vis';
 	import AppSidebar from './AppSidebar.vue';
@@ -60,20 +65,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	})
 	export default class MindmapView extends Vue {
+		private mindmapService: MindmapService;
 		private mindmapNodeService: MindmapNodeService;
 		// @ts-ignore
-		private mindmap: Mindmap = new Mindmap();
+		private createOrEdit: boolean;
+		// @ts-ignore
+		mindmap: Mindmap = new Mindmap();
+
+		@Watch('$route.params.id', {deep: true})
+		onMindmapIdChanged(id: number): void {
+			this.loadMindmap(id);
+		}
 
 		created(): void {
-			const id = parseInt(this.$route.params.id);
+			this.mindmapService = new MindmapService();
 			this.mindmapNodeService = new MindmapNodeService();
+			this.createOrEdit = false;
 
-			const mindmapService = new MindmapService();
-			mindmapService.load().then(() => {
+			const id = parseInt(this.$route.params.id);
+			this.loadMindmap(id);
+		}
+
+		loadMindmap(id: number): void {
+			this.mindmapService.get(id).then(response => {
 				$('#mindmap').removeClass('loading');
-				const mindmap = mindmapService.find(id);
-				if (!_.isNull(mindmap)) {
-					this.mindmap = mindmap;
+				if (!_.isNull(response.data)) {
+					this.mindmap = response.data;
 				}
 			}).catch(error => {
 				$('#mindmap').removeClass('loading');
@@ -89,8 +106,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					interaction: {dragNodes: false},
 					locale: OC.getLocale()
 				};
-				const nodes: Array<MindmapNode> = response.data;
-				const edges: Array<{from: number, to: number}> = [];
+				const nodes: MindmapNode[] = response.data;
+				const edges: {from: number, to: number}[] = [];
 
 				if (!_.isNull(content) && !_.isNull(wrapper) && !_.isNull(container)) {
 					// The mindmap should use all of the wrappers place.
@@ -98,9 +115,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					container.style.height = wrapper.clientHeight + 'px';
 				}
 
-				nodes.forEach((val: MindmapNode) => {
-					if (val.parentId !== null) {
-						edges.push({from: val.parentId, to: val.id});
+				nodes.forEach(node => {
+					if (!_.isNull(node.parentId)) {
+						edges.push({from: node.parentId, to: node.id});
 					}
 				});
 
@@ -111,7 +128,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					network.fit();
 
 					network.on('click', this.showPopover);
-					network.on('doubleClick', this.showNew);
+					network.on('doubleClick', this.showPopover);
 				} else {
 					OC.dialogs.alert(t('mindmaps', 'The vis.js Framework is not available!'), t('mindmaps', 'Error'));
 				}
@@ -130,41 +147,82 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				$popover.css('left', params.pointer.DOM.x - 60);
 			} else {
 				$popover.removeClass('open');
-			}
-		}
 
-		showNew(params: any): void {
-			const parentId: number = parseInt($('#mindmap').data('selected') as string);
-			if (_.isNaN(parentId)) {
-				OC.dialogs.alert(t('mindmaps', 'Please select a parent node first!'), t('mindmaps', 'Error'));
-			} else {
-				console.log('New node at: ' + params.pointer.DOM.y + ' / ' + params.pointer.DOM.x + ' / Parent: ' + parentId);
+				const parentId = parseInt($('#mindmap').data('selected') as string);
+				if (!_.isNaN(parentId)) {
+					console.log('New node at: ' + params.pointer.DOM.y + ' / ' + params.pointer.DOM.x + ' / Parent: ' + parentId);
+					this.createOrEdit = true;
+				}
 			}
 		}
 
 		showRename(): void {
-			const mindmapNodeId: number = parseInt($('#mindmap').data('selected') as string);
-			if (_.isNaN(mindmapNodeId)) {
+			const mindmapNodeId = parseInt($('#mindmap').data('selected') as string);
+			if (!_.isNaN(mindmapNodeId)) {
 				console.log('Edit node: ' + mindmapNodeId);
+				this.createOrEdit = true;
 			}
 		}
 
+		create(): void {
+
+		}
+
+		update(): void {
+
+		}
+
 		remove(): void {
-			const mindmapNodeId: number = parseInt($('#mindmap').data('selected') as string);
+			const mindmapNodeId = parseInt($('#mindmap').data('selected') as string);
 			this.mindmapNodeService.remove(mindmapNodeId).then(() => {
 				console.log('Node deleted!');
 			}).catch(error => {
 				console.error('Error: ' + error.message);
 			});
 		}
-
 	}
 </script>
 
 <style lang="scss">
 	#app-content-wrapper {
 		.popovermenu {
-			width: 84px;
+			min-width: 84px;
+			max-width: 168px;
+			padding: 4px;
+
+			form {
+				display: inline-flex;
+				width: 100%;
+
+				input[type="text"] {
+					width: 100%;
+					min-width: 0;
+					height: 38px;
+					border-bottom-right-radius: 0;
+					border-top-right-radius: 0;
+					padding: 5px;
+					margin-right: 0;
+				}
+
+				input:not([type="text"]) {
+					width: 36px;
+					height: 38px;
+					flex: 0 0 36px;
+
+					:not(:first-child) {
+						margin-left: -1px;
+					}
+
+					:not(:last-child) {
+						border-radius: 0;
+					}
+
+					:last-child {
+						border-bottom-left-radius: 0;
+						border-top-left-radius: 0;
+					}
+				}
+			}
 		}
 	}
 </style>

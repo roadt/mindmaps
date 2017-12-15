@@ -59,7 +59,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	export default class AppSidebar extends Vue {
 		@Prop({required: true})
 		// @ts-ignore
-		private mindmap: Mindmap;
+		mindmap: Mindmap;
 
 		closeSidebar(): void {
 			OC.Apps.hideAppSidebar();

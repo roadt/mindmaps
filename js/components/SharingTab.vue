@@ -46,9 +46,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	@Component
 	export default class SharingTab extends Vue {
 		private aclService: AclService;
+		private shares: Acl[] = [];
 		@Prop({required: true})
-		private mindmap: Mindmap;
-		private shares: Array<Acl> = [];
+		mindmap: Mindmap;
 
 		private setAvatars(): void {
 			// @ts-ignore
@@ -93,7 +93,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		private filterSuggestions(type: number, suggestions: Array<SharingInfo>): Array<SharingInfo> {
+		private filterSuggestions(type: number, suggestions: SharingInfo[]): SharingInfo[] {
 			const sharedWith = this.shares.filter(share => {
 				return share.type === type;
 			}).map(share => {
@@ -111,7 +111,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			return suggestions;
 		}
 
-		private autocompleteHandler(search: {term: string}, callback: (data?: Array<SharingInfo>) => any): void {
+		private autocompleteHandler(search: {term: string}, callback: (data?: SharingInfo[]) => any): void {
 			this.aclService.getAutocomplete(search.term.trim()).then(response => {
 				const users = this.filterSuggestions(
 					OC.Share.SHARE_TYPE_USER,
@@ -121,7 +121,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					OC.Share.SHARE_TYPE_GROUP,
 					response.data.ocs.data.exact.groups.concat(response.data.ocs.data.groups)
 				);
-				let circles: Array<SharingInfo> = [];
+				let circles: SharingInfo[] = [];
 				if (!_.isUndefined(response.data.ocs.data.circles)) {
 					circles = this.filterSuggestions(
 						OC.Share.SHARE_TYPE_CIRCLE,
@@ -167,8 +167,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		onMindmapIdChanged(id: number): void {
 			if (id > 0) {
 				this.registerAutocomplete();
+				this.shares.length = 0;
 				this.aclService.load(id).then(response => {
-					response.data.forEach((share: Acl) => {
+					response.data.forEach(share => {
 						this.shares.push(share);
 					});
 				}).catch(error => {
