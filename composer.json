@@ -11,6 +11,6 @@
 		"christophwurst/nextcloud": "^12.0",
 		"phpunit/phpunit": "^5.4",
 		"league/factory-muffin": "^3.0",
-		"league/factory-muffin-faker": "^2.0"
+		"league/factory-muffin-faker": "^2.0.0"
 	}
 }
