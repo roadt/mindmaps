@@ -21,8 +21,8 @@
  */
 
 import {assert, expect} from 'chai';
-import Acl from '../../models/Acl';
-import AclService from '../../services/AclService';
+import {Acl} from '../../models';
+import {AclService} from '../../services';
 import * as moxios from 'moxios';
 import * as sinon from 'sinon';
 

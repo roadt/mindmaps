@@ -23,17 +23,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div id="app-content-wrapper">
 			<div class="popovermenu bubble">
-				<form @submit.prevent="create" v-show="createOrEdit">
-					<input type="text" :placeholder="t('Edit mindmap node')" maxlength="255" v-model="title">
-					<input type="button" value="" class="icon-close">
-					<input type="submit" value="" class="icon-checkmark">
-				</form>
-				<ul v-show="!createOrEdit">
+				<ul>
 					<li>
-						<a href="#" @click="showRename">
-							<span class="icon-rename"></span>
-							<span>{{ t('Edit') }}</span>
-						</a>
+						<form @submit.prevent="create">
+							<input type="text" :placeholder="t('Edit mindmap node')" maxlength="255" v-model="title">
+							<input type="button" value="" class="icon-close">
+							<input type="submit" value="" class="icon-checkmark">
+						</form>
 					</li>
 					<li>
 						<a href="#" @click="remove">
@@ -54,10 +50,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import * as _ from 'lodash';
 	import * as vis from 'vis';
 	import AppSidebar from './AppSidebar.vue';
-	import MindmapNodeService from '../services/MindmapNodeService';
-	import MindmapNode from '../models/MindmapNode';
-	import MindmapService from '../services/MindmapService';
-	import Mindmap from '../models/Mindmap';
+	import {MindmapService, MindmapNodeService} from '../services';
+	import {Mindmap, MindmapNode} from '../models';
 
 	@Component({
 		components: {
@@ -67,8 +61,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	export default class MindmapView extends Vue {
 		private mindmapService: MindmapService;
 		private mindmapNodeService: MindmapNodeService;
-		// @ts-ignore
-		private createOrEdit: boolean;
 		// @ts-ignore
 		mindmap: Mindmap = new Mindmap();
 
@@ -80,7 +72,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		created(): void {
 			this.mindmapService = new MindmapService();
 			this.mindmapNodeService = new MindmapNodeService();
-			this.createOrEdit = false;
 
 			const id = parseInt(this.$route.params.id);
 			this.loadMindmap(id);
@@ -151,7 +142,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				const parentId = parseInt($('#mindmap').data('selected') as string);
 				if (!_.isNaN(parentId)) {
 					console.log('New node at: ' + params.pointer.DOM.y + ' / ' + params.pointer.DOM.x + ' / Parent: ' + parentId);
-					this.createOrEdit = true;
 				}
 			}
 		}
@@ -160,7 +150,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			const mindmapNodeId = parseInt($('#mindmap').data('selected') as string);
 			if (!_.isNaN(mindmapNodeId)) {
 				console.log('Edit node: ' + mindmapNodeId);
-				this.createOrEdit = true;
 			}
 		}
 
@@ -186,9 +175,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <style lang="scss">
 	#app-content-wrapper {
 		.popovermenu {
-			min-width: 84px;
-			max-width: 168px;
-			padding: 4px;
+			width: 240px;
+			padding: 4px 2px 4px 4px;
 
 			form {
 				display: inline-flex;
@@ -208,19 +196,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					width: 36px;
 					height: 38px;
 					flex: 0 0 36px;
+				}
 
-					:not(:first-child) {
-						margin-left: -1px;
-					}
+				input:not([type="text"]):not(:first-child) {
+					margin-left: -1px;
+				}
 
-					:not(:last-child) {
-						border-radius: 0;
-					}
+				input:not([type="text"]):not(:last-child) {
+					border-radius: 0;
+				}
 
-					:last-child {
-						border-bottom-left-radius: 0;
-						border-top-left-radius: 0;
-					}
+				input:not([type="text"]):last-child {
+					border-bottom-left-radius: 0;
+					border-top-left-radius: 0;
+					margin-left: -4px;
 				}
 			}
 		}

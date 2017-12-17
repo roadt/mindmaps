@@ -36,11 +36,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <script lang="ts">
 	import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-	import * as _ from 'lodash';
-	import Acl from '../models/Acl';
-	import AclService from '../services/AclService';
-	import Mindmap from '../models/Mindmap';
 	import AutocompleteUIParams = JQueryUI.AutocompleteUIParams;
+	import * as _ from 'lodash';
+	import {Acl, Mindmap} from '../models';
+	import {AclService} from '../services';
 	import System from '../System';
 
 	@Component

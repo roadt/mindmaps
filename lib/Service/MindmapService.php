@@ -58,6 +58,26 @@ class MindmapService extends Service {
 	}
 
 	/**
+	 * Find the entity by given id and user id.
+	 *
+	 * @param int $id
+	 * @param string $userId
+	 *
+	 * @return null|\OCP\AppFramework\Db\Entity
+	 *
+	 * @throws NotFoundException
+	 * @throws Exception
+	 */
+	public function findByUser($id, $userId): Entity {
+		try {
+			return $this->mindmapMapper->findByUser($id, $userId);
+		} catch (Exception $e) {
+			$this->handleException($e);
+		}
+		return null;
+	}
+
+	/**
 	 * Create a new mindmap object and insert it via mapper class.
 	 *
 	 * @param string $title

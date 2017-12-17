@@ -23,7 +23,7 @@
 import Axios, {AxiosPromise} from 'axios';
 import * as _ from 'lodash';
 import Service from './Service';
-import Acl from '../models/Acl';
+import {Acl} from '../models';
 import System from '../System';
 
 export default class AclService extends Service<Acl> {

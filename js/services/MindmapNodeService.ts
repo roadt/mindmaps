@@ -23,7 +23,7 @@
 import Axios, {AxiosPromise} from 'axios';
 import * as _ from 'lodash';
 import Service from './Service';
-import MindmapNode from '../models/MindmapNode';
+import {MindmapNode} from '../models';
 import System from '../System';
 
 export default class MindmapNodeService extends Service<MindmapNode> {

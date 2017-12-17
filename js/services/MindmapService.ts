@@ -20,10 +20,9 @@
  *
  */
 
+import Axios, {AxiosPromise} from 'axios';
 import Service from './Service';
-import Mindmap from '../models/Mindmap';
-import {AxiosPromise} from 'axios';
-import Axios from 'axios';
+import {Mindmap} from '../models';
 
 export default class MindmapService extends Service<Mindmap> {
 	private active: Mindmap | null;

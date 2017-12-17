@@ -82,9 +82,9 @@ class MindmapController extends Controller {
 	 *
 	 * @throws \Exception
 	 */
-	public function read(int $id) {
+	public function read(int $id): DataResponse {
 		try {
-			return new DataResponse($this->mindmapService->find($id));
+			return new DataResponse($this->mindmapService->findByUser($id, $this->userId));
 		} catch (NotFoundException $ex) {
 			return new DataResponse(array('msg' => $ex->getMessage()), $ex->getCode());
 		}

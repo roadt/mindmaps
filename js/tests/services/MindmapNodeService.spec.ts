@@ -21,8 +21,8 @@
  */
 
 import {assert, expect} from 'chai';
-import MindmapNode from '../../models/MindmapNode';
-import MindmapNodeService from '../../services/MindmapNodeService';
+import {MindmapNode} from '../../models';
+import {MindmapNodeService} from '../../services';
 import * as moxios from 'moxios';
 import * as sinon from 'sinon';
 

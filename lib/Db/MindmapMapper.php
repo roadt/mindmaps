@@ -25,7 +25,9 @@ namespace OCA\Mindmaps\Db;
 
 use OCA\Mindmaps\AppInfo\Application;
 use OCA\Mindmaps\Util;
-use OCP\AppFramework\Db\{Entity, Mapper};
+use OCP\AppFramework\Db\{
+	DoesNotExistException, Entity, Mapper
+};
 use OCP\{IDBConnection, IGroupManager, IUserManager};
 
 class MindmapMapper extends Mapper {
@@ -87,6 +89,25 @@ class MindmapMapper extends Mapper {
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
 	public function find(int $id): Entity {
+		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id = ?';
+		return $this->findEntity($sql, [$id]);
+	}
+
+	/**
+	 * Return a mindmap object by given id and userId (with access check).
+	 *
+	 * @param int $id
+	 * @param string $userId
+	 *
+	 * @return \OCP\AppFramework\Db\Entity
+	 *
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
+	 */
+	public function findByUser(int $id, string $userId): Entity {
+		if (!$this->hasUserAccess($id, $userId)) {
+			throw new DoesNotExistException('Mindmap not found.');
+		}
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id = ?';
 		return $this->findEntity($sql, [$id]);
 	}

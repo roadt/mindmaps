@@ -79,8 +79,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import {Component, Vue} from 'vue-property-decorator';
 	import * as _ from 'lodash';
 	import AppSettings from './AppSettings.vue';
-	import MindmapService from '../services/MindmapService';
-	import Mindmap from '../models/Mindmap';
+	import {MindmapService} from '../services';
+	import {Mindmap} from '../models';
 
 	@Component({
 		components: {
@@ -158,3 +158,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	}
 </script>
+
+<style lang="scss">
+	.app-navigation-entry-utils-menu-share {
+		.icon-share {
+			height: 44px;
+			display: block;
+			opacity: 0.5;
+		}
+	}
+</style>

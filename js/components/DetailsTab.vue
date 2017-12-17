@@ -38,8 +38,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <script lang="ts">
 	import {Component, Prop, Vue} from 'vue-property-decorator';
-	import Mindmap from '../models/Mindmap';
-	import MindmapService from '../services/MindmapService';
+	import {Mindmap} from '../models';
+	import {MindmapService} from '../services';
 
 	@Component
 	export default class DetailsTab extends Vue {
@@ -67,6 +67,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		h3 {
 			padding-bottom: 4px;
 			border-bottom: 1px solid black;
+
+			.icon-info {
+				display: block;
+				opacity: 0.5;
+				float: right;
+				margin-right: 6px;
+			}
 		}
 
 		#description {

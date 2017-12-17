@@ -20,23 +20,8 @@
  *
  */
 
-import {expect} from 'chai';
-import Acl from '../../models/Acl';
+import Acl from './Acl';
+import Mindmap from './Mindmap';
+import MindmapNode from './MindmapNode';
 
-describe('Acl', () => {
-	it('Should be an instance of the Acl class', () => {
-		const acl = new Acl();
-		acl.id = 1;
-		acl.mindmapId = 1;
-		acl.participant = 'test';
-		acl.participantDisplayName = 'Test';
-		acl.type = 0;
-
-		expect(acl).to.instanceOf(Acl);
-		expect(acl.id).to.eq(1);
-		expect(acl.mindmapId).to.eq(1);
-		expect(acl.participant).to.eq('test');
-		expect(acl.participantDisplayName).to.eq('Test');
-		expect(acl.type).to.eq(0);
-	});
-});
+export { Acl, Mindmap, MindmapNode };

@@ -57,7 +57,7 @@ abstract class Service {
 	}
 
 	/**
-	 * Find the entity by given id and user id.
+	 * Find the entity by given id.
 	 *
 	 * @param int $id
 	 *

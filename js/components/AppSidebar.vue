@@ -48,7 +48,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	import {Component, Prop, Vue} from 'vue-property-decorator';
 	import DetailsTab from './DetailsTab.vue';
 	import SharingTab from './SharingTab.vue';
-	import Mindmap from '../models/Mindmap';
+	import {Mindmap} from '../models';
 
 	@Component({
 		components: {
