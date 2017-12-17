@@ -21,28 +21,22 @@
  */
 
 import {expect} from 'chai';
-import {MindmapNode} from '../../models';
+import {Acl} from '../../models';
 
-describe('MindmapNode', () => {
-	it('Should be an instance of the MindmapNode class', () => {
-		const mindmapNode = new MindmapNode();
-		mindmapNode.id = 1;
-		mindmapNode.mindmapId = 1;
-		mindmapNode.parentId = null;
-		mindmapNode.userId = 'test';
-		mindmapNode.x = 0;
-		mindmapNode.y = 0;
-		mindmapNode.label = 'Test';
-		mindmapNode.lockedBy = 'test';
+describe('Acl', () => {
+	it('Should be an instance of the Acl class', () => {
+		const acl = new Acl();
+		acl.id = 1;
+		acl.mindmapId = 1;
+		acl.participant = 'test';
+		acl.participantDisplayName = 'Test';
+		acl.type = 0;
 
-		expect(mindmapNode).to.instanceOf(MindmapNode);
-		expect(mindmapNode.id).to.eq(1);
-		expect(mindmapNode.mindmapId).to.eq(1);
-		expect(mindmapNode.parentId).to.eq(null);
-		expect(mindmapNode.userId).to.eq('test');
-		expect(mindmapNode.x).to.eq(0);
-		expect(mindmapNode.y).to.eq(0);
-		expect(mindmapNode.label).to.eq('Test');
-		expect(mindmapNode.lockedBy).to.eq('test');
+		expect(acl).to.instanceOf(Acl);
+		expect(acl.id).to.eq(1);
+		expect(acl.mindmapId).to.eq(1);
+		expect(acl.participant).to.eq('test');
+		expect(acl.participantDisplayName).to.eq('Test');
+		expect(acl.type).to.eq(0);
 	});
 });

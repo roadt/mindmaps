@@ -21,10 +21,10 @@
  */
 
 import {assert, expect} from 'chai';
-import {Mindmap} from '../../models';
-import {MindmapService} from '../../services';
 import * as moxios from 'moxios';
 import * as sinon from 'sinon';
+import {Mindmap} from '../../models';
+import {MindmapService} from '../../services';
 
 describe('MindmapService', () => {
 	let service: MindmapService;

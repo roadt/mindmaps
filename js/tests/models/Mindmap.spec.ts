@@ -21,28 +21,22 @@
  */
 
 import {expect} from 'chai';
-import {MindmapNode} from '../../models';
+import {Mindmap} from '../../models';
 
-describe('MindmapNode', () => {
-	it('Should be an instance of the MindmapNode class', () => {
-		const mindmapNode = new MindmapNode();
-		mindmapNode.id = 1;
-		mindmapNode.mindmapId = 1;
-		mindmapNode.parentId = null;
-		mindmapNode.userId = 'test';
-		mindmapNode.x = 0;
-		mindmapNode.y = 0;
-		mindmapNode.label = 'Test';
-		mindmapNode.lockedBy = 'test';
+describe('Mindmap', () => {
+	it('Should be an instance of the Mindmap class', () => {
+		const mindmap = new Mindmap();
+		mindmap.id = 1;
+		mindmap.title = 'Test';
+		mindmap.description = 'Test';
+		mindmap.userId = 'test';
+		mindmap.shared = true;
 
-		expect(mindmapNode).to.instanceOf(MindmapNode);
-		expect(mindmapNode.id).to.eq(1);
-		expect(mindmapNode.mindmapId).to.eq(1);
-		expect(mindmapNode.parentId).to.eq(null);
-		expect(mindmapNode.userId).to.eq('test');
-		expect(mindmapNode.x).to.eq(0);
-		expect(mindmapNode.y).to.eq(0);
-		expect(mindmapNode.label).to.eq('Test');
-		expect(mindmapNode.lockedBy).to.eq('test');
+		expect(mindmap).to.instanceOf(Mindmap);
+		expect(mindmap.id).to.eq(1);
+		expect(mindmap.title).to.eq('Test');
+		expect(mindmap.description).to.eq('Test');
+		expect(mindmap.userId).to.eq('test');
+		expect(mindmap.shared).to.eq(true);
 	});
 });
