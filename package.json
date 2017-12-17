@@ -1,0 +1,67 @@
+{
+	"name": "mindmaps",
+	"description": "This Nextcloud app allows you to create awesome mindmaps together with you colleagues.",
+	"version": "0.0.1",
+	"author": "Kai Schröer <git@schroeer.co>",
+	"license": "AGPL-3.0",
+	"homepage": "https://github.com/splitt3r/mindmaps#readme",
+	"bugs": {
+		"url": "https://github.com/splitt3r/mindmaps/issues"
+	},
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/splitt3r/mindmaps.git"
+	},
+	"keywords": [
+		"Nextcloud",
+		"Mindmaps"
+	],
+	"scripts": {
+		"dev": "cross-env NODE_ENV=development webpack-dev-server --hot --inline --open",
+		"build": "cross-env NODE_ENV=production webpack -p",
+		"build:dev": "cross-env NODE_ENV=development webpack -d",
+		"test": "mocha-webpack --include js/tests/Setup.ts js/tests/**/*.spec.ts"
+	},
+	"dependencies": {
+		"axios": "^0.17.1",
+		"babel-core": "^6.26.0",
+		"babel-loader": "^7.1.2",
+		"chai": "^4.1.2",
+		"copy-webpack-plugin": "^4.2.3",
+		"cross-env": "^5.1.1",
+		"css-loader": "^0.28.7",
+		"lodash": "^4.17.4",
+		"markdown-it": "^8.4.0",
+		"mocha": "^4.0.1",
+		"mocha-webpack": "^1.0.1",
+		"moxios": "^0.4.0",
+		"node-sass": "^4.7.2",
+		"sass-loader": "^6.0.6",
+		"sinon": "^4.1.2",
+		"ts-loader": "^3.1.1",
+		"typescript": "^2.6.1",
+		"vis": "4.21.0",
+		"vue": "^2.5.5",
+		"vue-class-component": "^6.1.0",
+		"vue-loader": "^13.5.0",
+		"vue-property-decorator": "^6.0.0",
+		"vue-router": "^2.8.1",
+		"vue-template-compiler": "^2.5.5",
+		"vuex": "^3.0.1",
+		"webpack": "^3.8.1"
+	},
+	"devDependencies": {
+		"@types/chai": "^4.0.5",
+		"@types/es6-promise": "0.0.33",
+		"@types/jquery": "^3.2.16",
+		"@types/jqueryui": "^1.11.37",
+		"@types/lodash": "^4.14.85",
+		"@types/markdown-it": "^0.0.4",
+		"@types/mocha": "^2.2.44",
+		"@types/moxios": "^0.4.7",
+		"@types/sinon": "^4.0.0",
+		"@types/vis": "^4.21.0",
+		"webpack-dev-server": "2.7.1"
+	}
+}

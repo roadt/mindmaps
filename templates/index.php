@@ -21,28 +21,14 @@
  *
  */
 
-style('mindmaps', 'vendor/vis.min');
-style('mindmaps', 'main');
+use OCA\Mindmaps\AppInfo\Application;
 
-script('mindmaps', 'vendor/vis.min');
-script('mindmaps', 'service/MindmapService');
-script('mindmaps', 'service/MindmapNodeService');
-script('mindmaps', 'service/AclService');
-script('mindmaps', 'view/View');
-script('mindmaps', 'Main');
+vendor_style(Application::APP_NAME, 'vis/vis.min');
+
+script(Application::APP_NAME, 'bundle');
 ?>
 
 <div id="app">
-	<div id="app-navigation">
-		<?php print_unescaped($this->inc('navigation/index')); ?>
-		<?php print_unescaped($this->inc('settings/index')); ?>
-	</div>
-	<div id="app-content">
-		<div id="app-content-wrapper">
-			<?php print_unescaped($this->inc('content/index')); ?>
-		</div>
-        <div id="app-sidebar">
-            <?php print_unescaped($this->inc('sidebar/index')); ?>
-        </div>
-	</div>
+	<app-navigation></app-navigation>
+	<app-content></app-content>
 </div>

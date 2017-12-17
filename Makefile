@@ -51,9 +51,9 @@ endif
 .PHONY: npm
 npm:
 ifeq (,$(wildcard $(CURDIR)/package.json))
-	cd js && $(npm) run build
+	cd js && $(npm) install && $(npm) run build
 else
-	npm run build
+	$(npm) install && $(npm) run build
 endif
 
 # Removes the appstore build
@@ -72,9 +72,7 @@ distclean: clean
 
 # Builds the source and appstore package
 .PHONY: dist
-dist:
-	make source
-	make appstore
+dist: source appstore
 
 # Builds the source package
 .PHONY: source
@@ -91,7 +89,7 @@ source:
 
 # Builds the source package for the app store, ignores php and js tests
 .PHONY: appstore
-appstore:
+appstore: npm
 	rm -rf $(appstore_build_directory)
 	rm -rf $(build_source_directory)
 	mkdir -p $(appstore_build_directory)
@@ -121,11 +119,6 @@ appstore:
 	--exclude="l10n/.tx" \
 	./ $(build_source_directory)/$(app_name)
 
-	@if [ -f $(cert_directory)/$(app_name).key ]; then \
-		echo "Creating integrity file..."; \
-		php ../../occ integrity:sign-app --privateKey="$(cert_directory)/$(app_name).key" --certificate="$(cert_directory)/$(app_name).crt" --path "$(build_source_directory)/$(app_name)"; \
-	fi
-
 	tar cvzf $(appstore_package_name).tar.gz --directory="$(build_source_directory)" $(app_name)
 
 	@if [ -f $(cert_directory)/$(app_name).key ]; then \
@@ -134,6 +127,7 @@ appstore:
 	fi
 
 .PHONY: test
-test: composer
+test: composer npm
 	$(CURDIR)/vendor/phpunit/phpunit/phpunit --coverage-clover clover.xml -c phpunit.xml
 	$(CURDIR)/vendor/phpunit/phpunit/phpunit -c phpunit.integration.xml
+	$(npm) run test
