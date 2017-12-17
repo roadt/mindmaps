@@ -33,7 +33,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 \OC::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
 \OC_App::loadApp(Application::APP_NAME);
 
-if (!class_exists('PHPUnit_Framework_TestCase')) {
+if (!class_exists('\PHPUnit\Framework\TestCase')) {
 	require_once 'PHPUnit/Autoload.php';
 }
 
