@@ -23,8 +23,9 @@
 
 namespace OCA\Mindmaps\Tests\Integration\Controller;
 
-use OCP\AppFramework\App;
-use OCP\AppFramework\IAppContainer;
+use OCA\Mindmaps\AppInfo\Application;
+use OCP\App\IAppManager;
+use OCP\AppFramework\{App, IAppContainer};
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -35,16 +36,16 @@ use PHPUnit_Framework_TestCase;
 class AppTest extends PHPUnit_Framework_TestCase {
 
 	/** @var IAppContainer */
-    private $container;
+	private $container;
 
-    public function setUp() {
-        parent::setUp();
-        $app = new App('mindmaps');
-        $this->container = $app->getContainer();
-    }
+	public function setUp() {
+		parent::setUp();
+		$app = new App(Application::APP_NAME);
+		$this->container = $app->getContainer();
+	}
 
-    public function testAppInstalled() {
-        $appManager = $this->container->query('OCP\App\IAppManager');
-        $this->assertTrue($appManager->isInstalled('mindmaps'));
-    }
+	public function testAppInstalled() {
+		$appManager = $this->container->query(IAppManager::class);
+		$this->assertTrue($appManager->isInstalled(Application::APP_NAME));
+	}
 }

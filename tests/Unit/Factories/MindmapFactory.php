@@ -22,11 +22,12 @@
  */
 
 use League\FactoryMuffin\Faker\Facade as Faker;
+use OCA\Mindmaps\Db\Mindmap;
 
 /**
  * General factory for the mindmap model.
  */
-$fm->define('OCA\Mindmaps\Db\Mindmap')->setDefinitions([
+$fm->define(Mindmap::class)->setDefinitions([
 	'title' => Faker::sentence(10),
 	'description' => Faker::sentence(20),
 	'userId' => Faker::firstNameMale()

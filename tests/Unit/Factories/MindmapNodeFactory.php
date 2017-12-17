@@ -22,11 +22,12 @@
  */
 
 use League\FactoryMuffin\Faker\Facade as Faker;
+use OCA\Mindmaps\Db\MindmapNode;
 
 /**
  * General factory for the mindmap node model.
  */
-$fm->define('OCA\Mindmaps\Db\MindmapNode')->setDefinitions([
+$fm->define(MindmapNode::class)->setDefinitions([
 	'userId' => Faker::firstNameMale(),
 	'x' => Faker::numberBetween(-400, 400),
 	'y' => Faker::numberBetween(-400, 400),
