@@ -26,14 +26,14 @@ namespace OCA\Mindmaps\Tests\Integration\Controller;
 use OCA\Mindmaps\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\AppFramework\{App, IAppContainer};
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * This test shows how to make a small Integration Test. Query your class
  * directly from the container, only pass in mocks if needed and run your tests
  * against the database
  */
-class AppTest extends PHPUnit_Framework_TestCase {
+class AppTest extends TestCase {
 
 	/** @var IAppContainer */
 	private $container;
