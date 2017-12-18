@@ -37,30 +37,34 @@ use JsonSerializable;
  */
 class Mindmap extends Model implements JsonSerializable {
 
-    protected $title;
-    protected $description;
-    protected $userId;
-    protected $shared;
+	/** @var string */
+	protected $title;
+	/** @var string */
+	protected $description;
+	/** @var string */
+	protected $userId;
+	/** @var boolean */
+	protected $shared;
 
-    /**
-     * Mindmap constructor.
-     */
-    public function __construct() {
-        $this->addType('shared', 'boolean');
-    }
+	/**
+	 * Mindmap constructor.
+	 */
+	public function __construct() {
+		$this->addType('shared', 'boolean');
+	}
 
-    /**
-     * Return object as json string.
-     *
-     * @return array
-     */
-    public function jsonSerialize() {
-        return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'userId' => $this->userId,
-            'shared' => $this->shared
-        ];
-    }
+	/**
+	 * Return object as json string.
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize(): array {
+		return [
+			'id' => $this->id,
+			'title' => $this->title,
+			'description' => $this->description,
+			'userId' => $this->userId,
+			'shared' => $this->shared
+		];
+	}
 }

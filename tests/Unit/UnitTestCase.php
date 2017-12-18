@@ -24,9 +24,9 @@
 namespace OCA\Mindmaps\Tests\Unit;
 
 use League\FactoryMuffin\FactoryMuffin;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-abstract class UnitTestCase extends PHPUnit_Framework_TestCase {
+abstract class UnitTestCase extends TestCase {
 
 	/** @var FactoryMuffin */
 	protected $fm;

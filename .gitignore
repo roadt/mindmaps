@@ -1,7 +1,12 @@
+js/**/*.js
+js/**/*.js.map
+node_modules/
 build/
 vendor/
+css/vendor/
 .idea/
 *.lock
 *.iml
 .DS_Store
 Thumbs.db
+package-lock.json
