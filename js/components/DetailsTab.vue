@@ -44,7 +44,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	@Component
 	export default class DetailsTab extends Vue {
 		// @ts-ignore
-		private helpText = t('mindmaps', 'Select a node and double click anywhere in your mindmap to add a child node. ' +
+		private helpText = t('mindmaps', 'Select a node and double click anywhere in your mindmap to create a child node. ' +
 			'You can also edit or delete nodes by simply clicking on them and choose the corresponding action icon. ' +
 			'App icon by <a href="https://icons8.com/" rel="noopener" target="_blank">Icons8</a> and mindmaps powered by ' +
 			'<a href="http://visjs.org/" rel="noopener" target="_blank">Vis.js</a>.');

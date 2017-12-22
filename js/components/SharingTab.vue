@@ -56,12 +56,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				const type = parseInt($item.data('type') as string);
 				const participant = $item.data('participant') as string;
 				const displayname = $item.data('displayname') as string;
+
 				if (type === OC.Share.SHARE_TYPE_USER) {
 					$item.avatar(participant);
 				} else {
 					$item.imageplaceholder(displayname);
 				}
-
 			});
 		}
 
@@ -142,19 +142,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			switch (item.value.shareType) {
 				case OC.Share.SHARE_TYPE_USER:
 					$('<a>').text(System.t('{sharee} (user)', {sharee: item.label}, undefined, {escape: false})).appendTo($insert);
-				break;
+					break;
 				case OC.Share.SHARE_TYPE_GROUP:
 					$('<a>').text(System.t('{sharee} (group)', {sharee: item.label}, undefined, {escape: false})).appendTo($insert);
-				break;
+					break;
 				case OC.Share.SHARE_TYPE_CIRCLE:
 					$('<a>').text(
 						System.t(
 							'{sharee} ({type}, {owner})',
-							{sharee: item.label, type: item.value.circleInfo, owner: item.value.circleOwner}, undefined,
+							{sharee: item.label, type: item.value.circleInfo, owner: item.value.circleOwner},
+							undefined,
 							{escape: false}
 						)
 					).appendTo($insert);
-				break;
+					break;
 				default:
 					$('<a>').text(System.t('Unexpected OCS response!')).appendTo($insert);
 			}
@@ -166,7 +167,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		onMindmapIdChanged(id: number): void {
 			if (id > 0) {
 				this.registerAutocomplete();
-				this.shares.length = 0;
+				for (let i = 0; i < this.shares.length; i++) {
+					this.shares.splice(i, 1);
+				}
 				this.aclService.load(id).then(response => {
 					response.data.forEach(share => {
 						this.shares.push(share);
