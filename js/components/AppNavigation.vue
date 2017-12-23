@@ -69,24 +69,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 						<input type="submit" value="" class="icon-checkmark">
 					</form>
 				</div>
+				<div class="app-navigation-entry-deleted">
+					<div class="app-navigation-entry-deleted-description">{{ t('Deleted important entry') }}</div>
+					<button class="app-navigation-entry-deleted-button icon-history" :title="t('Undo')"></button>
+				</div>
 			</li>
 		</ul>
-		<app-settings></app-settings>
 	</div>
 </template>
 
 <script lang="ts">
 	import {Component, Vue} from 'vue-property-decorator';
 	import * as _ from 'lodash';
-	import AppSettings from './AppSettings.vue';
 	import {MindmapService} from '../services';
 	import {Mindmap} from '../models';
 
-	@Component({
-		components: {
-			'app-settings': AppSettings
-		}
-	})
+	@Component
 	export default class AppNavigation extends Vue {
 		private mindmapService: MindmapService;
 		private mindmaps: Mindmap[] = [];

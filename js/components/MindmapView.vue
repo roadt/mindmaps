@@ -25,13 +25,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="popovermenu bubble">
 				<ul>
 					<li>
-						<form @submit.prevent="create">
-							<input type="text" :placeholder="t('Node title')" maxlength="255" v-model="title">
+						<form @submit.prevent="save">
+							<input type="text" :placeholder="t('Node title')" maxlength="255" v-model="currentNode.label">
 							<input type="button" value="" class="icon-close">
 							<input type="submit" value="" class="icon-checkmark">
 						</form>
 					</li>
-					<li v-show="!showRemove">
+					<li v-show="showRemove">
 						<a href="#" @click="remove">
 							<span class="icon-delete"></span>
 							<span>{{ t('Delete') }}</span>
@@ -64,6 +64,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		// @ts-ignore
 		mindmap: Mindmap = new Mindmap();
 		showRemove: boolean = false;
+		currentNode: MindmapNode = new MindmapNode();
 
 		@Watch('$route.params.id', {deep: true})
 		onMindmapIdChanged(id: number): void {
@@ -135,16 +136,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			const $popover = $('.popovermenu');
 			$popover.addClass('open');
 			$popover.css('top', params.pointer.DOM.y + 30);
-			$popover.css('left', params.pointer.DOM.x - 60);
+			$popover.css('left', params.pointer.DOM.x - 200);
 
 			if (params.nodes.length === 1) {
-				this.showRemove = false;
-				console.log('Edit node: ' + params.nodes[0]);
+				this.showRemove = true;
+				const node = this.mindmapNodeService.find(parseInt(params.nodes[0]));
+				if (!_.isNull(node)) {
+					this.currentNode = node;
+				}
 			} else {
 				const parentId = parseInt($('#mindmap').data('selected') as string);
 				if (!_.isNaN(parentId)) {
-					this.showRemove = true;
-					console.log('New node at: ' + params.pointer.DOM.y + ' / ' + params.pointer.DOM.x + ' / Parent: ' + parentId);
+					this.showRemove = false;
+					this.currentNode.mindmapId = this.mindmap.id;
+					this.currentNode.parentId = parentId;
+					this.currentNode.userId = OC.getCurrentUser().uid;
+					this.currentNode.x = params.pointer.canvas.x;
+					this.currentNode.y = params.pointer.canvas.y;
+					this.currentNode.label = '';
 				}
 			}
 		}
@@ -157,12 +166,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			}
 		}
 
-		create(): void {
-
-		}
-
-		update(): void {
-
+		save(): void {
+			if (this.showRemove) {
+				this.mindmapNodeService.update(this.currentNode).then(node => {
+					console.log('Node updated: ' + node.data.label);
+				}).catch(error => {
+					console.error('Error: ' + error.message);
+				});
+			} else {
+				this.mindmapNodeService.create(this.currentNode).then(node => {
+					console.log('Node created: ' + node.data.label);
+				}).catch(error => {
+					console.error('Error: ' + error.message);
+				});
+			}
 		}
 
 		remove(): void {
